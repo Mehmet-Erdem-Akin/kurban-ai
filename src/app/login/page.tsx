@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
     const [formData, setFormData] = useState({
@@ -10,6 +11,7 @@ export default function LoginPage() {
     });
     const [isLoading, setIsLoading] = useState(false);
     const [errors, setErrors] = useState<any>({});
+    const router = useRouter();
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -32,8 +34,8 @@ export default function LoginPage() {
 
         if (!formData.password) {
             newErrors.password = "Şifre gereklidir";
-        } else if (formData.password.length < 6) {
-            newErrors.password = "Şifre en az 6 karakter olmalıdır";
+        } else if (formData.password.length < 3) {
+            newErrors.password = "Şifre en az 3 karakter olmalıdır";
         }
 
         return newErrors;
@@ -49,13 +51,35 @@ export default function LoginPage() {
         }
 
         setIsLoading(true);
+        setErrors({});
 
-        // Simulate login API call
-        setTimeout(() => {
+        try {
+            const response = await fetch('/api/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                // Store auth token
+                localStorage.setItem('auth_token', data.token);
+                localStorage.setItem('user_data', JSON.stringify(data.user));
+
+                // Redirect to home page
+                alert('Giriş başarılı! Anasayfaya yönlendiriliyorsunuz...');
+                router.push('/');
+            } else {
+                setErrors({ general: data.error || 'Giriş başarısız' });
+            }
+        } catch (error) {
+            setErrors({ general: 'Bağlantı hatası. Lütfen tekrar deneyin.' });
+        } finally {
             setIsLoading(false);
-            // Redirect to dashboard or home page
-            console.log("Login successful:", formData);
-        }, 1500);
+        }
     };
 
     return (
@@ -76,6 +100,27 @@ export default function LoginPage() {
 
                 {/* Login Form */}
                 <div className="card p-8 animate-scale-in">
+                    {/* Demo Credentials Info */}
+                    <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
+                        <h3 className="text-sm font-semibold text-green-800 mb-2">Demo Giriş Bilgileri:</h3>
+                        <div className="text-sm text-green-700 space-y-1">
+                            <p><strong>E-posta:</strong> demo@kurbanaliz.com</p>
+                            <p><strong>Şifre:</strong> demo123</p>
+                        </div>
+                    </div>
+
+                    {/* General Error Message */}
+                    {errors.general && (
+                        <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+                            <p className="text-sm text-red-700 flex items-center">
+                                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                {errors.general}
+                            </p>
+                        </div>
+                    )}
+
                     <form onSubmit={handleSubmit} className="space-y-6">
                         <div>
                             <label htmlFor="email" className="block text-sm font-medium text-neutral-700 mb-2">

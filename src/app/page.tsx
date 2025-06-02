@@ -1,25 +1,73 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { useState, useEffect } from "react";
 
 export default function Home() {
+  const [user, setUser] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Check if user is logged in
+    const token = localStorage.getItem('auth_token');
+    const userData = localStorage.getItem('user_data');
+
+    if (token && userData) {
+      try {
+        setUser(JSON.parse(userData));
+      } catch (error) {
+        localStorage.removeItem('auth_token');
+        localStorage.removeItem('user_data');
+      }
+    }
+    setIsLoading(false);
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('auth_token');
+    localStorage.removeItem('user_data');
+    setUser(null);
+    alert('Başarıyla çıkış yaptınız!');
+  };
+
   return (
     <div className="min-h-screen hero-gradient">
       {/* Header */}
       <header className="container mx-auto px-4 py-6">
         <nav className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-primary-600 to-primary-700 rounded-xl flex items-center justify-center shadow-soft">
+            <div className="w-10 h-10 bg-gradient-to-br from-green-600 to-green-700 rounded-xl flex items-center justify-center shadow-soft">
               <span className="text-white text-lg font-bold">KA</span>
             </div>
             <span className="text-2xl font-bold text-neutral-800">Kurbanlık Analiz</span>
           </div>
           <div className="flex items-center space-x-4">
-            <Link href="/login" className="text-neutral-600 hover:text-neutral-800 transition-colors font-medium">
-              Giriş Yap
-            </Link>
-            <Link href="/register" className="btn btn-primary btn-md">
-              Kayıt Ol
-            </Link>
+            {isLoading ? (
+              <div className="w-6 h-6 border-2 border-gray-300 border-t-green-600 rounded-full animate-spin"></div>
+            ) : user ? (
+              <div className="flex items-center space-x-4">
+                <span className="text-neutral-700 font-medium">Hoş geldin, {user.name}!</span>
+                <button
+                  onClick={handleLogout}
+                  className="text-neutral-600 hover:text-neutral-800 transition-colors font-medium"
+                >
+                  Çıkış Yap
+                </button>
+                <Link href="/profile" className="btn btn-primary btn-md">
+                  Profilim
+                </Link>
+              </div>
+            ) : (
+              <>
+                <Link href="/login" className="text-neutral-600 hover:text-neutral-800 transition-colors font-medium">
+                  Giriş Yap
+                </Link>
+                <Link href="/register" className="btn btn-primary btn-md">
+                  Kayıt Ol
+                </Link>
+              </>
+            )}
           </div>
         </nav>
       </header>

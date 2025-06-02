@@ -5,51 +5,149 @@ import { useState, useRef } from "react";
 import Image from "next/image";
 
 export default function AnalyzePage() {
-    const [selectedImage, setSelectedImage] = useState<string | null>(null);
+    const [selectedImages, setSelectedImages] = useState<string[]>([]);
+    const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [isAnalyzing, setIsAnalyzing] = useState(false);
     const [analysisResult, setAnalysisResult] = useState<any>(null);
+    const [cameraStream, setCameraStream] = useState<MediaStream | null>(null);
+    const [showCamera, setShowCamera] = useState(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
+    const cameraRef = useRef<HTMLVideoElement>(null);
+    const canvasRef = useRef<HTMLCanvasElement>(null);
 
     const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                setSelectedImage(e.target?.result as string);
-            };
-            reader.readAsDataURL(file);
+        const files = event.target.files;
+        if (files) {
+            const imagePromises = Array.from(files).map((file) => {
+                return new Promise<string>((resolve) => {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        resolve(e.target?.result as string);
+                    };
+                    reader.readAsDataURL(file);
+                });
+            });
+
+            Promise.all(imagePromises).then((images) => {
+                setSelectedImages(images);
+                setCurrentImageIndex(0);
+            });
+        }
+    };
+
+    const startCamera = async () => {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({
+                video: {
+                    facingMode: 'environment', // Arka kamera
+                    width: { ideal: 1920 },
+                    height: { ideal: 1080 }
+                }
+            });
+            setCameraStream(stream);
+            setShowCamera(true);
+
+            if (cameraRef.current) {
+                cameraRef.current.srcObject = stream;
+            }
+        } catch (error) {
+            console.error('Kamera erişim hatası:', error);
+            alert('Kamera erişimi başarısız. Lütfen tarayıcı izinlerini kontrol edin.');
+        }
+    };
+
+    const stopCamera = () => {
+        if (cameraStream) {
+            cameraStream.getTracks().forEach(track => track.stop());
+            setCameraStream(null);
+        }
+        setShowCamera(false);
+    };
+
+    const capturePhoto = () => {
+        if (cameraRef.current && canvasRef.current) {
+            const video = cameraRef.current;
+            const canvas = canvasRef.current;
+            const context = canvas.getContext('2d');
+
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+
+            if (context) {
+                context.drawImage(video, 0, 0);
+                const imageDataUrl = canvas.toDataURL('image/jpeg', 0.8);
+
+                setSelectedImages(prev => [...prev, imageDataUrl]);
+                stopCamera();
+
+                // Yeni çekilen fotoğrafı göster
+                setCurrentImageIndex(selectedImages.length);
+            }
         }
     };
 
     const handleAnalyze = async () => {
-        if (!selectedImage) return;
+        if (selectedImages.length === 0) return;
 
         setIsAnalyzing(true);
 
-        // Simulated analysis - replace with actual AI API call
-        setTimeout(() => {
-            setAnalysisResult({
-                animalType: "Dana",
-                breed: "Simmental",
-                estimatedWeight: 450,
-                healthScore: 92,
-                marketValue: 45000,
-                meatYield: {
-                    totalMeat: 270,
-                    bonelessMeat: 195,
-                    boneWeight: 75
+        // API çağrısı için mevcut resmi kullan
+        const currentImage = selectedImages[currentImageIndex];
+
+        try {
+            const response = await fetch('/api/analyze', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
                 },
-                costPerShare: 6428,
-                confidence: 94
+                body: JSON.stringify({
+                    image: currentImage,
+                    imageIndex: currentImageIndex + 1,
+                    totalImages: selectedImages.length
+                }),
             });
+
+            if (response.ok) {
+                const result = await response.json();
+                setAnalysisResult(result);
+            } else {
+                throw new Error('Analiz başarısız');
+            }
+        } catch (error) {
+            console.error('Analiz hatası:', error);
+            alert('Analiz sırasında bir hata oluştu. Lütfen tekrar deneyin.');
+        } finally {
             setIsAnalyzing(false);
-        }, 3000);
+        }
     };
 
     const resetAnalysis = () => {
-        setSelectedImage(null);
+        setSelectedImages([]);
+        setCurrentImageIndex(0);
         setAnalysisResult(null);
         setIsAnalyzing(false);
+        stopCamera();
+    };
+
+    const switchImage = (index: number) => {
+        setCurrentImageIndex(index);
+        setAnalysisResult(null); // Yeni resim seçildiğinde analizi sıfırla
+    };
+
+    const removeImage = (index: number) => {
+        const newImages = selectedImages.filter((_, i) => i !== index);
+        setSelectedImages(newImages);
+
+        if (newImages.length === 0) {
+            setCurrentImageIndex(0);
+            setAnalysisResult(null);
+        } else if (currentImageIndex >= newImages.length) {
+            setCurrentImageIndex(newImages.length - 1);
+        }
+    };
+
+    const getCurrentImage = () => {
+        return selectedImages[currentImageIndex] || null;
     };
 
     return (
@@ -80,7 +178,7 @@ export default function AnalyzePage() {
                         </p>
                     </div>
 
-                    {!selectedImage && !analysisResult && (
+                    {!selectedImages.length && !analysisResult && (
                         <div className="card p-12 text-center animate-fade-in">
                             <div className="icon-container-primary mx-auto mb-6">
                                 <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -105,7 +203,7 @@ export default function AnalyzePage() {
                                     Galeriden Seç
                                 </button>
 
-                                <button className="btn btn-secondary btn-lg">
+                                <button onClick={startCamera} className="btn btn-secondary btn-lg">
                                     <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -118,25 +216,101 @@ export default function AnalyzePage() {
                                 ref={fileInputRef}
                                 type="file"
                                 accept="image/*"
+                                multiple
                                 onChange={handleImageUpload}
                                 className="hidden"
                             />
                         </div>
                     )}
 
-                    {selectedImage && !analysisResult && !isAnalyzing && (
+                    {/* Camera View */}
+                    {showCamera && (
                         <div className="card p-8 animate-scale-in">
                             <div className="text-center mb-6">
-                                <h3 className="text-2xl font-bold text-neutral-900 mb-2">Seçilen Fotoğraf</h3>
-                                <p className="text-neutral-600">Analizi başlatmak için butona tıklayın</p>
+                                <h3 className="text-2xl font-bold text-neutral-900 mb-2">Kamera</h3>
+                                <p className="text-neutral-600">Fotoğraf çekmek için butona tıklayın</p>
                             </div>
 
                             <div className="relative max-w-md mx-auto mb-6">
-                                <img
-                                    src={selectedImage}
-                                    alt="Seçilen hayvan"
-                                    className="w-full h-64 object-cover rounded-lg"
+                                <video
+                                    ref={cameraRef}
+                                    autoPlay
+                                    playsInline
+                                    className="w-full h-64 object-cover rounded-lg bg-gray-900"
                                 />
+                                <canvas ref={canvasRef} className="hidden" />
+                            </div>
+
+                            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                                <button
+                                    onClick={capturePhoto}
+                                    className="btn btn-primary btn-lg"
+                                >
+                                    <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    </svg>
+                                    Fotoğraf Çek
+                                </button>
+
+                                <button
+                                    onClick={stopCamera}
+                                    className="btn btn-secondary btn-lg"
+                                >
+                                    İptal
+                                </button>
+                            </div>
+                        </div>
+                    )}
+
+                    {selectedImages.length > 0 && !analysisResult && !isAnalyzing && !showCamera && (
+                        <div className="card p-8 animate-scale-in">
+                            <div className="text-center mb-6">
+                                <h3 className="text-2xl font-bold text-neutral-900 mb-2">
+                                    Seçilen Fotoğraflar ({selectedImages.length})
+                                </h3>
+                                <p className="text-neutral-600">Analiz etmek istediğiniz fotoğrafı seçin</p>
+                            </div>
+
+                            {/* Image Thumbnails */}
+                            {selectedImages.length > 1 && (
+                                <div className="flex gap-2 overflow-x-auto p-2 mb-6 bg-gray-50 rounded-lg">
+                                    {selectedImages.map((image, index) => (
+                                        <div key={index} className="relative flex-shrink-0">
+                                            <img
+                                                src={image}
+                                                alt={`Fotoğraf ${index + 1}`}
+                                                className={`w-16 h-16 object-cover rounded cursor-pointer border-2 transition-all ${currentImageIndex === index
+                                                        ? 'border-green-500 ring-2 ring-green-200'
+                                                        : 'border-gray-200 hover:border-gray-300'
+                                                    }`}
+                                                onClick={() => switchImage(index)}
+                                            />
+                                            <button
+                                                onClick={() => removeImage(index)}
+                                                className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white rounded-full text-xs hover:bg-red-600 transition-colors"
+                                            >
+                                                ×
+                                            </button>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+
+                            {/* Current Image */}
+                            <div className="relative max-w-md mx-auto mb-6">
+                                {getCurrentImage() && (
+                                    <img
+                                        src={getCurrentImage()!}
+                                        alt={`Seçilen hayvan ${currentImageIndex + 1}`}
+                                        className="w-full h-64 object-cover rounded-lg"
+                                    />
+                                )}
+                                {selectedImages.length > 1 && (
+                                    <div className="absolute top-2 right-2 bg-black bg-opacity-50 text-white px-2 py-1 rounded text-sm">
+                                        {currentImageIndex + 1} / {selectedImages.length}
+                                    </div>
+                                )}
                             </div>
 
                             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -147,14 +321,24 @@ export default function AnalyzePage() {
                                     <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
                                     </svg>
-                                    Analizi Başlat
+                                    Bu Fotoğrafı Analiz Et
+                                </button>
+
+                                <button
+                                    onClick={() => fileInputRef.current?.click()}
+                                    className="btn btn-secondary btn-lg"
+                                >
+                                    <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                    </svg>
+                                    Daha Fazla Ekle
                                 </button>
 
                                 <button
                                     onClick={resetAnalysis}
                                     className="btn btn-secondary btn-lg"
                                 >
-                                    Yeni Fotoğraf
+                                    Temizle
                                 </button>
                             </div>
                         </div>

@@ -46,19 +46,19 @@ const calculateDetailedAnalysis = (basicAnalysis: any) => {
 
 export async function POST(request: NextRequest) {
     try {
-        const formData = await request.formData();
-        const imageFile = formData.get('image') as File;
+        // Parse JSON data instead of FormData
+        const body = await request.json();
+        const { image, imageIndex, totalImages } = body;
 
-        if (!imageFile) {
+        if (!image) {
             return NextResponse.json(
-                { error: 'Resim dosyası gerekli' },
+                { error: 'Resim verisi gerekli' },
                 { status: 400 }
             );
         }
 
-        // Convert image to base64 for processing
-        const arrayBuffer = await imageFile.arrayBuffer();
-        const base64Image = Buffer.from(arrayBuffer).toString('base64');
+        // Remove data:image/jpeg;base64, prefix if present
+        const base64Image = image.replace(/^data:image\/[a-z]+;base64,/, '');
 
         // Simulate processing time
         await new Promise(resolve => setTimeout(resolve, 2000));
@@ -69,12 +69,21 @@ export async function POST(request: NextRequest) {
 
         const result = {
             success: true,
-            analysis: {
-                ...basicAnalysis,
-                ...detailedAnalysis,
-                analysisDate: new Date().toISOString(),
-                imageProcessed: true
-            }
+            animalType: basicAnalysis.animalType,
+            breed: basicAnalysis.breed,
+            estimatedWeight: basicAnalysis.estimatedWeight,
+            healthScore: basicAnalysis.healthScore,
+            marketValue: basicAnalysis.marketPrice,
+            meatYield: {
+                totalMeat: detailedAnalysis.totalMeatKg,
+                bonelessMeat: Math.floor(detailedAnalysis.totalMeatKg * 0.75),
+                boneWeight: Math.floor(detailedAnalysis.totalMeatKg * 0.25)
+            },
+            costPerShare: detailedAnalysis.sharePrice,
+            confidence: basicAnalysis.confidence,
+            analysisDate: new Date().toISOString(),
+            imageIndex: imageIndex || 1,
+            totalImages: totalImages || 1
         };
 
         return NextResponse.json(result);

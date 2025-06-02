@@ -199,6 +199,41 @@ export default function AnalyzePage() {
         }
     };
 
+    const handleAnalyzeAll = async () => {
+        if (selectedImages.length === 0) return;
+
+        setIsAnalyzing(true);
+
+        try {
+            console.log(`🚀 ${selectedImages.length} fotoğraf analiz ediliyor...`);
+
+            const response = await fetch('/api/analyze', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    images: selectedImages, // Tüm fotoğrafları gönder
+                    totalImages: selectedImages.length,
+                    analysisType: 'multiple'
+                }),
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                setAnalysisResult(result);
+                console.log(`✅ ${selectedImages.length} fotoğraf başarıyla analiz edildi`);
+            } else {
+                throw new Error('Çoklu analiz başarısız');
+            }
+        } catch (error) {
+            console.error('Çoklu analiz hatası:', error);
+            alert('Çoklu analiz sırasında bir hata oluştu. Lütfen tekrar deneyin.');
+        } finally {
+            setIsAnalyzing(false);
+        }
+    };
+
     const resetAnalysis = () => {
         setSelectedImages([]);
         setCurrentImageIndex(0);
@@ -416,7 +451,8 @@ export default function AnalyzePage() {
                                 )}
                             </div>
 
-                            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                            <div className="flex flex-col gap-4 justify-center">
+                                {/* Tek fotoğraf analizi için ana buton */}
                                 <button
                                     onClick={handleAnalyze}
                                     className="btn btn-primary btn-lg"
@@ -427,22 +463,41 @@ export default function AnalyzePage() {
                                     Bu Fotoğrafı Analiz Et
                                 </button>
 
-                                <button
-                                    onClick={() => fileInputRef.current?.click()}
-                                    className="btn btn-secondary btn-lg"
-                                >
-                                    <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                                    </svg>
-                                    Daha Fazla Ekle
-                                </button>
+                                {/* Çoklu fotoğraf analizi butonu - sadece birden fazla fotoğraf varsa göster */}
+                                {selectedImages.length > 1 && (
+                                    <button
+                                        onClick={handleAnalyzeAll}
+                                        className="btn btn-accent btn-lg"
+                                    >
+                                        <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                                        </svg>
+                                        Tüm Fotoğrafları Analiz Et ({selectedImages.length} adet)
+                                    </button>
+                                )}
 
-                                <button
-                                    onClick={resetAnalysis}
-                                    className="btn btn-secondary btn-lg"
-                                >
-                                    Temizle
-                                </button>
+                                {/* Yardımcı butonlar */}
+                                <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                                    <button
+                                        onClick={() => fileInputRef.current?.click()}
+                                        className="btn btn-secondary btn-md"
+                                    >
+                                        <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                        </svg>
+                                        Daha Fazla Ekle
+                                    </button>
+
+                                    <button
+                                        onClick={resetAnalysis}
+                                        className="btn btn-secondary btn-md"
+                                    >
+                                        <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                        </svg>
+                                        Temizle
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     )}

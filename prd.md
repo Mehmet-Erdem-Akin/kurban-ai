@@ -1,245 +1,117 @@
-# Kurbanlık Analiz - Product Requirements Document (PRD)
+# Kurbanlık Hayvan Analiz Projesi - Proje Gereksinim Dokümanı
 
-## 📋 Proje Genel Bakış
+## Proje Özeti
+Yapay zeka destekli kurbanlık hayvan analiz platformu. Kullanıcılar fotoğraf yükleyerek hayvanların ağırlık, sağlık durumu, cins ve pazar değeri analizi alabilirler.
 
-**Proje Adı:** Kurbanlık Analiz  
-**Sürüm:** v1.0  
-**Son Güncelleme:** 2024-12-31  
-**Takım:** Frontend Developer & AI Engineer  
+## Özellikler
 
-## 🎯 Ürün Vizyonu
+### 🎯 Temel İşlevler
+- [x] Fotoğraf yükleme (galeri/kamera)
+- [x] AI destekli hayvan analizi
+- [x] Ağırlık tahmini
+- [x] Sağlık skoru hesaplama
+- [x] Pazar değeri analizi
+- [x] Et verimi hesaplama
 
-Yapay zeka destekli mobil-first web uygulaması ile kurbanlık hayvan satın alma sürecinde kullanıcıların daha bilinçli kararlar vermelerini sağlamak.
+### 🧠 AI Analiz Motoru
+- [x] Google Gemini 2.0 Flash entegrasyonu
+- [x] Çoklu fotoğraf desteği (aynı hayvan, farklı açılar)
+- [x] Türkçe prompt optimizasyonu
+- [x] Gerçek zamanlı analiz
 
-## 👥 Hedef Kitle
+### 💰 Fiyat Hesaplama Sistemi
+- [x] 2025 güncel Türkiye et fiyatları
+- [x] Büyükbaş/küçükbaş ayrımı
+- [x] Premium ırk hesaplaması (+%20-25)
+- [x] Kurban sezonu primi (+%15-20)
+- [x] Kalite derecesi ayarlaması
+- [x] Yeni fiyat formülü: (ağırlık ÷ 2) × et_fiyatı
 
-- **Birincil:** Kurban bayramında hayvan satın almak isteyen bireysel müşteriler
-- **İkincil:** Hayvancılık sektöründeki profesyoneller
-- **Yaş Grubu:** 25-55 yaş arası
-- **Teknoloji Seviyesi:** Orta düzey mobil/web kullanıcıları
+### 📱 Kullanıcı Deneyimi
+- [x] Modern ve responsive tasarım
+- [x] Çoklu fotoğraf yönetimi
+- [x] Gerçek zamanlı kamera desteği
+- [x] Detaylı sonuç görüntüleme
+- [x] Hisse hesaplama (7 kişi)
 
-## 🎯 Temel Problemler
+## Teknik Detaylar
 
-1. **Bilgi Eksikliği:** Kullanıcılar hayvan kalitesini değerlendirmekte zorlanıyor
-2. **Fiyat Belirsizliği:** Piyasa değerini bilmemek nedeniyle yanlış fiyat ödeme riski
-3. **Sağlık Endişeleri:** Hayvanın sağlık durumunu anlamada güçlük
-4. **Zaman Kaybı:** Uzun karşılaştırma ve karar verme süreçleri
+### 🛠 Teknoloji Stack
+- **Frontend:** Next.js 14, TypeScript, Tailwind CSS
+- **AI Model:** Google Gemini 2.0 Flash
+- **Backend:** Next.js API Routes
+- **Deployment:** Vercel/Docker
 
-## 🎯 Başarı Metrikleri
-
-- **Kullanıcı Memnuniyeti:** >4.5/5 yıldız
-- **Analiz Doğruluğu:** >90% kullanıcı onayı
-- **MAU (Monthly Active Users):** 10K+ (6 ay içinde)
-- **Retention Rate:** >60% (30 gün)
-- **Analiz Tamamlama Oranı:** >80%
-
-## 🔧 Teknik Gereksinimler
-
-### Frontend
-- **Framework:** Next.js 15 with TypeScript
-- **Styling:** Tailwind CSS v3
-- **State Management:** React Hooks
-- **Authentication:** Custom JWT-based
-- **File Handling:** Multiple image upload & camera capture
-
-### Backend
-- **API:** Next.js API Routes
-- **Database:** File-based JSON (development)
-- **AI Integration:** Ready for Google Gemini API
-- **Deployment:** Vercel (serverless)
-
-### Mobile Support
-- **Progressive Web App (PWA)** ready
-- **Camera API** integration
-- **Touch-friendly** interface
-- **Offline** capability (future)
-
-## 📱 Core Features
-
-### 1. Yapay Zeka Analiz Sistemi
-**User Story:** "Bir kullanıcı olarak, hayvan fotoğrafı çekip anında analiz sonucu alabilmek istiyorum."
-
-**Kabul Kriterleri:**
-- ✅ Kameradan fotoğraf çekme
-- ✅ Galeriden çoklu fotoğraf seçme
-- ✅ AI analiz API entegrasyonu
-- ✅ Sonuç görüntüleme (tür, kilo, sağlık skoru)
-
-### 2. Kullanıcı Yönetimi
-**User Story:** "Bir kullanıcı olarak, hesap oluşturup analiz geçmişimi görebilmek istiyorum."
-
-**Kabul Kriterleri:**
-- ✅ Kayıt olma/Giriş yapma
-- ✅ Profil yönetimi
-- ✅ Analiz geçmişi
-- ✅ Favoriler (future)
-
-### 3. Piyasa Analizi
-**User Story:** "Bir kullanıcı olarak, güncel piyasa fiyatlarını görebilmek istiyorum."
-
-**Kabul Kriterleri:**
-- ✅ Canlı fiyat API'si
-- ✅ Bölgesel fiyat karşılaştırması
-- ✅ Fiyat trend analizi
-- ✅ Değer hesaplama
-
-### 4. Responsive Tasarım
-**User Story:** "Bir kullanıcı olarak, tüm cihazlarda sorunsuz deneyim yaşamak istiyorum."
-
-**Kabul Kriterleri:**
-- ✅ Mobile-first tasarım
-- ✅ Tablet uyumluluğu
-- ✅ Desktop uyumluluğu
-- ✅ Touch-friendly interface
-
-## 📊 Özellik Detayları
-
-### Analiz Sonuçları İçeriği
-- **Hayvan Bilgileri:** Tür, cins, tahmini yaş
-- **Fiziksel Özellikler:** Ağırlık, boy, sağlık skoru
-- **Ekonomik Analiz:** Piyasa değeri, hisse fiyatı, et miktarı
-- **Güven Skoru:** AI analiz güvenilirlik oranı
-
-### Desteklenen Hayvan Türleri
-- **Dana/Büyükbaş:** Holstein, Simmental, Angus
-- **Koç/Koyun:** Merinos, Akkaraman, İvesi
-- **Keçi:** Saanen, Maltiz, Kıl keçisi
-
-## 🚀 Deployment & DevOps
-
-### Development Environment
-- **Local:** localhost:3000
-- **Dependencies:** Node.js 18+, npm/yarn
-- **Database:** File-based JSON storage
-
-### Production Environment
-- **Hosting:** Vercel
-- **Domain:** [Custom domain ready]
-- **CDN:** Vercel Edge Network
-- **Monitoring:** Vercel Analytics
-
-### Security
-- **Authentication:** JWT tokens
-- **Data Privacy:** Local storage for user sessions
-- **Image Security:** Client-side processing
-- **API Security:** Rate limiting & validation
-
-## 📅 Roadmap
-
-### Phase 1: MVP (Completed ✅)
-- ✅ Basic UI/UX
-- ✅ Camera & gallery integration
-- ✅ Mock AI analysis
-- ✅ User authentication
-- ✅ Responsive design
-
-### Phase 2: AI Integration (Next)
-- 🔄 Google Gemini API integration
-- 🔄 Real image analysis
-- 🔄 Accuracy improvements
-- 🔄 Multiple animal support
-
-### Phase 3: Advanced Features (Future)
-- 📋 Real-time market data
-- 📋 Social features (sharing, reviews)
-- 📋 Advanced analytics dashboard
-- 📋 Veteriner consultations
-
-### Phase 4: Scaling (Future)
-- 📋 iOS/Android native apps
-- 📋 Enterprise features
-- 📋 API marketplace
-- 📋 Multi-language support
-
-## 💻 Development Guidelines
-
-### Code Standards
-- **TypeScript:** Strict mode enabled
-- **ESLint:** Configured for Next.js
-- **Formatting:** Prettier with Tailwind plugin
-- **Naming:** camelCase for variables, PascalCase for components
-
-### Performance
-- **Image Optimization:** Next.js Image component
-- **Lazy Loading:** Dynamic imports
-- **Bundle Size:** < 1MB initial load
-- **Core Web Vitals:** All metrics in green
-
-### Testing Strategy
-- **Unit Tests:** Jest + React Testing Library
-- **E2E Tests:** Playwright (future)
-- **Manual Testing:** Device matrix testing
-- **Performance Testing:** Lighthouse CI
-
-## 📈 Analitik & Monitoring
-
-### Key Metrics to Track
-- **User Engagement:** Analysis completion rate
-- **Technical Performance:** Page load times, error rates
-- **Business Metrics:** User retention, feature adoption
-- **AI Performance:** Analysis accuracy feedback
-
-### Tools
-- **Analytics:** Vercel Analytics
-- **Error Tracking:** Console logging
-- **Performance:** Web Vitals
-- **User Feedback:** In-app rating system
-
-## 🔒 Privacy & Compliance
-
-### Data Handling
-- **Image Processing:** Client-side only
-- **User Data:** Minimal collection (email, name)
-- **Storage:** Local browser storage
-- **Retention:** User-controlled
-
-### Compliance
-- **GDPR:** User consent & data portability
-- **CCPA:** Privacy disclosures
-- **Local Laws:** Turkish data protection compliance
-
----
+### 📊 Analiz Parametreleri
+- **Büyükbaş Et Fiyatı:** 450 TL/kg
+- **Küçükbaş Et Fiyatı:** 520 TL/kg  
+- **Karkas Verimi:** Büyükbaş %52, Küçükbaş %48
+- **Kemiksiz Et:** Büyükbaş %72, Küçükbaş %70
 
 ## Yapıldı
 
-### ✅ Backend API Development (2024-12-31)
-- Tamamen ücretsiz Next.js API routes sistemi geliştirildi
-- Authentication endpoints (/api/auth/login, /api/auth/register)
-- AI analysis endpoint (/api/analyze) Gemini API'sine hazır
-- Market prices endpoint (/api/market/prices)
-- User history management (/api/user/history)
-- File-based JSON database sistemi
-- Demo kullanıcı bilgileri entegrasyonu
-- JWT token-based authentication
-- Error handling ve validation
+### ✅ Gemini API Entegrasyonu (02.06.2025)
+- Google Gemini 2.0 Flash API kullanımı
+- Environment değişkenleri konfigürasyonu
+- API key güvenlik ayarları
+- Hata yönetimi ve fallback sistemleri
 
-### ✅ Camera & Multiple Image Upload System (2024-12-31)
-- Kamera erişimi ve fotoğraf çekme özelliği
-- Çoklu resim seçimi ve galeri entegrasyonu
-- Resim önizleme ve silme fonksiyonları
-- Thumbnail navigasyon sistemi
-- Mobile-optimized camera controls
-- Image switching ve selection logic
-- File upload validation
-- Real-time image processing
+### ✅ Güncel Türkiye Et Fiyatları Entegrasyonu (02.06.2025)
+- 2025 Haziran dönemi güncel fiyat referansları
+- Büyükbaş: 450 TL/kg, Küçükbaş: 520 TL/kg
+- ESK oranları ve piyasa primleri
+- Bölgesel farklılık hesaplaması
 
-### ✅ Enhanced User Interface (2024-12-31)
-- Login/logout state management
-- User profile display in header
-- Demo credentials helper
-- Error message handling
-- Loading states ve animations
-- Responsive camera interface
-- Multi-image thumbnail gallery
-- Progressive enhancement pattern
+### ✅ Gelişmiş Fiyat Hesaplama Sistemi (02.06.2025)
+- Yeni formül: (hayvan_ağırlığı ÷ 2) × et_fiyatı
+- Premium ırk bonusları (Simental, Holstein, Angus)
+- Kurban sezonu dinamik fiyatlandırması
+- A/B kalite derecesi ayarlamaları
 
-### ✅ Multiple Photo Analysis System (2024-12-31)
-- Çoklu fotoğraf analiz API endpoint'i geliştirildi
-- Tek fotoğraf vs. tüm fotoğrafları analiz et buton sistemi
-- Individual analysis results tracking
-- Combined analysis logic (toplam ağırlık, ortalama sağlık skoru)
-- Backend'de multiple analysis type support
-- Frontend'de conditional button rendering (2+ fotoğraf için)
-- Responsive UI layout improvements
-- API'de tek ve çoklu analiz mode desteği
-- Console logging ile debug support 
+### ✅ Çoklu Fotoğraf Analiz Sistemi (02.06.2025)
+- Aynı hayvana ait farklı açılardan fotoğraf desteği
+- Unified assessment (birleşik değerlendirme)
+- Yüksek güvenilirlik skorları (%90+)
+- Multi-angle ağırlık tahmini
+
+### ✅ Türkçe Prompt Optimizasyonu (02.06.2025)
+- Tam Türkçe AI talimatları
+- Detaylı field doldurma zorunlulukları
+- Gerçekçi örnek değer açıklamaları
+- Fallback data Türkçeleştirmesi
+
+### ✅ Kapsamlı Analiz Görselleştirme Sistemi (02.06.2025)
+- 3 kolonlu detay grid (Hayvan/Et/Fiyat bilgileri)
+- Renkli veri kartları ve metrik gösterimi
+- Karkas-kemiksiz et verimi analizi
+- Dinamik sağlık rozet sistemi
+- Hisse bazında maliyet hesaplama
+- Analiz tarihi/türü detay bilgileri
+
+### ✅ Yasal Uyarı ve Sorumluluk Reddi Sistemi (02.06.2025)
+- Üst banner AI analizi disclaimer'ı
+- 4 kategorili kapsamlı yasal uyarılar
+- AI analizi sınırları bilgilendirmesi
+- Veteriner kontrolü gereklilik uyarısı
+- Hukuki sorumluluk reddi beyanları
+- Profesyonel danışmanlık uyarı sistemi
+
+## Gelecek Özellikler
+
+### 🔮 Planlanan
+- [ ] Favori hayvanlar sistemi
+- [ ] Sosyal paylaşım özellikleri
+- [ ] Fiyat geçmişi takibi
+- [ ] Offline analiz desteği
+- [ ] Toplu fotoğraf analizi
+- [ ] PDF rapor çıktısı
+
+### 📈 İyileştirmeler
+- [ ] Daha detaylı sağlık analizi
+- [ ] Hayvan yaşı tahmin doğruluğu
+- [ ] Bölgesel fiyat farklılıkları
+- [ ] Mevsimsel trend analizi
+
+---
+
+*Son güncellenme: 02.06.2025* 

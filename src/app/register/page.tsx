@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 
 const Register = () => {
@@ -27,9 +27,15 @@ const Register = () => {
     setError("");
     setSuccess("");
 
-    // Validation
+    // Basic validation
     if (formData.password !== formData.confirmPassword) {
       setError("Şifreler eşleşmiyor");
+      setLoading(false);
+      return;
+    }
+
+    if (formData.password.length < 6) {
+      setError("Şifre en az 6 karakter olmalıdır");
       setLoading(false);
       return;
     }
@@ -49,15 +55,15 @@ const Register = () => {
 
       const data = await response.json();
 
-      if (data.success) {
+      if (response.ok) {
         setSuccess("Kayıt başarılı! Giriş sayfasına yönlendiriliyorsunuz...");
         setTimeout(() => {
           window.location.href = "/login";
         }, 2000);
       } else {
-        setError(data.error || "Kayıt başarısız");
+        setError(data.error || "Kayıt sırasında bir hata oluştu");
       }
-    } catch (error) {
+    } catch {
       setError("Sunucu hatası oluştu");
     } finally {
       setLoading(false);
@@ -248,7 +254,7 @@ const Register = () => {
           <Link href="#" className="text-green-600 hover:text-green-500">
             Gizlilik Politikası
           </Link>
-          'nı kabul etmiş olursunuz.
+          &apos;nı kabul etmiş olursunuz.
         </div>
       </div>
     </div>

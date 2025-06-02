@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { writeFileSync, readFileSync, existsSync } from "fs";
+import { writeFileSync, readFileSync, existsSync, mkdirSync } from "fs";
 import { join } from "path";
 
 // Mock users database - JSON file
@@ -10,7 +10,7 @@ const getUsersDB = () => {
     // Create directory and initial database
     const dataDir = join(process.cwd(), "data");
     if (!existsSync(dataDir)) {
-      require("fs").mkdirSync(dataDir, { recursive: true });
+      mkdirSync(dataDir, { recursive: true });
     }
 
     const initialData = {
@@ -32,10 +32,10 @@ const getUsersDB = () => {
   return JSON.parse(readFileSync(dbPath, "utf-8"));
 };
 
-const saveUsersDB = (data: any) => {
-  const dbPath = join(process.cwd(), "data", "users.json");
-  writeFileSync(dbPath, JSON.stringify(data, null, 2));
-};
+/*const saveUsersDB = (data: any) => {
+    const dbPath = join(process.cwd(), "data", "users.json");
+    writeFileSync(dbPath, JSON.stringify(data, null, 2));
+};*/
 
 export async function POST(request: NextRequest) {
   try {
@@ -49,7 +49,10 @@ export async function POST(request: NextRequest) {
     }
 
     const db = getUsersDB();
-    const user = db.users.find((u: any) => u.email === email);
+    const user = db.users.find(
+      (u: { email: string; password: string; id: string; name: string }) =>
+        u.email === email,
+    );
 
     if (!user || user.password !== password) {
       return NextResponse.json(

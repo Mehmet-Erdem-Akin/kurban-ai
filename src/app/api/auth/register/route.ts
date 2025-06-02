@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { writeFileSync, readFileSync, existsSync } from "fs";
+import { writeFileSync, readFileSync, existsSync, mkdirSync } from "fs";
 import { join } from "path";
 
 // Simple email validation
@@ -7,16 +7,28 @@ const isValidEmail = (email: string) => {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 };
 
-const getUsersDB = () => {
+interface User {
+  id: string;
+  email: string;
+  password: string;
+  name: string;
+  createdAt: string;
+}
+
+interface UserDatabase {
+  users: User[];
+}
+
+const getUsersDB = (): UserDatabase => {
   const dbPath = join(process.cwd(), "data", "users.json");
 
   if (!existsSync(dbPath)) {
     const dataDir = join(process.cwd(), "data");
     if (!existsSync(dataDir)) {
-      require("fs").mkdirSync(dataDir, { recursive: true });
+      mkdirSync(dataDir, { recursive: true });
     }
 
-    const initialData = {
+    const initialData: UserDatabase = {
       users: [
         {
           id: "1",
@@ -35,7 +47,7 @@ const getUsersDB = () => {
   return JSON.parse(readFileSync(dbPath, "utf-8"));
 };
 
-const saveUsersDB = (data: any) => {
+const saveUsersDB = (data: UserDatabase) => {
   const dbPath = join(process.cwd(), "data", "users.json");
   writeFileSync(dbPath, JSON.stringify(data, null, 2));
 };
@@ -69,7 +81,7 @@ export async function POST(request: NextRequest) {
     const db = getUsersDB();
 
     // Check if user already exists
-    const existingUser = db.users.find((u: any) => u.email === email);
+    const existingUser = db.users.find((u: User) => u.email === email);
     if (existingUser) {
       return NextResponse.json(
         { error: "Bu email adresi zaten kayıtlı" },
@@ -78,7 +90,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Create new user
-    const newUser = {
+    const newUser: User = {
       id: Date.now().toString(),
       email,
       password, // In production, hash this!

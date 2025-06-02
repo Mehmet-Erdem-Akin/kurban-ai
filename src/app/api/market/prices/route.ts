@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
 // Mock market data - In production, this would come from a real API
 const generateMarketPrices = () => {
@@ -64,7 +64,7 @@ const generateMarketPrices = () => {
   };
 };
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     const marketData = generateMarketPrices();
 

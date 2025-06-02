@@ -4,11 +4,45 @@ import Link from "next/link";
 import { useState, useRef } from "react";
 import Image from "next/image";
 
+interface AnalysisResult {
+  success: boolean;
+  analysisType: string;
+  animalType: string;
+  breed: string;
+  estimatedWeight: number;
+  healthScore: number;
+  marketValue: number;
+  meatYield: {
+    totalMeat: number;
+    karkasWeight: number;
+    bonelessMeat: number;
+    boneWeight: number;
+    yieldRatios: {
+      karkasYield: number;
+      bonelessYield: number;
+      totalYield: number;
+    };
+  };
+  pricing: {
+    liveWeightPrice: number;
+    meatPrice: number;
+    estimatedMeatValue: number;
+  };
+  costPerShare: number;
+  confidence: number;
+  recommendations: string[];
+  analysisDate: string;
+  totalImages: number;
+  analysisNote?: string;
+}
+
 export default function AnalyzePage() {
   const [selectedImages, setSelectedImages] = useState<string[]>([]);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [analysisResult, setAnalysisResult] = useState<any>(null);
+  const [analysisResult, setAnalysisResult] = useState<AnalysisResult | null>(
+    null,
+  );
   const [cameraStream, setCameraStream] = useState<MediaStream | null>(null);
   const [showCamera, setShowCamera] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -566,9 +600,11 @@ export default function AnalyzePage() {
                 <div className="flex gap-2 overflow-x-auto p-2 mb-6 bg-gray-50 rounded-lg">
                   {selectedImages.map((image, index) => (
                     <div key={index} className="relative flex-shrink-0">
-                      <img
+                      <Image
                         src={image}
                         alt={`Fotoğraf ${index + 1}`}
+                        width={64}
+                        height={64}
                         className={`w-16 h-16 object-cover rounded cursor-pointer border-2 transition-all ${
                           currentImageIndex === index
                             ? "border-green-500 ring-2 ring-green-200"
@@ -590,9 +626,11 @@ export default function AnalyzePage() {
               {/* Current Image */}
               <div className="relative max-w-md mx-auto mb-6">
                 {getCurrentImage() && (
-                  <img
+                  <Image
                     src={getCurrentImage()!}
                     alt={`Seçilen hayvan ${currentImageIndex + 1}`}
+                    width={320}
+                    height={240}
                     className="w-full h-64 object-cover rounded-lg"
                   />
                 )}
@@ -1138,9 +1176,11 @@ export default function AnalyzePage() {
                     /* Tek Fotoğraf Görünümü */
                     <div className="flex flex-col items-center">
                       <div className="relative">
-                        <img
+                        <Image
                           src={selectedImages[0]}
                           alt="Analiz edilen fotoğraf"
+                          width={320}
+                          height={240}
                           className="w-64 h-48 object-cover rounded-lg border-2 border-green-200 shadow-md"
                         />
                         <div className="absolute top-2 right-2 bg-green-500 text-white px-2 py-1 rounded-full text-xs font-semibold">
@@ -1165,9 +1205,11 @@ export default function AnalyzePage() {
                       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
                         {selectedImages.map((image, index) => (
                           <div key={index} className="relative group">
-                            <img
+                            <Image
                               src={image}
                               alt={`Fotoğraf ${index + 1}`}
+                              width={128}
+                              height={96}
                               className="w-full h-24 object-cover rounded-lg border-2 border-gray-200 group-hover:border-blue-400 transition-colors cursor-pointer"
                               onClick={() => {
                                 // Modal açma işlevi (daha sonra eklenebilir)

@@ -1,11 +1,16 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 
+interface User {
+  id: string;
+  email: string;
+  name: string;
+}
+
 export default function Home() {
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -16,7 +21,7 @@ export default function Home() {
     if (token && userData) {
       try {
         setUser(JSON.parse(userData));
-      } catch (error) {
+      } catch {
         localStorage.removeItem("auth_token");
         localStorage.removeItem("user_data");
       }
@@ -198,8 +203,8 @@ export default function Home() {
               Akıllı Değer Hesaplama
             </h3>
             <p className="text-neutral-600 leading-relaxed">
-              Güncel piyasa fiyatlarına göre hayvanın gerçek değerini hesaplayın
-              ve en iyi fırsatları yakalayın.
+              Güncel piyasa fiyatları ve hayvan özelliklerine göre gerçekçi
+              değer tahmini alın.
             </p>
           </div>
 
@@ -220,80 +225,139 @@ export default function Home() {
               </svg>
             </div>
             <h3 className="text-2xl font-bold text-neutral-900 mb-3">
-              Detaylı Analiz Raporu
+              Detaylı Rapor
             </h3>
             <p className="text-neutral-600 leading-relaxed">
-              Tür, kilo, et miktarı, hisse başına maliyet ve sağlık durumu gibi
-              kapsamlı bilgiler alın.
+              Hayvan türü, cinsi, ağırlık tahmini, sağlık durumu ve et miktarı
+              hakkında kapsamlı bilgi.
             </p>
           </div>
         </div>
 
         {/* Stats Section */}
-        <div className="card p-12 mb-20 bg-gradient-to-r from-primary-600 to-accent-600 text-white animate-slide-up">
-          <div className="grid md:grid-cols-4 gap-8 text-center">
-            <div>
-              <div className="text-4xl font-bold mb-2">15K+</div>
-              <div className="text-primary-100">Başarılı Analiz</div>
+        <div className="card p-12 mb-20 bg-gradient-to-r from-primary-50 to-accent-50 border-primary-200 animate-fade-in">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold text-neutral-900 mb-4">
+              Güvenilir Platform
+            </h2>
+            <p className="text-xl text-neutral-600">
+              Binlerce kullanıcı tarafından tercih edilen analiz sistemi
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-4 gap-8">
+            <div className="text-center">
+              <div className="text-4xl font-bold text-primary-600 mb-2">
+                1,000+
+              </div>
+              <p className="text-neutral-600 font-medium">Analiz Yapıldı</p>
             </div>
-            <div>
-              <div className="text-4xl font-bold mb-2">98%</div>
-              <div className="text-primary-100">Doğruluk Oranı</div>
+            <div className="text-center">
+              <div className="text-4xl font-bold text-secondary-600 mb-2">95%</div>
+              <p className="text-neutral-600 font-medium">Doğruluk Oranı</p>
             </div>
-            <div>
-              <div className="text-4xl font-bold mb-2">8.5K+</div>
-              <div className="text-primary-100">Aktif Kullanıcı</div>
+            <div className="text-center">
+              <div className="text-4xl font-bold text-accent-600 mb-2">500+</div>
+              <p className="text-neutral-600 font-medium">Mutlu Kullanıcı</p>
             </div>
-            <div>
-              <div className="text-4xl font-bold mb-2">4.9⭐</div>
-              <div className="text-primary-100">Kullanıcı Puanı</div>
+            <div className="text-center">
+              <div className="text-4xl font-bold text-success-600 mb-2">24/7</div>
+              <p className="text-neutral-600 font-medium">Hizmet Süresi</p>
             </div>
           </div>
         </div>
 
-        {/* How It Works */}
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-neutral-900 mb-4">
-            Nasıl Çalışır?
-          </h2>
-          <p className="text-xl text-neutral-600 mb-12">
-            3 adımda profesyonel analiz sonuçları
-          </p>
+        {/* How It Works Section */}
+        <div className="mb-20">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-neutral-900 mb-4">
+              Nasıl Çalışır?
+            </h2>
+            <p className="text-xl text-neutral-600 max-w-3xl mx-auto">
+              Sadece 3 adımda hayvanınızı analiz edin ve detaylı rapor alın
+            </p>
+          </div>
 
           <div className="grid md:grid-cols-3 gap-8">
             <div className="text-center animate-slide-up">
-              <div className="w-20 h-20 bg-gradient-to-br from-primary-500 to-primary-600 rounded-full flex items-center justify-center text-white text-2xl font-bold mx-auto mb-4 shadow-large">
+              <div className="w-20 h-20 bg-gradient-to-br from-primary-500 to-primary-600 rounded-full flex items-center justify-center text-white text-2xl font-bold mx-auto mb-6 shadow-large">
                 1
               </div>
-              <h3 className="text-xl font-bold text-neutral-900 mb-2">
+              <h3 className="text-xl font-bold text-neutral-900 mb-4">
                 Fotoğraf Çekin
               </h3>
-              <p className="text-neutral-600">
-                Hayvanın fotoğrafını çekin veya galeriden seçin
+              <p className="text-neutral-600 leading-relaxed">
+                Hayvanın net bir fotoğrafını çekin veya galeriden bir fotoğraf
+                seçin
               </p>
             </div>
+
             <div className="text-center animate-slide-up">
-              <div className="w-20 h-20 bg-gradient-to-br from-secondary-500 to-secondary-600 rounded-full flex items-center justify-center text-white text-2xl font-bold mx-auto mb-4 shadow-large">
+              <div className="w-20 h-20 bg-gradient-to-br from-secondary-500 to-secondary-600 rounded-full flex items-center justify-center text-white text-2xl font-bold mx-auto mb-6 shadow-large">
                 2
               </div>
-              <h3 className="text-xl font-bold text-neutral-900 mb-2">
+              <h3 className="text-xl font-bold text-neutral-900 mb-4">
                 AI Analizi
               </h3>
-              <p className="text-neutral-600">
-                Yapay zeka hayvanı analiz eder ve bilgileri çıkarır
+              <p className="text-neutral-600 leading-relaxed">
+                Yapay zeka modelimiz fotoğrafı analiz eder ve özellikleri
+                belirler
               </p>
             </div>
+
             <div className="text-center animate-slide-up">
-              <div className="w-20 h-20 bg-gradient-to-br from-accent-500 to-accent-600 rounded-full flex items-center justify-center text-white text-2xl font-bold mx-auto mb-4 shadow-large">
+              <div className="w-20 h-20 bg-gradient-to-br from-accent-500 to-accent-600 rounded-full flex items-center justify-center text-white text-2xl font-bold mx-auto mb-6 shadow-large">
                 3
               </div>
-              <h3 className="text-xl font-bold text-neutral-900 mb-2">
-                Sonuçları Görün
+              <h3 className="text-xl font-bold text-neutral-900 mb-4">
+                Rapor Alın
               </h3>
-              <p className="text-neutral-600">
-                Detaylı raporu inceleyin ve karar verin
+              <p className="text-neutral-600 leading-relaxed">
+                Detaylı analiz raporu ile hayvan hakkında tüm bilgileri öğrenin
               </p>
             </div>
+          </div>
+        </div>
+
+        {/* CTA Section */}
+        <div className="card p-12 text-center bg-gradient-to-r from-primary-600 to-accent-600 text-white animate-scale-in">
+          <h2 className="text-4xl font-bold mb-6">Hemen Başlayın!</h2>
+          <p className="text-xl mb-8 text-primary-100 max-w-3xl mx-auto">
+            Kurbanlık hayvan seçiminizde akıllı analiz teknolojisinden
+            yararlanın. İlk analizinizi ücretsiz yapın.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link
+              href="/analyze"
+              className="btn btn-white btn-xl shadow-large hover:bg-neutral-100"
+            >
+              <svg
+                className="w-5 h-5 mr-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
+                />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
+                />
+              </svg>
+              Ücretsiz Analiz Yap
+            </Link>
+            <Link
+              href="/demo"
+              className="btn btn-secondary btn-xl border-2 border-white/30 hover:bg-white/10"
+            >
+              Demo İzle
+            </Link>
           </div>
         </div>
       </main>

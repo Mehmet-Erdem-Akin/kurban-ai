@@ -4,13 +4,24 @@ import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
+interface FormData {
+  email: string;
+  password: string;
+}
+
+interface FormErrors {
+  general?: string;
+  email?: string;
+  password?: string;
+}
+
 export default function LoginPage() {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     email: "",
     password: "",
   });
   const [isLoading, setIsLoading] = useState(false);
-  const [errors, setErrors] = useState<any>({});
+  const [errors, setErrors] = useState<FormErrors>({});
   const router = useRouter();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -18,13 +29,13 @@ export default function LoginPage() {
     setFormData((prev) => ({ ...prev, [name]: value }));
 
     // Clear error when user starts typing
-    if (errors[name]) {
-      setErrors((prev: any) => ({ ...prev, [name]: "" }));
+    if (errors[name as keyof FormErrors]) {
+      setErrors((prev: FormErrors) => ({ ...prev, [name]: "" }));
     }
   };
 
-  const validateForm = () => {
-    const newErrors: any = {};
+  const validateForm = (): FormErrors => {
+    const newErrors: FormErrors = {};
 
     if (!formData.email) {
       newErrors.email = "E-posta adresi gereklidir";
@@ -75,7 +86,7 @@ export default function LoginPage() {
       } else {
         setErrors({ general: data.error || "Giriş başarısız" });
       }
-    } catch (error) {
+    } catch {
       setErrors({ general: "Bağlantı hatası. Lütfen tekrar deneyin." });
     } finally {
       setIsLoading(false);
@@ -222,54 +233,43 @@ export default function LoginPage() {
                   type="checkbox"
                   className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-neutral-300 rounded"
                 />
-                <label
-                  htmlFor="remember-me"
-                  className="ml-2 block text-sm text-neutral-700"
-                >
+                <label htmlFor="remember-me" className="ml-2 block text-sm text-neutral-900">
                   Beni hatırla
                 </label>
               </div>
 
-              <Link
-                href="/forgot-password"
-                className="text-sm text-primary-600 hover:text-primary-500 transition-colors"
-              >
-                Şifremi unuttum
-              </Link>
+              <div className="text-sm">
+                <Link
+                  href="/forgot-password"
+                  className="font-medium text-primary-600 hover:text-primary-500 transition-colors"
+                >
+                  Şifremi unuttum
+                </Link>
+              </div>
             </div>
 
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="btn btn-primary w-full btn-lg"
-            >
-              {isLoading ? (
-                <div className="flex items-center">
-                  <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
-                  Giriş yapılıyor...
-                </div>
-              ) : (
-                <div className="flex items-center justify-center">
-                  <svg
-                    className="w-5 h-5 mr-2"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"
-                    />
-                  </svg>
-                  Giriş Yap
-                </div>
-              )}
-            </button>
+            <div>
+              <button
+                type="submit"
+                disabled={isLoading}
+                className={`btn btn-primary w-full py-3 ${isLoading ? "opacity-75 cursor-not-allowed" : ""
+                  }`}
+              >
+                {isLoading ? (
+                  <div className="flex items-center justify-center">
+                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Giriş yapılıyor...
+                  </div>
+                ) : (
+                  "Giriş Yap"
+                )}
+              </button>
+            </div>
           </form>
 
-          {/* Social Login */}
           <div className="mt-6">
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
@@ -317,27 +317,16 @@ export default function LoginPage() {
           </div>
         </div>
 
-        {/* Sign Up Link */}
         <div className="text-center">
           <p className="text-neutral-600">
             Hesabınız yok mu?{" "}
             <Link
               href="/register"
-              className="text-primary-600 hover:text-primary-500 font-semibold transition-colors"
+              className="font-medium text-primary-600 hover:text-primary-500 transition-colors"
             >
               Kayıt olun
             </Link>
           </p>
-        </div>
-
-        {/* Back to Home */}
-        <div className="text-center">
-          <Link
-            href="/"
-            className="text-neutral-500 hover:text-neutral-700 transition-colors text-sm"
-          >
-            ← Ana sayfaya dön
-          </Link>
         </div>
       </div>
     </div>

@@ -210,8 +210,13 @@ const analyzeImageWithGemini = async (imageData: string) => {
   }
 };
 
-const calculateDetailedAnalysis = (basicAnalysis: any) => {
-  const { animalType, estimatedWeight, healthScore, meatYield, marketPrice } =
+const calculateDetailedAnalysis = (basicAnalysis: {
+  animalType: string;
+  estimatedWeight: number;
+  healthScore: number;
+  marketPrice: number;
+}) => {
+  const { animalType, estimatedWeight, healthScore, marketPrice } =
     basicAnalysis;
 
   // Calculate meat amounts based on Turkish livestock industry standards
@@ -312,25 +317,6 @@ export async function POST(request: NextRequest) {
         );
 
         console.log("📸 İlk fotoğraf seçildi, boyut:", base64Image.length);
-
-        // Çoklu resim için özel kısa prompt
-        const multipleImagePrompt = `Bu ${images.length} fotoğraf aynı hayvana ait. İlk fotoğrafı analiz et ve çoklu açı bilgisini dikkate al. Türkçe JSON formatında yanıt ver:
-                {
-                    "animalType": "Dana/Koç/Koyun/Buzağı",
-                    "breed": "ırk adı",
-                    "estimatedWeight": sayı,
-                    "healthScore": 70-100,
-                    "meatYield": 60-80,
-                    "estimatedAge": 2-5,
-                    "qualityGrade": "A/B",
-                    "marketPrice": sayı,
-                    "confidence": 85-95,
-                    "physicalCondition": "detaylı açıklama",
-                    "recommendations": ["en az 3 öneri"]
-                }
-                
-                ${images.length} farklı açıdan fotoğraf olduğu için güven skorunu yüksek tut (85-95).
-                Fiyat hesaplama: (ağırlık ÷ 2) × et_fiyatı (Dana: 450 TL/kg, Koç: 520 TL/kg)`;
 
         console.log("📝 Çoklu fotoğraf prompt hazırlandı");
 

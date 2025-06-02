@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 
 export default function DemoPage() {
   const demoResults = [
@@ -199,56 +198,64 @@ export default function DemoPage() {
                       <h3 className="text-xl font-bold text-neutral-900">
                         {result.animalType}
                       </h3>
-                      <span className="badge badge-info">{result.breed}</span>
+                      <span className="badge badge-primary">{result.breed}</span>
                     </div>
 
                     <div className="space-y-3 mb-6">
                       <div className="flex justify-between">
                         <span className="text-neutral-600">Ağırlık:</span>
-                        <span className="font-semibold">
-                          {result.weight} kg
-                        </span>
+                        <span className="font-semibold">{result.weight} kg</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-neutral-600">Sağlık:</span>
-                        <span className="font-semibold flex items-center">
+                        <span className="text-neutral-600">Sağlık Skoru:</span>
+                        <span className="font-semibold text-green-600">
                           {result.healthScore}/100
-                          <span className="badge badge-success ml-2 text-xs">
-                            Mükemmel
-                          </span>
                         </span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-neutral-600">Tahmini Değer:</span>
                         <span className="font-bold text-primary-600">
-                          {result.value.toLocaleString()} ₺
+                          ₺{result.value.toLocaleString()}
                         </span>
                       </div>
                     </div>
 
-                    <button className="btn btn-primary w-full btn-sm">
-                      Detayları Görüntüle
-                    </button>
+                    <div className="border-t pt-4">
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-neutral-600">Güven oranı:</span>
+                        <span className="font-semibold text-accent-600">
+                          %{result.confidence}
+                        </span>
+                      </div>
+                      <div className="mt-2 bg-neutral-200 rounded-full h-2">
+                        <div
+                          className="bg-gradient-to-r from-accent-500 to-accent-600 h-2 rounded-full"
+                          style={{ width: `${result.confidence}%` }}
+                        ></div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Features Showcase */}
-          <div className="card p-12 mb-16 bg-gradient-to-br from-primary-600 to-accent-600 text-white">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold mb-4">Gelişmiş Özellikler</h2>
-              <p className="text-primary-100 text-lg">
-                Kurbanlık Analiz'in sunduğu tüm imkânlar
+          {/* Benefits Section */}
+          <div className="card p-8 mb-16 animate-fade-in">
+            <div className="text-center mb-8">
+              <h2 className="text-3xl font-bold text-neutral-900 mb-4">
+                Neden Kurbanlık Analiz?
+              </h2>
+              <p className="text-xl text-neutral-600">
+                Akıllı teknoloji ile hayvan seçimi hiç bu kadar kolay olmamıştı
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
               <div className="text-center">
-                <div className="w-16 h-16 bg-white/20 rounded-xl flex items-center justify-center mx-auto mb-4">
+                <div className="icon-container-primary mb-4 mx-auto">
                   <svg
-                    className="w-8 h-8"
+                    className="w-6 h-6"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -257,20 +264,46 @@ export default function DemoPage() {
                       strokeLinecap="round"
                       strokeLinejoin="round"
                       strokeWidth={2}
-                      d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                      d="M13 10V3L4 14h7v7l9-11h-7z"
                     />
                   </svg>
                 </div>
-                <h3 className="text-lg font-bold mb-2">Detaylı Analiz</h3>
-                <p className="text-primary-100 text-sm">
-                  Tür, cins, ağırlık ve sağlık analizi
+                <h3 className="text-lg font-bold text-neutral-900 mb-2">
+                  Hızlı Analiz
+                </h3>
+                <p className="text-neutral-600 text-sm">
+                  Sadece birkaç saniyede detaylı sonuçlar alın
                 </p>
               </div>
 
               <div className="text-center">
-                <div className="w-16 h-16 bg-white/20 rounded-xl flex items-center justify-center mx-auto mb-4">
+                <div className="icon-container-secondary mb-4 mx-auto">
                   <svg
-                    className="w-8 h-8"
+                    className="w-6 h-6"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                </div>
+                <h3 className="text-lg font-bold text-neutral-900 mb-2">
+                  Doğru Seçim
+                </h3>
+                <p className="text-neutral-600 text-sm">
+                  AI destekli analiz ile en uygun hayvanı seçin
+                </p>
+              </div>
+
+              <div className="text-center">
+                <div className="icon-container-accent mb-4 mx-auto">
+                  <svg
+                    className="w-6 h-6"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -283,16 +316,18 @@ export default function DemoPage() {
                     />
                   </svg>
                 </div>
-                <h3 className="text-lg font-bold mb-2">Değer Hesaplama</h3>
-                <p className="text-primary-100 text-sm">
-                  Güncel piyasa fiyatları ile değerlendirme
+                <h3 className="text-lg font-bold text-neutral-900 mb-2">
+                  Tasarruf
+                </h3>
+                <p className="text-neutral-600 text-sm">
+                  Doğru değerlendirme ile bütçenizi optimize edin
                 </p>
               </div>
 
               <div className="text-center">
-                <div className="w-16 h-16 bg-white/20 rounded-xl flex items-center justify-center mx-auto mb-4">
+                <div className="icon-container-success mb-4 mx-auto">
                   <svg
-                    className="w-8 h-8"
+                    className="w-6 h-6"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -305,74 +340,118 @@ export default function DemoPage() {
                     />
                   </svg>
                 </div>
-                <h3 className="text-lg font-bold mb-2">Favoriler</h3>
-                <p className="text-primary-100 text-sm">
-                  Beğendiğiniz hayvanları kaydedin
-                </p>
-              </div>
-
-              <div className="text-center">
-                <div className="w-16 h-16 bg-white/20 rounded-xl flex items-center justify-center mx-auto mb-4">
-                  <svg
-                    className="w-8 h-8"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z"
-                    />
-                  </svg>
-                </div>
-                <h3 className="text-lg font-bold mb-2">Paylaşım</h3>
-                <p className="text-primary-100 text-sm">
-                  Sonuçları kolayca paylaşın
+                <h3 className="text-lg font-bold text-neutral-900 mb-2">
+                  Güvenilir
+                </h3>
+                <p className="text-neutral-600 text-sm">
+                  Uzman bilgisi ile desteklenen güvenilir sonuçlar
                 </p>
               </div>
             </div>
           </div>
 
           {/* CTA Section */}
-          <div className="text-center">
+          <div className="card p-8 text-center bg-gradient-to-r from-primary-50 to-accent-50 border-primary-200 animate-scale-in">
             <h2 className="text-3xl font-bold text-neutral-900 mb-4">
               Hemen Başlayın!
             </h2>
-            <p className="text-xl text-neutral-600 mb-8">
-              Kendi hayvanınızı analiz etmek için sadece bir fotoğraf yeterli
+            <p className="text-xl text-neutral-600 mb-8 max-w-2xl mx-auto">
+              Kurbanlık hayvan seçiminizde akıllı analiz teknolojisinden
+              yararlanın. Ücretsiz hesap oluşturun ve ilk analizinizi yapın.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/analyze" className="btn btn-primary btn-xl">
-                <svg
-                  className="w-5 h-5 mr-2"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
-                  />
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
-                  />
-                </svg>
-                Ücretsiz Analiz Yap
+              <Link href="/register" className="btn btn-primary btn-lg">
+                Ücretsiz Kayıt Ol
               </Link>
-              <Link href="/register" className="btn btn-secondary btn-xl">
-                Hesap Oluştur
+              <Link href="/analyze" className="btn btn-secondary btn-lg">
+                Hemen Analiz Et
               </Link>
             </div>
           </div>
         </div>
       </main>
+
+      {/* Footer */}
+      <footer className="bg-neutral-800 text-white py-12 mt-20">
+        <div className="container mx-auto px-4">
+          <div className="grid md:grid-cols-4 gap-8">
+            <div>
+              <div className="flex items-center space-x-3 mb-4">
+                <div className="w-10 h-10 bg-gradient-to-br from-primary-600 to-primary-700 rounded-xl flex items-center justify-center">
+                  <span className="text-white text-lg font-bold">KA</span>
+                </div>
+                <span className="text-xl font-bold">Kurbanlık Analiz</span>
+              </div>
+              <p className="text-neutral-400">
+                Yapay zeka destekli kurbanlık hayvan analiz platformu. Akıllı
+                seçim, doğru değer.
+              </p>
+            </div>
+
+            <div>
+              <h3 className="text-lg font-bold mb-4">Özellikler</h3>
+              <ul className="space-y-2 text-neutral-400">
+                <li>
+                  <Link href="/analyze" className="hover:text-white transition-colors">
+                    Fotoğraf Analizi
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/demo" className="hover:text-white transition-colors">
+                    Demo
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/pricing" className="hover:text-white transition-colors">
+                    Fiyat Hesaplama
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="text-lg font-bold mb-4">Destek</h3>
+              <ul className="space-y-2 text-neutral-400">
+                <li>
+                  <Link href="/help" className="hover:text-white transition-colors">
+                    Yardım Merkezi
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/contact" className="hover:text-white transition-colors">
+                    İletişim
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/faq" className="hover:text-white transition-colors">
+                    SSS
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="text-lg font-bold mb-4">Yasal</h3>
+              <ul className="space-y-2 text-neutral-400">
+                <li>
+                  <Link href="/privacy" className="hover:text-white transition-colors">
+                    Gizlilik Politikası
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/terms" className="hover:text-white transition-colors">
+                    Kullanım Şartları
+                  </Link>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="border-t border-neutral-700 mt-8 pt-8 text-center text-neutral-400">
+            <p>&copy; 2024 Kurbanlık Analiz. Tüm hakları saklıdır.</p>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }

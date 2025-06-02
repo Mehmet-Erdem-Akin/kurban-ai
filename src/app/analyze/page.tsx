@@ -37,52 +37,130 @@ export default function AnalyzePage() {
 
     const startCamera = async () => {
         try {
+            console.log('🚀 Kamera başlatılıyor...');
+
             const stream = await navigator.mediaDevices.getUserMedia({
                 video: {
-                    facingMode: 'environment', // Arka kamera
-                    width: { ideal: 1920 },
-                    height: { ideal: 1080 }
+                    facingMode: 'environment',
+                    width: { ideal: 1280, min: 640 },
+                    height: { ideal: 720, min: 480 }
                 }
             });
+
+            console.log('✅ Kamera erişimi başarılı', stream.getVideoTracks());
             setCameraStream(stream);
             setShowCamera(true);
 
-            if (cameraRef.current) {
-                cameraRef.current.srcObject = stream;
-            }
+            // Video element'e stream'i bağla
+            setTimeout(() => {
+                if (cameraRef.current) {
+                    console.log('📹 Video element\'e stream bağlanıyor...');
+                    cameraRef.current.srcObject = stream;
+
+                    // Video yüklenme event'lerini dinle
+                    cameraRef.current.onloadedmetadata = () => {
+                        console.log('✅ Video metadata yüklendi:', {
+                            width: cameraRef.current?.videoWidth,
+                            height: cameraRef.current?.videoHeight
+                        });
+                    };
+
+                    cameraRef.current.onloadeddata = () => {
+                        console.log('✅ Video data yüklendi');
+                        // Video'yu oynatmaya zorla
+                        cameraRef.current?.play().catch(e => {
+                            console.log('Video autoplay engellendi, manuel başlatılıyor:', e);
+                        });
+                    };
+
+                    cameraRef.current.onerror = (error) => {
+                        console.error('❌ Video element hatası:', error);
+                    };
+                } else {
+                    console.error('❌ Video element ref bulunamadı');
+                }
+            }, 100);
+
         } catch (error) {
-            console.error('Kamera erişim hatası:', error);
-            alert('Kamera erişimi başarısız. Lütfen tarayıcı izinlerini kontrol edin.');
+            console.error('❌ Kamera erişim hatası:', error);
+
+            if (error instanceof Error) {
+                switch (error.name) {
+                    case 'NotAllowedError':
+                        alert('Kamera izni reddedildi. Lütfen tarayıcı ayarlarından kameraya izin verin.');
+                        break;
+                    case 'NotFoundError':
+                        alert('Kamera bulunamadı. Lütfen cihazınızda kamera olduğundan emin olun.');
+                        break;
+                    case 'NotReadableError':
+                        alert('Kamera başka bir uygulama tarafından kullanılıyor.');
+                        break;
+                    default:
+                        alert('Kamera erişimi başarısız: ' + error.message);
+                }
+            }
         }
     };
 
     const stopCamera = () => {
         if (cameraStream) {
-            cameraStream.getTracks().forEach(track => track.stop());
+            cameraStream.getTracks().forEach((track: MediaStreamTrack) => {
+                track.stop();
+            });
             setCameraStream(null);
         }
+
+        if (cameraRef.current) {
+            cameraRef.current.srcObject = null;
+        }
+
         setShowCamera(false);
+        console.log('🔴 Kamera kapatıldı');
     };
 
     const capturePhoto = () => {
-        if (cameraRef.current && canvasRef.current) {
-            const video = cameraRef.current;
-            const canvas = canvasRef.current;
-            const context = canvas.getContext('2d');
+        if (!cameraRef.current || !canvasRef.current) {
+            alert('Kamera hazır değil. Lütfen bekleyin.');
+            return;
+        }
 
+        const video = cameraRef.current;
+        const canvas = canvasRef.current;
+
+        // Video boyutlarını kontrol et
+        if (video.videoWidth === 0 || video.videoHeight === 0) {
+            alert('Video henüz yüklenmedi. Lütfen bekleyin.');
+            return;
+        }
+
+        try {
             canvas.width = video.videoWidth;
             canvas.height = video.videoHeight;
 
-            if (context) {
-                context.drawImage(video, 0, 0);
-                const imageDataUrl = canvas.toDataURL('image/jpeg', 0.8);
-
-                setSelectedImages(prev => [...prev, imageDataUrl]);
-                stopCamera();
-
-                // Yeni çekilen fotoğrafı göster
-                setCurrentImageIndex(selectedImages.length);
+            const context = canvas.getContext('2d');
+            if (!context) {
+                alert('Canvas context alınamadı.');
+                return;
             }
+
+            // Fotoğraf çek
+            context.drawImage(video, 0, 0);
+            const imageDataUrl = canvas.toDataURL('image/jpeg', 0.8);
+
+            console.log('📸 Fotoğraf çekildi');
+
+            // Fotoğrafı listeye ekle
+            const newImages = [...selectedImages, imageDataUrl];
+            setSelectedImages(newImages);
+            setCurrentImageIndex(newImages.length - 1);
+
+            // Kamerayı kapat
+            stopCamera();
+
+            console.log('✅ Fotoğraf başarıyla eklendi. Toplam:', newImages.length);
+        } catch (error) {
+            console.error('❌ Fotoğraf çekme hatası:', error);
+            alert('Fotoğraf çekerken hata oluştu.');
         }
     };
 
@@ -126,7 +204,6 @@ export default function AnalyzePage() {
         setCurrentImageIndex(0);
         setAnalysisResult(null);
         setIsAnalyzing(false);
-        stopCamera();
     };
 
     const switchImage = (index: number) => {
@@ -178,7 +255,7 @@ export default function AnalyzePage() {
                         </p>
                     </div>
 
-                    {!selectedImages.length && !analysisResult && (
+                    {!selectedImages.length && !analysisResult && !showCamera && (
                         <div className="card p-12 text-center animate-fade-in">
                             <div className="icon-container-primary mx-auto mb-6">
                                 <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -198,7 +275,7 @@ export default function AnalyzePage() {
                                     className="btn btn-primary btn-lg"
                                 >
                                     <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 002 2z" />
                                     </svg>
                                     Galeriden Seç
                                 </button>
@@ -208,7 +285,7 @@ export default function AnalyzePage() {
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
                                     </svg>
-                                    Kamera ile Çek
+                                    Kamera Aç
                                 </button>
                             </div>
 
@@ -223,29 +300,37 @@ export default function AnalyzePage() {
                         </div>
                     )}
 
-                    {/* Camera View */}
+                    {/* Camera Preview */}
                     {showCamera && (
-                        <div className="card p-8 animate-scale-in">
-                            <div className="text-center mb-6">
-                                <h3 className="text-2xl font-bold text-neutral-900 mb-2">Kamera</h3>
-                                <p className="text-neutral-600">Fotoğraf çekmek için butona tıklayın</p>
-                            </div>
+                        <div className="card p-8 text-center animate-scale-in">
+                            <h3 className="text-2xl font-bold text-neutral-900 mb-6">Kamera Görünümü</h3>
 
-                            <div className="relative max-w-md mx-auto mb-6">
+                            <div className="relative w-full max-w-lg mx-auto mb-6">
                                 <video
                                     ref={cameraRef}
                                     autoPlay
                                     playsInline
-                                    className="w-full h-64 object-cover rounded-lg bg-gray-900"
+                                    muted
+                                    style={{
+                                        width: '100%',
+                                        height: '320px',
+                                        objectFit: 'cover',
+                                        backgroundColor: '#1f2937'
+                                    }}
+                                    className="rounded-lg border-2 border-gray-200"
                                 />
-                                <canvas ref={canvasRef} className="hidden" />
+                                <canvas ref={canvasRef} style={{ display: 'none' }} />
+
+                                {/* Kamera frame overlay */}
+                                <div className="absolute inset-0 border-2 border-dashed border-white/50 rounded-lg pointer-events-none">
+                                    <div className="absolute top-4 left-4 right-4 text-white text-sm font-medium bg-black/50 rounded px-2 py-1">
+                                        Hayvanı çerçeveye yerleştirin
+                                    </div>
+                                </div>
                             </div>
 
                             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                                <button
-                                    onClick={capturePhoto}
-                                    className="btn btn-primary btn-lg"
-                                >
+                                <button onClick={capturePhoto} className="btn btn-primary btn-lg">
                                     <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -254,16 +339,34 @@ export default function AnalyzePage() {
                                 </button>
 
                                 <button
-                                    onClick={stopCamera}
-                                    className="btn btn-secondary btn-lg"
+                                    onClick={() => {
+                                        console.log('🔍 Video debug bilgileri:', {
+                                            videoElement: cameraRef.current,
+                                            srcObject: cameraRef.current?.srcObject,
+                                            videoWidth: cameraRef.current?.videoWidth,
+                                            videoHeight: cameraRef.current?.videoHeight,
+                                            readyState: cameraRef.current?.readyState,
+                                            currentTime: cameraRef.current?.currentTime,
+                                            paused: cameraRef.current?.paused,
+                                            ended: cameraRef.current?.ended
+                                        });
+                                    }}
+                                    className="btn btn-accent btn-lg"
                                 >
+                                    Debug Video
+                                </button>
+
+                                <button onClick={stopCamera} className="btn btn-secondary btn-lg">
+                                    <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
                                     İptal
                                 </button>
                             </div>
                         </div>
                     )}
 
-                    {selectedImages.length > 0 && !analysisResult && !isAnalyzing && !showCamera && (
+                    {selectedImages.length > 0 && !analysisResult && !isAnalyzing && (
                         <div className="card p-8 animate-scale-in">
                             <div className="text-center mb-6">
                                 <h3 className="text-2xl font-bold text-neutral-900 mb-2">
@@ -281,8 +384,8 @@ export default function AnalyzePage() {
                                                 src={image}
                                                 alt={`Fotoğraf ${index + 1}`}
                                                 className={`w-16 h-16 object-cover rounded cursor-pointer border-2 transition-all ${currentImageIndex === index
-                                                        ? 'border-green-500 ring-2 ring-green-200'
-                                                        : 'border-gray-200 hover:border-gray-300'
+                                                    ? 'border-green-500 ring-2 ring-green-200'
+                                                    : 'border-gray-200 hover:border-gray-300'
                                                     }`}
                                                 onClick={() => switchImage(index)}
                                             />

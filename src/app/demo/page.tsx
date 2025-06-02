@@ -443,6 +443,11 @@ export default function DemoPage() {
                     Kullanım Şartları
                   </Link>
                 </li>
+                <li>
+                  <Link href="/kvkk" className="hover:text-white transition-colors">
+                    KVKK
+                  </Link>
+                </li>
               </ul>
             </div>
           </div>

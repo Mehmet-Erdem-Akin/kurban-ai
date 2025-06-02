@@ -238,31 +238,41 @@ export default function Home() {
         <div className="card p-12 mb-20 bg-gradient-to-r from-primary-50 to-accent-50 border-primary-200 animate-fade-in">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold text-neutral-900 mb-4">
-              Güvenilir Platform
+              Yapay Zeka Destekli Analiz
             </h2>
             <p className="text-xl text-neutral-600">
-              Binlerce kullanıcı tarafından tercih edilen analiz sistemi
+              Modern teknoloji ile hayvan analizi alanında güvenilir çözümler
             </p>
           </div>
 
           <div className="grid md:grid-cols-4 gap-8">
             <div className="text-center">
-              <div className="text-4xl font-bold text-primary-600 mb-2">
-                1,000+
+              <div className="text-3xl font-bold text-primary-600 mb-2">
+                🤖
               </div>
-              <p className="text-neutral-600 font-medium">Analiz Yapıldı</p>
+              <p className="text-neutral-600 font-medium">AI Destekli</p>
+              <p className="text-neutral-500 text-sm">Gelişmiş algoritma</p>
             </div>
             <div className="text-center">
-              <div className="text-4xl font-bold text-secondary-600 mb-2">95%</div>
-              <p className="text-neutral-600 font-medium">Doğruluk Oranı</p>
+              <div className="text-3xl font-bold text-secondary-600 mb-2">
+                📊
+              </div>
+              <p className="text-neutral-600 font-medium">Detaylı Analiz</p>
+              <p className="text-neutral-500 text-sm">Kapsamlı raporlama</p>
             </div>
             <div className="text-center">
-              <div className="text-4xl font-bold text-accent-600 mb-2">500+</div>
-              <p className="text-neutral-600 font-medium">Mutlu Kullanıcı</p>
+              <div className="text-3xl font-bold text-accent-600 mb-2">
+                🆓
+              </div>
+              <p className="text-neutral-600 font-medium">Tamamen Ücretsiz</p>
+              <p className="text-neutral-500 text-sm">Hiçbir ücret yok</p>
             </div>
             <div className="text-center">
-              <div className="text-4xl font-bold text-success-600 mb-2">24/7</div>
-              <p className="text-neutral-600 font-medium">Hizmet Süresi</p>
+              <div className="text-3xl font-bold text-success-600 mb-2">
+                ⚡
+              </div>
+              <p className="text-neutral-600 font-medium">Hızlı Sonuç</p>
+              <p className="text-neutral-500 text-sm">Anında analiz</p>
             </div>
           </div>
         </div>
@@ -377,15 +387,15 @@ export default function Home() {
             Yapay zeka ile daha bilinçli kararlar
           </p>
           <div className="flex justify-center space-x-6 text-neutral-500">
-            <a href="#" className="hover:text-primary-600 transition-colors">
-              Gizlilik
-            </a>
-            <a href="#" className="hover:text-primary-600 transition-colors">
-              Şartlar
-            </a>
-            <a href="#" className="hover:text-primary-600 transition-colors">
-              Destek
-            </a>
+            <Link href="/privacy" className="hover:text-primary-600 transition-colors">
+              Gizlilik Politikası
+            </Link>
+            <Link href="/terms" className="hover:text-primary-600 transition-colors">
+              Kullanım Şartları
+            </Link>
+            <Link href="/kvkk" className="hover:text-primary-600 transition-colors">
+              KVKK
+            </Link>
             <a href="#" className="hover:text-primary-600 transition-colors">
               İletişim
             </a>

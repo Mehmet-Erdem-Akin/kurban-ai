@@ -18,6 +18,7 @@ Kurbanlık hayvan satın alırken daha bilinçli kararlar verin! Fotoğraf çeki
 [https://kurbanaliz.vercel.app](https://kurbanaliz.vercel.app)
 
 **Demo Giriş:**
+
 - Email: `demo@kurbanaliz.com`
 - Şifre: `demo123`
 
@@ -49,14 +50,17 @@ Uygulama [http://localhost:3000](http://localhost:3000) adresinde çalışmaya b
 ## 🔧 API Endpoints
 
 ### Authentication
+
 - `POST /api/auth/login` - Kullanıcı girişi
 - `POST /api/auth/register` - Yeni kullanıcı kaydı
 
 ### Analysis
+
 - `POST /api/analyze` - Hayvan fotoğrafı analizi
 - `GET /api/market/prices` - Güncel piyasa fiyatları
 
 ### User
+
 - `GET /api/user/history` - Kullanıcı analiz geçmişi
 - `POST /api/user/history` - Analiz kaydetme
 

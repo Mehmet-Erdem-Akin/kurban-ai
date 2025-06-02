@@ -22,6 +22,7 @@ GOOGLE_AI_API_KEY=your_actual_api_key_here
 ## 3. Önerilen Model
 
 **Gemini 2.0 Flash** - En uygun maliyet/performans oranı
+
 - ✅ Ücretsiz katmanda sınırsız kullanım
 - ✅ Hızlı analiz
 - ✅ Mükemmel görüntü analizi
@@ -30,11 +31,13 @@ GOOGLE_AI_API_KEY=your_actual_api_key_here
 ## 4. Fiyatlandırma
 
 ### Ücretsiz Katman
+
 - Google AI Studio tamamen ücretsiz
 - Günlük limitleri vardır
 - Test ve geliştirme için idealdir
 
 ### Ücretli Katman (ihtiyaç halinde)
+
 - **Gemini 2.0 Flash:**
   - Input: $0.10 / 1M token
   - Output: $0.40 / 1M token
@@ -43,7 +46,7 @@ GOOGLE_AI_API_KEY=your_actual_api_key_here
 
 ## 5. Kurulum Tamamlandı
 
-SDK yüklendi ve API hazır! 
+SDK yüklendi ve API hazır!
 
 ```bash
 npm install @google/generative-ai  # ✅ Tamamlandı
@@ -52,7 +55,7 @@ npm install @google/generative-ai  # ✅ Tamamlandı
 ## 6. Test Etme
 
 1. `.env.local` dosyasını oluşturun
-2. API anahtarınızı ekleyin  
+2. API anahtarınızı ekleyin
 3. Uygulamayı restart edin
 4. Fotoğraf yükleyip analiz edin
 
@@ -66,4 +69,4 @@ npm install @google/generative-ai  # ✅ Tamamlandı
 
 - `.env.local` dosyası Git'e eklenmesin (zaten .gitignore'da)
 - API anahtarını kimseyle paylaşmayın
-- Production'da environment variables kullanın 
+- Production'da environment variables kullanın

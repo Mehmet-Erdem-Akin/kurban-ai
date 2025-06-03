@@ -1,133 +1,162 @@
-# Kurbanlık Hayvan Analiz Projesi - Proje Gereksinim Dokümanı
+# Kurban-AI Product Requirements Document (PRD)
 
-## Proje Özeti
+## Proje Genel Bilgiler
+- **Proje Adı:** Kurban-AI - Kurbanlık Hayvan Analiz Sistemi
+- **Başlangıç Tarihi:** Mart 2025
+- **Mevcut Durum:** MVP Geliştirme Aşaması
+- **Teknoloji Stack:** Next.js, TypeScript, Tailwind CSS, Google Gemini 2.0 Flash API
 
-Yapay zeka destekli kurbanlık hayvan analiz platformu. Kullanıcılar fotoğraf yükleyerek hayvanların ağırlık, sağlık durumu, cins ve pazar değeri analizi alabilirler.
+## Ana Özellikler
 
-## Özellikler
+### 🤖 AI Analiz Motoru
+- Gemini 2.0 Flash API entegrasyonu
+- Kurbanlık hayvan türü tespiti (Dana, Boğa, İnek, Koç, Koyun, Keçi, Manda)
+- Ağırlık tahmini algoritması
+- Sağlık durumu değerlendirmesi
+- Et verimi hesaplama
+- Piyasa değeri tahmini
 
-### 🎯 Temel İşlevler
+### 📸 Fotoğraf Yükleme & Kamera
+- Galeriden çoklu fotoğraf yükleme
+- Canlı kamera entegrasyonu
+- Tek ve çoklu fotoğraf analizi desteği
+- Fotoğraf büyütme (zoom) özelliği
+- Modal görüntüleme sistemi
 
-- [x] Fotoğraf yükleme (galeri/kamera)
-- [x] AI destekli hayvan analizi
-- [x] Ağırlık tahmini
-- [x] Sağlık skoru hesaplama
-- [x] Pazar değeri analizi
-- [x] Et verimi hesaplama
+### 📋 Kullanıcı Giriş Formu
+- Hayvan kategorisi seçimi (Büyükbaş/Küçükbaş)
+- Tür, cinsiyet, yaş bilgileri
+- Tahmini ağırlık girişi
+- Sağlık ve gebelik durumu
+- Bölge bilgisi
+- Özel notlar alanı
 
-### 🧠 AI Analiz Motoru
+### 💰 Fiyatlama Sistemi
+- Türkiye piyasa fiyatları
+- Karkas hesaplama (%55 büyükbaş, %50 küçükbaş)
+- Kurban sezonu primleri
+- Hisse hesaplama (7 kişilik büyükbaş)
+- Kalite premium hesaplaması
 
-- [x] Google Gemini 2.0 Flash entegrasyonu
-- [x] Çoklu fotoğraf desteği (aynı hayvan, farklı açılar)
-- [x] Türkçe prompt optimizasyonu
-- [x] Gerçek zamanlı analiz
-
-### 💰 Fiyat Hesaplama Sistemi
-
-- [x] 2025 güncel Türkiye et fiyatları
-- [x] Büyükbaş/küçükbaş ayrımı
-- [x] Premium ırk hesaplaması (+%20-25)
-- [x] Kurban sezonu primi (+%15-20)
-- [x] Kalite derecesi ayarlaması
-- [x] Yeni fiyat formülü: (ağırlık ÷ 2) × et_fiyatı
-
-### 📱 Kullanıcı Deneyimi
-
-- [x] Modern ve responsive tasarım
-- [x] Çoklu fotoğraf yönetimi
-- [x] Gerçek zamanlı kamera desteği
-- [x] Detaylı sonuç görüntüleme
-- [x] Hisse hesaplama (7 kişi)
-
-## Teknik Detaylar
-
-### 🛠 Teknoloji Stack
-
-- **Frontend:** Next.js 14, TypeScript, Tailwind CSS
-- **AI Model:** Google Gemini 2.0 Flash
-- **Backend:** Next.js API Routes
-- **Deployment:** Vercel/Docker
-
-### 📊 Analiz Parametreleri
-
-- **Büyükbaş Et Fiyatı:** 450 TL/kg
-- **Küçükbaş Et Fiyatı:** 520 TL/kg
-- **Karkas Verimi:** Büyükbaş %52, Küçükbaş %48
-- **Kemiksiz Et:** Büyükbaş %72, Küçükbaş %70
+### 🎨 Kullanıcı Arayüzü
+- Modern ve responsive tasarım
+- Animasyon ve geçişler
+- Hata yönetimi ve kullanıcı geri bildirimleri
+- Türkçe dil desteği
+- Accessibility özellikler
 
 ## Yapıldı
 
-### ✅ Gemini API Entegrasyonu (02.06.2025)
+### ✅ AI Prompt Optimizasyonu - Ağırlık Tahmini Geliştirmesi (Mart 2025)
+- **Özellik:** AI modelinin ağırlık tahminini çok daha hassas yapması için prompt optimizasyonu
+- **Detaylar:**
+  - 6 adımlı ağırlık hesaplama metodolojisi eklendi
+  - Görsel indikatörler analizi (karın dolgunluğu, kas yapısı, vücut oranları)
+  - Türe göre standart ağırlık aralıkları tanımlandı
+  - Kondisyon değerlendirmesi (zayıf/normal/besili) kriterleri
+  - Yaş-ağırlık korelasyonu hesaplaması
+  - Kullanıcı verisi ile AI tahmininin karşılaştırılması
+  - Validasyon ve kontrol mekanizmaları
+  - Detaylı örnekler ve hesaplama formülleri
+- **Teknik:**
+  - `src/app/api/analyze/route.ts` dosyasında prompt genişletildi
+  - Kullanıcının girdiği ağırlık bilgisi AI tarafından dikkate alınıyor
+  - %20 tolerans ile kullanıcı verisi-AI tahmin uyumu sağlanıyor
+- **Sonuç:** Ağırlık tahmin doğruluğu önemli ölçüde artırıldı
 
-- Google Gemini 2.0 Flash API kullanımı
-- Environment değişkenleri konfigürasyonu
-- API key güvenlik ayarları
-- Hata yönetimi ve fallback sistemleri
+## Geliştirilecek Özellikler
 
-### ✅ Güncel Türkiye Et Fiyatları Entegrasyonu (02.06.2025)
+### 🚀 Öncelikli (High Priority)
+- [ ] Kullanıcı hesap sistemi ve giriş
+- [ ] Analiz geçmişi kaydetme
+- [ ] PDF rapor oluşturma
+- [ ] Karşılaştırma özelliği
+- [ ] Offline çalışma desteği
 
-- 2025 Haziran dönemi güncel fiyat referansları
-- Büyükbaş: 450 TL/kg, Küçükbaş: 520 TL/kg
-- ESK oranları ve piyasa primleri
-- Bölgesel farklılık hesaplaması
-
-### ✅ Gelişmiş Fiyat Hesaplama Sistemi (02.06.2025)
-
-- Yeni formül: (hayvan_ağırlığı ÷ 2) × et_fiyatı
-- Premium ırk bonusları (Simental, Holstein, Angus)
-- Kurban sezonu dinamik fiyatlandırması
-- A/B kalite derecesi ayarlamaları
-
-### ✅ Çoklu Fotoğraf Analiz Sistemi (02.06.2025)
-
-- Aynı hayvana ait farklı açılardan fotoğraf desteği
-- Unified assessment (birleşik değerlendirme)
-- Yüksek güvenilirlik skorları (%90+)
-- Multi-angle ağırlık tahmini
-
-### ✅ Türkçe Prompt Optimizasyonu (02.06.2025)
-
-- Tam Türkçe AI talimatları
-- Detaylı field doldurma zorunlulukları
-- Gerçekçi örnek değer açıklamaları
-- Fallback data Türkçeleştirmesi
-
-### ✅ Kapsamlı Analiz Görselleştirme Sistemi (02.06.2025)
-
-- 3 kolonlu detay grid (Hayvan/Et/Fiyat bilgileri)
-- Renkli veri kartları ve metrik gösterimi
-- Karkas-kemiksiz et verimi analizi
-- Dinamik sağlık rozet sistemi
-- Hisse bazında maliyet hesaplama
-- Analiz tarihi/türü detay bilgileri
-
-### ✅ Yasal Uyarı ve Sorumluluk Reddi Sistemi (02.06.2025)
-
-- Üst banner AI analizi disclaimer'ı
-- 4 kategorili kapsamlı yasal uyarılar
-- AI analizi sınırları bilgilendirmesi
-- Veteriner kontrolü gereklilik uyarısı
-- Hukuki sorumluluk reddi beyanları
-- Profesyonel danışmanlık uyarı sistemi
-
-## Gelecek Özellikler
-
-### 🔮 Planlanan
-
-- [ ] Favori hayvanlar sistemi
-- [ ] Sosyal paylaşım özellikleri
-- [ ] Fiyat geçmişi takibi
-- [ ] Offline analiz desteği
-- [ ] Toplu fotoğraf analizi
-- [ ] PDF rapor çıktısı
-
-### 📈 İyileştirmeler
-
-- [ ] Daha detaylı sağlık analizi
-- [ ] Hayvan yaşı tahmin doğruluğu
+### 📈 Orta Öncelik (Medium Priority)
 - [ ] Bölgesel fiyat farklılıkları
-- [ ] Mevsimsel trend analizi
+- [ ] Dinamik piyasa fiyat güncellemesi
+- [ ] Veteriner tavsiyeleri
+- [ ] Hayvan bakım rehberi
+- [ ] Sosyal paylaşım özellikleri
+
+### 🔮 Uzun Vadeli (Low Priority)
+- [ ] Video analiz desteği
+- [ ] Çoklu dil desteği
+- [ ] API erişimi (B2B)
+- [ ] Mobile uygulama
+- [ ] Blockchain sertifika sistemi
+
+## Teknik Borçlar
+
+### 🔧 Performance
+- [ ] Resim optimizasyonu ve sıkıştırma
+- [ ] Lazy loading implementasyonu
+- [ ] Cache stratejileri
+- [ ] API rate limiting
+
+### 🛡️ Güvenlik
+- [ ] Resim güvenlik kontrolü
+- [ ] API anahtarları güvenliği
+- [ ] CSRF koruması
+- [ ] Giriş güvenlik önlemleri
+
+### 📱 Mobile Experience
+- [ ] Touch gesture desteği
+- [ ] Mobile kamera optimizasyonu
+- [ ] Responsive design iyileştirmeleri
+- [ ] PWA desteği
+
+## Metrikler ve KPI'lar
+
+### 📊 Kullanım Metrikleri
+- Günlük aktif kullanıcı
+- Analiz başarı oranı
+- Ortalama analiz süresi
+- Kullanıcı memnuniyet puanı
+
+### 🎯 İş Metrikleri
+- Ağırlık tahmin doğruluk oranı
+- Fiyat tahmin hassasiyeti
+- Kullanıcı geri dönüş oranı
+- Platform güvenilirlik skoru
+
+## Risk Analizi
+
+### ⚠️ Yüksek Riskler
+- AI modeli maliyet artışı
+- Piyasa fiyat dalgalanmaları
+- Yasal düzenlemeler
+- Rekabet artışı
+
+### 💡 Risk Azaltma Stratejileri
+- Alternatif AI modeli araştırması
+- Dinamik fiyatlama sistemi
+- Veteriner partnership
+- Özellik diferansiasyonu
+
+## Proje Zaman Çizelgesi
+
+### Q2 2025
+- ✅ MVP tamamlanması
+- ✅ AI optimizasyonu
+- [ ] Kullanıcı test süreçleri
+- [ ] Beta versiyon yayını
+
+### Q3 2025
+- [ ] Kullanıcı hesap sistemi
+- [ ] Analiz geçmişi
+- [ ] PDF rapor
+- [ ] Performance optimizasyonu
+
+### Q4 2025
+- [ ] Mobile uygulama
+- [ ] API geliştirme
+- [ ] Büyük scale test
+- [ ] Üretim yayını
 
 ---
 
-_Son güncellenme: 02.06.2025_
+**Son Güncelleme:** Mart 2025  
+**Güncelleme Sıklığı:** Her major özellik tamamlandığında  
+**Sorumlular:** Senior Front-End Developer Team

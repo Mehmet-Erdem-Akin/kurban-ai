@@ -96,6 +96,100 @@ const analyzeImageWithGemini = async (imageData: string, additionalInfo?: any) =
         - Bulanık, çok uzak veya belirsiz fotoğraflarda analiz yapma
         - Emin değilsen error döndür, rastgele tahmin yapma!
         
+        🎯 AĞIRLIK TAHMİNİ - EN ÖNEMLİ BÖLÜM:
+        
+        AĞIRLIK HESAPLAMA ADAMLARI (SIRASIYLA UYGULA):
+        
+        1️⃣ GÖRSEL İNDİKATÖRLER ANALİZİ:
+        • Karın bölgesi dolgunluğu (şişkinlik derecesi)
+        • Sırt ve bel genişliği 
+        • Göğüs derinliği ve genişliği
+        • Uyluk kaslarının gelişimi
+        • Boyun kalınlığı
+        • Genel vücut kütlesi oranları
+        
+        2️⃣ TÜRE GÖRE STANDART AĞIRLIK ARALIKLARI:
+        
+        BÜYÜKBAŞ:
+        • Dana (12-18 ay): 300-500 kg
+        • Tosun (18-30 ay): 450-650 kg  
+        • Boğa (2+ yaş): 600-900 kg
+        • İnek (2+ yaş): 400-600 kg
+        • Buzağı (6-12 ay): 150-300 kg
+        • Manda: 500-800 kg
+        
+        KÜÇÜKBAŞ:
+        • Kuzu (6-12 ay): 35-50 kg
+        • Koyun (1+ yaş): 45-80 kg  
+        • Koç (1+ yaş): 70-120 kg
+        • Oğlak (6-12 ay): 25-40 kg
+        • Keçi (1+ yaş): 40-70 kg
+        • Teke (1+ yaş): 60-100 kg
+        
+        3️⃣ VİZÜEL AĞIRLIK DEĞERLENDİRME KRİTERLERİ:
+        
+        ZAYIF HAYVAN (Alt limit):
+        • Kaburgalar hafif belirgin
+        • Karın çukur görünümde  
+        • Kalça kemikleri çıkıntılı
+        • Uyluk kasları zayıf
+        → Standart ağırlığın %80-85'i
+        
+        NORMAL HAYVAN (Orta değer):
+        • Dengeli vücut yapısı
+        • Karın normal dolgunlukta
+        • Kas yapısı iyi gelişmiş
+        • Genel görünüm sağlıklı
+        → Standart ağırlığın %90-100'ü
+        
+        BESİLİ HAYVAN (Üst limit):
+        • Karın belirgin şişkin
+        • Boyun ve sırt kalın
+        • Uyluk kasları çok gelişmiş
+        • Yağ tabakası görünür
+        → Standart ağırlığın %110-125'i
+        
+        4️⃣ YAŞ-AĞIRLIK KORELASYONU:
+        • Genç hayvanlar: Alt-orta aralık
+        • Orta yaş: Orta-üst aralık  
+        • Olgun yaş: Üst aralık
+        
+        5️⃣ KULLANICI BİLGİSİ VALİDASYONU:
+        ${additionalInfo?.weight ? `
+        KULLANICI AĞIRLIK TAHMİNİ: ${additionalInfo.weight}
+        
+        ÖNEMLİ KURALAR:
+        • Kullanıcı ağırlık vermiş ise, bu bilgiyi DİKKATE AL
+        • Fotoğraftaki görsel gözlemlerin ile KARŞILAŞTIR
+        • Eğer kullanıcı verisi makul aralıkta ise (%20 tolerans), buna yakın değer ver
+        • Eğer kullanıcı verisi çok farklı ise, görsel analizini öncelikle
+        • Kullanıcı verisi ile uyumlu olması güvenilirliği artırır
+        ` : `
+        KULLANICI AĞIRLIK BİLGİSİ: Verilmemiş
+        • Tamamen görsel analiz yaparak ağırlığı hesapla
+        • Yukarıdaki standart aralıkları kullan
+        `}
+        
+        6️⃣ SON KONTROL VE VALİDASYON:
+        • Tahmin edilen ağırlık, türün standart aralığında mı?
+        • Hayvanın yaşı ile uyumlu mu?  
+        • Görsel özellikler (zayıf/normal/besili) ile tutarlı mı?
+        • Kullanıcı verisi varsa, onunla uyumlu mu?
+        
+        AĞIRLIK HESAPLAMA ÖRNEKLERİ:
+        
+        Örnek 1 - Orta yaş Dana:
+        • Tür: Dana (15 aylık tahmin)
+        • Görsel: Normal vücut yapısı, karın dolgun
+        • Hesaplama: 300-500 kg aralığında → 380-420 kg arası seç
+        • Kullanıcı verisi: 400 kg → UYUMLU → Final: 400 kg
+        
+        Örnek 2 - Besili Koç:
+        • Tür: Koç (2 yaşında tahmin)  
+        • Görsel: Kalın boyun, şişkin karın, kaslı yapı
+        • Hesaplama: 70-120 kg aralığında → Besili olduğu için üst limit → 100-110 kg
+        • Kullanıcı verisi: Yok → Final: 105 kg
+        
         HAYVAN TÜRÜ AYIRT ETME KRİTERLERİ:
         
         🐂 BOĞA (Erkek Sığır):
@@ -175,7 +269,13 @@ const analyzeImageWithGemini = async (imageData: string, additionalInfo?: any) =
         1. Fotoğraftaki SPESIFIK hayvanı dikkatlice incele
         2. Fiziksel özelliklerini yukarıdaki kriterlere göre değerlendir
         3. Türü doğru tespit et (boynuz, meme, sakal, kuyruk kontrol et)
-        4. Görsel görünümüne göre gerçek ağırlığını tahmin et
+        4. AĞIRLIK TAHMİNİNİ 6 ADIMDA DETAYLI OLARAK YAP:
+           a) Görsel indikatörleri analiz et
+           b) Türün standart ağırlık aralığını belirle
+           c) Hayvanın kondisyonunu değerlendir (zayıf/normal/besili)
+           d) Yaş faktörünü hesaba kat
+           e) Kullanıcı verisi varsa karşılaştır
+           f) Final kontrol ve validasyon yap
         5. Karkas ağırlığını hesapla: büyükbaş için (ağırlık × 0.55), küçükbaş için (ağırlık × 0.50)
         6. Temel fiyatı uygula: karkas_ağırlık × karkas_et_fiyatı
         7. Yüksek kaliteli ırk varsa cins primi ekle (+%20-25)
@@ -186,8 +286,17 @@ const analyzeImageWithGemini = async (imageData: string, additionalInfo?: any) =
         DOLDURULMASI ZORUNLU ALANLAR (Türkçe):
         - animalType: Dana, Boğa, İnek, Koç, Koyun, Keçi, Manda, Buzağı olarak belirt
         - breed: Irk ismini Türkçe yaz (örn: "Holstein", "Simental", "Akkaraman", "Merinos", "Saanen")
+        - estimatedWeight: MUTLAKA yukarıdaki 6 adımlı metodu kullanarak hassas hesapla
         - physicalCondition: Hayvanın fiziksel durumunu ve ayırt edici özelliklerini Türkçe detaylı açıkla
         - recommendations: En az 3 Türkçe öneri ver
+        
+        AĞIRLIK TAHMİNİ ÖNCELİK SIRASI:
+        1. ÖNCE türü kesin olarak belirle
+        2. Standart ağırlık aralığını tespit et
+        3. Görsel kondisyon analizi yap
+        4. Yaş faktörünü hesaba kat
+        5. Kullanıcı verisi varsa karşılaştır ve uyumlu olmaya çalış
+        6. Final ağırlığı belirle (makul aralıkta olmalı)
         
         FORMÜL: 
         - Büyükbaş: (hayvan_ağırlığı × 0.55) × 440 TL = gerçekçi pazar değeri

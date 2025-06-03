@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 
 interface AnalysisResult {
@@ -68,6 +68,10 @@ export default function AnalyzePage() {
     const [cameraStream, setCameraStream] = useState<MediaStream | null>(null);
     const [showCamera, setShowCamera] = useState(false);
     const [additionalInfo, setAdditionalInfo] = useState<AdditionalInfo>({});
+    // Image Modal States
+    const [showImageModal, setShowImageModal] = useState(false);
+    const [modalImageIndex, setModalImageIndex] = useState(0);
+    const [imageZoom, setImageZoom] = useState(1);
     const fileInputRef = useRef<HTMLInputElement>(null);
     const cameraRef = useRef<HTMLVideoElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -441,6 +445,84 @@ export default function AnalyzePage() {
     const getCurrentImage = () => {
         return selectedImages[currentImageIndex] || null;
     };
+
+    // Modal Functions
+    const openImageModal = (imageIndex: number) => {
+        if (!selectedImages || selectedImages.length === 0 || imageIndex >= selectedImages.length) {
+            console.error("Geçersiz fotoğraf indeksi veya boş fotoğraf listesi");
+            return;
+        }
+        setModalImageIndex(imageIndex);
+        setShowImageModal(true);
+        setImageZoom(1);
+        console.log("Modal açılıyor - Fotoğraf indeksi:", imageIndex, "Toplam fotoğraf:", selectedImages.length);
+    };
+
+    const closeImageModal = () => {
+        setShowImageModal(false);
+        setImageZoom(1);
+    };
+
+    const nextImageInModal = () => {
+        if (modalImageIndex < selectedImages.length - 1) {
+            setModalImageIndex(modalImageIndex + 1);
+            setImageZoom(1);
+        }
+    };
+
+    const prevImageInModal = () => {
+        if (modalImageIndex > 0) {
+            setModalImageIndex(modalImageIndex - 1);
+            setImageZoom(1);
+        }
+    };
+
+    const handleZoomIn = () => {
+        setImageZoom(prev => Math.min(prev + 0.5, 3));
+    };
+
+    const handleZoomOut = () => {
+        setImageZoom(prev => Math.max(prev - 0.5, 0.5));
+    };
+
+    const resetZoom = () => {
+        setImageZoom(1);
+    };
+
+    // Keyboard Event Handler
+    const handleKeyPress = (e: KeyboardEvent) => {
+        if (!showImageModal || !selectedImages || selectedImages.length === 0) return;
+
+        switch (e.key) {
+            case 'Escape':
+                closeImageModal();
+                break;
+            case 'ArrowLeft':
+                prevImageInModal();
+                break;
+            case 'ArrowRight':
+                nextImageInModal();
+                break;
+            case '+':
+            case '=':
+                handleZoomIn();
+                break;
+            case '-':
+                handleZoomOut();
+                break;
+            case '0':
+                resetZoom();
+                break;
+        }
+    };
+
+    // Add keyboard event listener
+    useEffect(() => {
+        document.addEventListener('keydown', handleKeyPress);
+        return () => {
+            document.removeEventListener('keydown', handleKeyPress);
+        };
+    }, [showImageModal, modalImageIndex, selectedImages.length]);
 
     return (
         <div className="min-h-screen hero-gradient">
@@ -1079,10 +1161,10 @@ export default function AnalyzePage() {
                                 saniye sürebilir.
                             </p>
 
-                            <div className="progress max-w-md mx-auto mb-4">
-                                <div className="progress-primary w-3/4"></div>
+                            <div className="progress max-w-md mx-auto mb-4 bg-gray-200 rounded-full overflow-hidden">
+                                <div className="h-2 bg-gradient-to-r from-primary-500 to-primary-600 rounded-full animate-pulse w-full"></div>
                             </div>
-                            <p className="text-sm text-neutral-500">%75 tamamlandı</p>
+                            <p className="text-sm text-neutral-500">AI modelimiz analiz yapıyor...</p>
                         </div>
                     )}
 
@@ -1198,20 +1280,41 @@ export default function AnalyzePage() {
                                     {selectedImages.length === 1 ? (
                                         /* Tek Fotoğraf Görünümü */
                                         <div className="flex flex-col items-center">
-                                            <div className="relative">
+
+                                            <div
+                                                onClick={() => openImageModal(currentImageIndex)}
+                                                className="relative cursor-pointer">
                                                 <Image
-                                                    src={selectedImages[0]}
+                                                    src={selectedImages[currentImageIndex]}
                                                     alt="Analiz edilen fotoğraf"
                                                     width={320}
                                                     height={240}
-                                                    className="w-64 h-48 object-cover rounded-lg border-2 border-green-200 shadow-md"
+                                                    className="w-64 h-48 object-cover rounded-lg border-2 border-green-200 shadow-md cursor-pointer hover:border-green-400 transition-colors"
                                                 />
+                                                <div className="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-20 transition-opacity rounded-lg flex items-center justify-center">
+                                                    <svg
+                                                        className="w-8 h-8 text-white opacity-0 hover:opacity-100 transition-opacity"
+                                                        fill="none"
+                                                        stroke="currentColor"
+                                                        viewBox="0 0 24 24"
+                                                    >
+                                                        <path
+                                                            strokeLinecap="round"
+                                                            strokeLinejoin="round"
+                                                            strokeWidth={2}
+                                                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                                                        />
+                                                    </svg>
+                                                </div>
                                                 <div className="absolute top-2 right-2 bg-green-500 text-white px-2 py-1 rounded-full text-xs font-semibold">
                                                     ✓ Analiz Edildi
                                                 </div>
+                                                {/* Büyüteç ikonu */}
                                             </div>
                                             <p className="mt-3 text-sm text-gray-600 text-center">
                                                 Bu fotoğraf üzerinden analiz gerçekleştirildi
+                                                <br />
+                                                <span className="text-blue-600 text-xs">📷 Büyütmek için tıklayın</span>
                                             </p>
                                         </div>
                                     ) : (
@@ -1234,10 +1337,7 @@ export default function AnalyzePage() {
                                                             width={128}
                                                             height={96}
                                                             className="w-full h-24 object-cover rounded-lg border-2 border-gray-200 group-hover:border-blue-400 transition-colors cursor-pointer"
-                                                            onClick={() => {
-                                                                // Modal açma işlevi (daha sonra eklenebilir)
-                                                                console.log(`Fotoğraf ${index + 1} tıklandı`);
-                                                            }}
+                                                            onClick={() => openImageModal(index)}
                                                         />
                                                         <div className="absolute top-1 right-1 bg-blue-500 text-white px-1.5 py-0.5 rounded-full text-xs font-semibold">
                                                             {index + 1}
@@ -1273,6 +1373,9 @@ export default function AnalyzePage() {
                                                     <strong>Not:</strong> Çoklu fotoğraf analizi daha
                                                     yüksek doğruluk oranı sağlar. Ana analiz 1. fotoğraf
                                                     üzerinden yapılıp diğer açılarla desteklenmiştir.
+                                                </p>
+                                                <p className="text-xs text-blue-600 mt-1">
+                                                    📷 Fotoğrafları büyütmek için tıklayın
                                                 </p>
                                             </div>
                                         </div>
@@ -1797,6 +1900,125 @@ export default function AnalyzePage() {
                     )}
                 </div>
             </main>
+
+            {/* Image Modal */}
+            {showImageModal && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80 animate-fade-in">
+                    <div className="relative w-full h-full flex items-center justify-center p-4">
+                        {/* Close Button */}
+                        <button
+                            onClick={closeImageModal}
+                            className="absolute top-4 right-4 z-10 w-10 h-10 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-full flex items-center justify-center text-white transition-colors"
+                            aria-label="Modalı Kapat"
+                        >
+                            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+
+                        {/* Navigation Buttons */}
+                        {selectedImages.length > 1 && (
+                            <>
+                                <button
+                                    onClick={prevImageInModal}
+                                    disabled={modalImageIndex === 0}
+                                    className="absolute left-4 top-1/2 transform -translate-y-1/2 z-10 w-12 h-12 bg-white bg-opacity-20 hover:bg-opacity-30 disabled:opacity-50 disabled:cursor-not-allowed rounded-full flex items-center justify-center text-white transition-colors"
+                                    aria-label="Önceki Fotoğraf"
+                                >
+                                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                                    </svg>
+                                </button>
+
+                                <button
+                                    onClick={nextImageInModal}
+                                    disabled={modalImageIndex === selectedImages.length - 1}
+                                    className="absolute right-4 top-1/2 transform -translate-y-1/2 z-10 w-12 h-12 bg-white bg-opacity-20 hover:bg-opacity-30 disabled:opacity-50 disabled:cursor-not-allowed rounded-full flex items-center justify-center text-white transition-colors"
+                                    aria-label="Sonraki Fotoğraf"
+                                >
+                                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                                    </svg>
+                                </button>
+                            </>
+                        )}
+
+                        {/* Zoom Controls */}
+                        <div className="absolute top-4 left-4 z-10 flex flex-col gap-2">
+                            <button
+                                onClick={handleZoomIn}
+                                className="w-10 h-10 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-full flex items-center justify-center text-white transition-colors"
+                                aria-label="Yakınlaştır"
+                            >
+                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                </svg>
+                            </button>
+                            <button
+                                onClick={handleZoomOut}
+                                className="w-10 h-10 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-full flex items-center justify-center text-white transition-colors"
+                                aria-label="Uzaklaştır"
+                            >
+                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 12H6" />
+                                </svg>
+                            </button>
+                            <button
+                                onClick={resetZoom}
+                                className="w-10 h-10 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-full flex items-center justify-center text-white transition-colors"
+                                aria-label="Zoom Sıfırla"
+                            >
+                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                                </svg>
+                            </button>
+                            <div className="text-white text-xs text-center bg-black bg-opacity-50 rounded px-2 py-1">
+                                {Math.round(imageZoom * 100)}%
+                            </div>
+                        </div>
+
+                        {/* Image Container */}
+                        <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
+                            <div
+                                className="transition-transform duration-200 ease-out"
+                                style={{ transform: `scale(${imageZoom})` }}
+                            >
+                                {selectedImages && selectedImages[modalImageIndex] ? (
+                                    <Image
+                                        src={selectedImages[modalImageIndex]}
+                                        alt={`Fotoğraf ${modalImageIndex + 1}`}
+                                        width={800}
+                                        height={600}
+                                        className="max-w-full max-h-full object-contain"
+                                        priority
+                                    />
+                                ) : (
+                                    <div className="flex items-center justify-center w-full h-full text-white">
+                                        <div className="text-center">
+                                            <svg className="w-16 h-16 mx-auto mb-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2z" />
+                                            </svg>
+                                            <p className="text-lg opacity-75">Fotoğraf yüklenemedi</p>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+
+                        {/* Image Info */}
+                        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-10 bg-black bg-opacity-50 text-white px-4 py-2 rounded-lg">
+                            <div className="text-center">
+                                <div className="font-semibold">
+                                    Fotoğraf {modalImageIndex + 1} / {selectedImages?.length || 0}
+                                </div>
+                                <div className="text-xs opacity-80 mt-1">
+                                    ESC: Kapat • ← →: Gezin • +/- : Zoom • 0: Sıfırla
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

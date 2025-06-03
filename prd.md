@@ -1,6 +1,7 @@
 # Kurban-AI Product Requirements Document (PRD)
 
 ## Proje Genel Bilgiler
+
 - **Proje Adı:** Kurban-AI - Kurbanlık Hayvan Analiz Sistemi
 - **Başlangıç Tarihi:** Mart 2025
 - **Mevcut Durum:** MVP Geliştirme Aşaması
@@ -9,6 +10,7 @@
 ## Ana Özellikler
 
 ### 🤖 AI Analiz Motoru
+
 - Gemini 2.0 Flash API entegrasyonu
 - Kurbanlık hayvan türü tespiti (Dana, Boğa, İnek, Koç, Koyun, Keçi, Manda)
 - Ağırlık tahmini algoritması
@@ -17,6 +19,7 @@
 - Piyasa değeri tahmini
 
 ### 📸 Fotoğraf Yükleme & Kamera
+
 - Galeriden çoklu fotoğraf yükleme
 - Canlı kamera entegrasyonu
 - Tek ve çoklu fotoğraf analizi desteği
@@ -24,6 +27,7 @@
 - Modal görüntüleme sistemi
 
 ### 📋 Kullanıcı Giriş Formu
+
 - Hayvan kategorisi seçimi (Büyükbaş/Küçükbaş)
 - Tür, cinsiyet, yaş bilgileri
 - Tahmini ağırlık girişi
@@ -32,6 +36,7 @@
 - Özel notlar alanı
 
 ### 💰 Fiyatlama Sistemi
+
 - Türkiye piyasa fiyatları
 - Karkas hesaplama (%55 büyükbaş, %50 küçükbaş)
 - Kurban sezonu primleri
@@ -39,6 +44,7 @@
 - Kalite premium hesaplaması
 
 ### 🎨 Kullanıcı Arayüzü
+
 - Modern ve responsive tasarım
 - Animasyon ve geçişler
 - Hata yönetimi ve kullanıcı geri bildirimleri
@@ -48,6 +54,7 @@
 ## Yapıldı
 
 ### ✅ AI Prompt Optimizasyonu - Ağırlık Tahmini Geliştirmesi (Mart 2025)
+
 - **Özellik:** AI modelinin ağırlık tahminini çok daha hassas yapması için prompt optimizasyonu
 - **Detaylar:**
   - 6 adımlı ağırlık hesaplama metodolojisi eklendi
@@ -67,6 +74,7 @@
 ## Geliştirilecek Özellikler
 
 ### 🚀 Öncelikli (High Priority)
+
 - [ ] Kullanıcı hesap sistemi ve giriş
 - [ ] Analiz geçmişi kaydetme
 - [ ] PDF rapor oluşturma
@@ -74,6 +82,7 @@
 - [ ] Offline çalışma desteği
 
 ### 📈 Orta Öncelik (Medium Priority)
+
 - [ ] Bölgesel fiyat farklılıkları
 - [ ] Dinamik piyasa fiyat güncellemesi
 - [ ] Veteriner tavsiyeleri
@@ -81,6 +90,7 @@
 - [ ] Sosyal paylaşım özellikleri
 
 ### 🔮 Uzun Vadeli (Low Priority)
+
 - [ ] Video analiz desteği
 - [ ] Çoklu dil desteği
 - [ ] API erişimi (B2B)
@@ -90,18 +100,21 @@
 ## Teknik Borçlar
 
 ### 🔧 Performance
+
 - [ ] Resim optimizasyonu ve sıkıştırma
 - [ ] Lazy loading implementasyonu
 - [ ] Cache stratejileri
 - [ ] API rate limiting
 
 ### 🛡️ Güvenlik
+
 - [ ] Resim güvenlik kontrolü
 - [ ] API anahtarları güvenliği
 - [ ] CSRF koruması
 - [ ] Giriş güvenlik önlemleri
 
 ### 📱 Mobile Experience
+
 - [ ] Touch gesture desteği
 - [ ] Mobile kamera optimizasyonu
 - [ ] Responsive design iyileştirmeleri
@@ -110,12 +123,14 @@
 ## Metrikler ve KPI'lar
 
 ### 📊 Kullanım Metrikleri
+
 - Günlük aktif kullanıcı
 - Analiz başarı oranı
 - Ortalama analiz süresi
 - Kullanıcı memnuniyet puanı
 
 ### 🎯 İş Metrikleri
+
 - Ağırlık tahmin doğruluk oranı
 - Fiyat tahmin hassasiyeti
 - Kullanıcı geri dönüş oranı
@@ -124,12 +139,14 @@
 ## Risk Analizi
 
 ### ⚠️ Yüksek Riskler
+
 - AI modeli maliyet artışı
 - Piyasa fiyat dalgalanmaları
 - Yasal düzenlemeler
 - Rekabet artışı
 
 ### 💡 Risk Azaltma Stratejileri
+
 - Alternatif AI modeli araştırması
 - Dinamik fiyatlama sistemi
 - Veteriner partnership
@@ -138,18 +155,21 @@
 ## Proje Zaman Çizelgesi
 
 ### Q2 2025
+
 - ✅ MVP tamamlanması
 - ✅ AI optimizasyonu
 - [ ] Kullanıcı test süreçleri
 - [ ] Beta versiyon yayını
 
 ### Q3 2025
+
 - [ ] Kullanıcı hesap sistemi
 - [ ] Analiz geçmişi
 - [ ] PDF rapor
 - [ ] Performance optimizasyonu
 
 ### Q4 2025
+
 - [ ] Mobile uygulama
 - [ ] API geliştirme
 - [ ] Büyük scale test

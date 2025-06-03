@@ -168,9 +168,7 @@ export default function Home() {
 
           <div className="grid md:grid-cols-4 gap-8">
             <div className="text-center">
-              <div className="text-3xl font-bold text-primary-600 mb-2">
-                🤖
-              </div>
+              <div className="text-3xl font-bold text-primary-600 mb-2">🤖</div>
               <p className="text-neutral-600 font-medium">AI Destekli</p>
               <p className="text-neutral-500 text-sm">Gelişmiş algoritma</p>
             </div>
@@ -182,16 +180,12 @@ export default function Home() {
               <p className="text-neutral-500 text-sm">Kapsamlı raporlama</p>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-accent-600 mb-2">
-                🆓
-              </div>
+              <div className="text-3xl font-bold text-accent-600 mb-2">🆓</div>
               <p className="text-neutral-600 font-medium">Tamamen Ücretsiz</p>
               <p className="text-neutral-500 text-sm">Hiçbir ücret yok</p>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-success-600 mb-2">
-                ⚡
-              </div>
+              <div className="text-3xl font-bold text-success-600 mb-2">⚡</div>
               <p className="text-neutral-600 font-medium">Hızlı Sonuç</p>
               <p className="text-neutral-500 text-sm">Anında analiz</p>
             </div>
@@ -302,13 +296,22 @@ export default function Home() {
             Yapay zeka ile daha bilinçli kararlar
           </p>
           <div className="flex justify-center space-x-6 text-neutral-500">
-            <Link href="/privacy" className="hover:text-primary-600 transition-colors">
+            <Link
+              href="/privacy"
+              className="hover:text-primary-600 transition-colors"
+            >
               Gizlilik Politikası
             </Link>
-            <Link href="/terms" className="hover:text-primary-600 transition-colors">
+            <Link
+              href="/terms"
+              className="hover:text-primary-600 transition-colors"
+            >
               Kullanım Şartları
             </Link>
-            <Link href="/kvkk" className="hover:text-primary-600 transition-colors">
+            <Link
+              href="/kvkk"
+              className="hover:text-primary-600 transition-colors"
+            >
               KVKK
             </Link>
             <a href="#" className="hover:text-primary-600 transition-colors">

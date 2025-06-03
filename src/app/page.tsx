@@ -1,41 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useEffect } from "react";
-
-interface User {
-  id: string;
-  email: string;
-  name: string;
-}
 
 export default function Home() {
-  const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    // Check if user is logged in
-    const token = localStorage.getItem("auth_token");
-    const userData = localStorage.getItem("user_data");
-
-    if (token && userData) {
-      try {
-        setUser(JSON.parse(userData));
-      } catch {
-        localStorage.removeItem("auth_token");
-        localStorage.removeItem("user_data");
-      }
-    }
-    setIsLoading(false);
-  }, []);
-
-  const handleLogout = () => {
-    localStorage.removeItem("auth_token");
-    localStorage.removeItem("user_data");
-    setUser(null);
-    alert("Başarıyla çıkış yaptınız!");
-  };
-
   return (
     <div className="min-h-screen hero-gradient">
       {/* Header */}
@@ -50,36 +17,9 @@ export default function Home() {
             </span>
           </div>
           <div className="flex items-center space-x-4">
-            {isLoading ? (
-              <div className="w-6 h-6 border-2 border-gray-300 border-t-green-600 rounded-full animate-spin"></div>
-            ) : user ? (
-              <div className="flex items-center space-x-4">
-                <span className="text-neutral-700 font-medium">
-                  Hoş geldin, {user.name}!
-                </span>
-                <button
-                  onClick={handleLogout}
-                  className="text-neutral-600 hover:text-neutral-800 transition-colors font-medium"
-                >
-                  Çıkış Yap
-                </button>
-                <Link href="/profile" className="btn btn-primary btn-md">
-                  Profilim
-                </Link>
-              </div>
-            ) : (
-              <>
-                <Link
-                  href="/login"
-                  className="text-neutral-600 hover:text-neutral-800 transition-colors font-medium"
-                >
-                  Giriş Yap
-                </Link>
-                <Link href="/register" className="btn btn-primary btn-md">
-                  Kayıt Ol
-                </Link>
-              </>
-            )}
+            <Link href="/analyze" className="btn btn-primary btn-md">
+              Analiz Başlat
+            </Link>
           </div>
         </nav>
       </header>
@@ -105,7 +45,7 @@ export default function Home() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/analyze"
-              className="btn btn-primary btn-xl shadow-large animate-scale-in"
+              className="btn btn-primary btn-xl animate-scale-in"
             >
               <svg
                 className="w-5 h-5 mr-2"
@@ -127,25 +67,6 @@ export default function Home() {
                 />
               </svg>
               Analiz Başlat
-            </Link>
-            <Link
-              href="/demo"
-              className="btn btn-secondary btn-xl animate-scale-in"
-            >
-              <svg
-                className="w-5 h-5 mr-2"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1m4 0h1m-6 4h8m-7 0a7 7 0 1114 0v3a2 2 0 01-2 2H7a2 2 0 01-2-2v-3z"
-                />
-              </svg>
-              Demo İzle
             </Link>
           </div>
         </div>
@@ -339,10 +260,10 @@ export default function Home() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/analyze"
-              className="btn btn-white btn-xl shadow-large hover:bg-neutral-100"
+              className="inline-flex items-center px-8 py-4 bg-white/95 backdrop-blur-sm text-primary-700 font-semibold text-lg rounded-2xl shadow-2xl hover:bg-white/98 hover:shadow-3xl hover:scale-[1.02] transition-all duration-300 border border-white/30 hover:border-white/60 group"
             >
               <svg
-                className="w-5 h-5 mr-2"
+                className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform duration-300"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -351,7 +272,7 @@ export default function Home() {
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   strokeWidth={2}
-                  d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
+                  d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0118.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
                 />
                 <path
                   strokeLinecap="round"
@@ -361,12 +282,6 @@ export default function Home() {
                 />
               </svg>
               Ücretsiz Analiz Yap
-            </Link>
-            <Link
-              href="/demo"
-              className="btn btn-secondary btn-xl border-2 border-white/30 hover:bg-white/10"
-            >
-              Demo İzle
             </Link>
           </div>
         </div>
@@ -402,7 +317,7 @@ export default function Home() {
           </div>
           <div className="mt-6 pt-6 border-t border-neutral-200">
             <p className="text-neutral-500">
-              &copy; 2024 Kurbanlık Analiz. Tüm hakları saklıdır.
+              &copy; 2025 Kurbanlık Analiz. Tüm hakları saklıdır.
             </p>
           </div>
         </div>

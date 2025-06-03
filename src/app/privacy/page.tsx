@@ -306,7 +306,7 @@ export default function PrivacyPage() {
             <footer className="bg-neutral-800 text-white py-8">
                 <div className="container mx-auto px-4 text-center">
                     <p className="text-neutral-400">
-                        &copy; 2024 Kurbanlık Analiz. Tüm hakları saklıdır.
+                        &copy; 2025 Kurbanlık Analiz. Tüm hakları saklıdır.
                     </p>
                 </div>
             </footer>

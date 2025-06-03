@@ -1161,7 +1161,7 @@ export default function AnalyzePage() {
                                     </div>
                                     <div className="text-right">
                                         <div className="text-2xl font-bold text-primary-600">
-                                            {analysisResult.marketValue?.toLocaleString()} ₺
+                                            {analysisResult.pricing?.estimatedMeatValue?.toLocaleString()} ₺
                                         </div>
                                         <div className="text-sm text-neutral-500">
                                             Tahmini Değer
@@ -1437,7 +1437,7 @@ export default function AnalyzePage() {
                                         <div className="flex justify-between items-center">
                                             <span className="text-neutral-600">Tahmini Değer:</span>
                                             <span className="font-bold text-xl text-success-700">
-                                                ₺{analysisResult?.marketValue?.toLocaleString()}
+                                                ₺{analysisResult?.pricing?.estimatedMeatValue?.toLocaleString()}
                                             </span>
                                         </div>
 

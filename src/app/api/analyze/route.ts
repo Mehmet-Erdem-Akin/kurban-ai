@@ -154,17 +154,19 @@ const analyzeImageWithGemini = async (imageData: string, additionalInfo?: any) =
         *Bunlar ÖRNEK referans değerlerdir. Fotoğraftaki spesifik hayvanı analiz et ve gerçek durumuna göre bireysel değerlendirme yap.*
         
         BÜYÜKBAŞ (SIĞIR/MANDA) FİYAT HESAPLAMA:
-        - Güncel et fiyatı: 450 TL/kg (Haziran 2025)
-        - Fiyat hesaplama: (hayvan_ağırlığı ÷ 2) × 450 TL/kg
-        - Örnek: 500kg Dana = (500kg ÷ 2) × 450 TL = 250kg × 450 TL = 112,500 TL
+        - Karkas verimi: %55 (0.55)
+        - Karkas et fiyatı: 440 TL/kg
+        - Fiyat hesaplama: (hayvan_ağırlığı × 0.55) × 440 TL/kg
+        - Örnek: 500kg Dana = (500kg × 0.55) × 440 TL = 275kg × 440 TL = 121,000 TL
         - Premium ırklar: +%20-25 (Simental, Holstein, Angus)
         - Kurban sezonu: +%15-20 prim
         - Kalite ayarlaması: A-kalite +%15, B-kalite -%10
         
         KÜÇÜKBAŞ (KOYUN/KEÇİ) FİYAT HESAPLAMA:
-        - Güncel et fiyatı: 520 TL/kg (Haziran 2025)
-        - Fiyat hesaplama: (hayvan_ağırlığı ÷ 2) × 520 TL/kg
-        - Örnek: 40kg Koç = (40kg ÷ 2) × 520 TL = 20kg × 520 TL = 10,400 TL
+        - Karkas verimi: %50 (0.50)
+        - Karkas et fiyatı: 470 TL/kg
+        - Fiyat hesaplama: (hayvan_ağırlığı × 0.50) × 470 TL/kg
+        - Örnek: 60kg Koç = (60kg × 0.50) × 470 TL = 30kg × 470 TL = 14,100 TL
         - Premium hayvanlar: +%20-25
         - Kurban sezonu: +%15-20 prim
         - Kalite ayarlaması: A-kalite +%15, B-kalite -%10
@@ -174,8 +176,8 @@ const analyzeImageWithGemini = async (imageData: string, additionalInfo?: any) =
         2. Fiziksel özelliklerini yukarıdaki kriterlere göre değerlendir
         3. Türü doğru tespit et (boynuz, meme, sakal, kuyruk kontrol et)
         4. Görsel görünümüne göre gerçek ağırlığını tahmin et
-        5. Et ağırlığını hesapla: tahmini_ağırlık ÷ 2
-        6. Temel fiyatı uygula: et_ağırlığı × et_fiyatı_kg
+        5. Karkas ağırlığını hesapla: büyükbaş için (ağırlık × 0.55), küçükbaş için (ağırlık × 0.50)
+        6. Temel fiyatı uygula: karkas_ağırlık × karkas_et_fiyatı
         7. Yüksek kaliteli ırk varsa cins primi ekle (+%20-25)
         8. Kurban dönemi için mevsimsel prim ekle (+%15-20)
         9. Kalite derecesi ayarlaması yap (A-kalite +%15, B-kalite -%10)
@@ -187,7 +189,9 @@ const analyzeImageWithGemini = async (imageData: string, additionalInfo?: any) =
         - physicalCondition: Hayvanın fiziksel durumunu ve ayırt edici özelliklerini Türkçe detaylı açıkla
         - recommendations: En az 3 Türkçe öneri ver
         
-        FORMÜL: (hayvan_ağırlığı ÷ 2) × güncel_et_fiyatı = gerçekçi pazar değeri.
+        FORMÜL: 
+        - Büyükbaş: (hayvan_ağırlığı × 0.55) × 440 TL = gerçekçi pazar değeri
+        - Küçükbaş: (hayvan_ağırlığı × 0.50) × 470 TL = gerçekçi pazar değeri
         Sabit örnek değerler kullanma. Fotoğraftaki gerçek hayvana göre bireysel değerlendirme yap.
         
         TEKRAR HATIRLATMA: Emin değilsen, belirsizsen veya fotoğrafta uygun hayvan yoksa MUTLAKA error döndür!
@@ -300,22 +304,23 @@ const calculateDetailedAnalysis = (basicAnalysis: {
         basicAnalysis;
 
     // Calculate meat amounts based on Turkish livestock industry standards
-    let karkasYieldPercentage, bonelessYieldPercentage, meatPricePerKg;
+    let karkasYieldPercentage, bonelessYieldPercentage, bonelessMeatPricePerKg, karkasMeatPricePerKg;
 
     if (animalType === "Dana" || animalType === "Tosun" || animalType === "Boğa" || animalType === "İnek" || animalType === "Manda" || animalType === "Buzağı") {
-        // Büyükbaş (Cattle/Buffalo) yield ratios
-        karkasYieldPercentage = 52; // ~52% karkas yield from live weight
+        // Büyükbaş (Cattle/Buffalo) yield ratios - Kullanıcı formülüne göre
+        karkasYieldPercentage = 55; // 55% karkas yield from live weight (0.55)
         bonelessYieldPercentage = 72; // ~72% boneless from karkas
-        meatPricePerKg = 450; // Dana et price TL/kg (June 2025)
+        bonelessMeatPricePerKg = 450; // Dana et price TL/kg (June 2025) - kemiksiz et
+        karkasMeatPricePerKg = 440; // Karkas et fiyatı (kemikli et) - kullanıcı formülü
     } else {
-        // Küçükbaş (Small livestock: sheep/goat) yield ratios
-        karkasYieldPercentage = 48; // ~48% karkas yield from live weight
+        // Küçükbaş (Small livestock: sheep/goat) yield ratios - Kullanıcı formülüne göre
+        karkasYieldPercentage = 50; // 50% karkas yield from live weight (0.50)
         bonelessYieldPercentage = 70; // ~70% boneless from karkas
-        meatPricePerKg = 520; // Kuzu et price TL/kg (June 2025)
+        bonelessMeatPricePerKg = 520; // Kuzu et price TL/kg (June 2025) - kemiksiz et
+        karkasMeatPricePerKg = 470; // Karkas et fiyatı (kemikli et) - kullanıcı formülü
     }
 
-    // Calculate meat amounts using the new method
-    const estimatedMeatWeight = Math.floor(estimatedWeight / 2); // Simple: weight ÷ 2 = meat weight
+    // Calculate meat amounts using proper livestock industry standards
     const karkasWeight = Math.floor(
         estimatedWeight * (karkasYieldPercentage / 100),
     );
@@ -324,12 +329,11 @@ const calculateDetailedAnalysis = (basicAnalysis: {
     );
     const boneWeight = karkasWeight - bonelessWeight;
 
-    // Calculate market price using new method: (animal_weight ÷ 2) × meat_price
-    const calculatedMarketPrice = estimatedMeatWeight * meatPricePerKg;
+    // Calculate market price using KARKAS weight (kemikli + kemiksiz et)
+    const calculatedMarketPrice = karkasWeight * karkasMeatPricePerKg;
 
-    // Use the AI's market price if reasonable, otherwise use calculated price
-    const finalMarketPrice =
-        marketPrice && marketPrice > 0 ? marketPrice : calculatedMarketPrice;
+    // Always use our calculated price for consistency with the formula
+    const finalMarketPrice = calculatedMarketPrice;
 
     // Calculate shares (hisse)
     const shares = animalType === "Dana" || animalType === "Tosun" || animalType === "Boğa" || animalType === "İnek" || animalType === "Manda" || animalType === "Buzağı" ? 7 : 1;
@@ -347,8 +351,8 @@ const calculateDetailedAnalysis = (basicAnalysis: {
     if (karkasYieldPercentage >= 50) recommendations.push("Yüksek et verimi");
     else recommendations.push("Orta düzey et verimi");
 
-    // Price comparison based on new calculation method
-    const expectedPrice = estimatedMeatWeight * meatPricePerKg;
+    // Price comparison based on karkas calculation method
+    const expectedPrice = karkasWeight * karkasMeatPricePerKg;
     if (finalMarketPrice > expectedPrice * 1.2)
         recommendations.push("Piyasa ortalaması üstü fiyat");
     else if (finalMarketPrice < expectedPrice * 0.8)
@@ -357,13 +361,14 @@ const calculateDetailedAnalysis = (basicAnalysis: {
 
     return {
         totalMeatKg: bonelessWeight, // Kemiksiz et miktarı
-        estimatedMeatWeight, // Tahmini et ağırlığı (ağırlık ÷ 2)
-        karkasWeight, // Karkas ağırlığı
+        karkasWeight, // Karkas ağırlığı (kemikli + kemiksiz)
+        bonelessWeight, // Kemiksiz et ağırlığı
         boneWeight, // Kemik ağırlığı
         pricePerKg: Math.floor(finalMarketPrice / estimatedWeight), // Canlı kg fiyatı
-        meatPricePerKg, // Et kg fiyatı
-        estimatedMeatValue: expectedPrice, // Hesaplanan et değeri
-        calculatedMarketPrice, // Yeni metodla hesaplanan fiyat
+        bonelessMeatPricePerKg, // Kemiksiz et kg fiyatı
+        karkasMeatPricePerKg, // Karkas et kg fiyatı (kemikli)
+        estimatedMeatValue: expectedPrice, // Hesaplanan et değeri (karkas üzerinden)
+        calculatedMarketPrice, // Karkas metoduyla hesaplanan fiyat
         shares,
         shareWeight,
         sharePrice,
@@ -450,7 +455,7 @@ export async function POST(request: NextRequest) {
                     },
                     pricing: {
                         liveWeightPrice: detailedAnalysis.pricePerKg,
-                        meatPrice: detailedAnalysis.meatPricePerKg,
+                        meatPrice: detailedAnalysis.karkasMeatPricePerKg,
                         estimatedMeatValue: detailedAnalysis.estimatedMeatValue,
                     },
                     costPerShare: detailedAnalysis.sharePrice,
@@ -530,7 +535,7 @@ export async function POST(request: NextRequest) {
             },
             pricing: {
                 liveWeightPrice: detailedAnalysis.pricePerKg, // Canlı kg fiyatı
-                meatPrice: detailedAnalysis.meatPricePerKg, // Et kg fiyatı
+                meatPrice: detailedAnalysis.karkasMeatPricePerKg, // Karkas et kg fiyatı
                 estimatedMeatValue: detailedAnalysis.estimatedMeatValue, // Tahmini et değeri
             },
             costPerShare: detailedAnalysis.sharePrice,

@@ -161,6 +161,70 @@ HomePage
 
 ## Yapıldı
 
+### İletişim ve URL Güncellemeleri (2025-01-27)
+
+- ✅ İletişim sayfasındaki form kaldırıldı, kişisel bilgiler (Mehmet Erdem Akın) eklendi
+- ✅ Sosyal medya linkleri gerçek hesaplarla güncellendi:
+  - Twitter: https://x.com/Mehmetoloji_
+  - GitHub: https://github.com/Mehmet-Erdem-Akin/kurban-ai
+  - LinkedIn: https://www.linkedin.com/in/mehmet-erdem-akin-77453b1a0/
+- ✅ Proje URL'si kurbanlikanaliz.netlify.app olarak güncellendi
+- ✅ KVKK sayfasında veri saklama süreleri kaldırıldı, "veri saklanmaz" politikası eklendi
+- ✅ Privacy sayfasında veri saklama tablosu güncellendi, minimizasyon prensibi vurgulandı
+- ✅ Tüm sayfalarda veri saklama ibareleri kaldırıldı/güncellendi
+- ✅ README.md dosyası yeni özellikler ve linklerle güncellendi
+
+### Çoklu Fotoğraf Çekim Özelliği (2025-01-25)
+
+- ✅ Çoklu fotoğraf çekim özelliği eklendi
+- ✅ Fotoğraf sayacı ve dinamik buton metinleri eklendi
+- ✅ Kamera açık kalma özelliği eklendi
+- ✅ "Çekimi Bitir" butonu ve rehberlik metinleri eklendi
+- ✅ Farklı açılardan çekim için ipuçları eklendi
+
+### Anasayfa İçerik Genişletmesi (2025-01-24)
+
+- ✅ Gelişmiş özellikler bölümü eklendi (4 kart)
+- ✅ Desteklenen hayvan türleri bölümü eklendi
+- ✅ Teknoloji altyapısı bölümü eklendi
+- ✅ "Nasıl Çalışır" bölümü 4 adıma çıkarıldı
+- ✅ Analiz parametreleri listesi eklendi (9 parametre)
+- ✅ İstatistik verileri güncellendi (95%+, 15+, 100%, <30sn)
+- ✅ Güvenlik & gizlilik bölümü eklendi
+- ✅ Kullanıcı deneyimleri (testimonials) eklendi
+- ✅ FAQ bölümü eklendi (4 soru-cevap)
+- ✅ Gelişmiş CTA bölümü eklendi
+
+### Hayvan Türü Badge Standardizasyonu (2025-01-23)
+
+- ✅ Tüm hayvan türleri için standart 4 badge sistemi uygulandı:
+  - Ağırlık Tahmini (yeşil)
+  - Et Miktarı (mavi)
+  - Değer Hesaplama (sarı)
+  - Sağlık Durumu (kırmızı)
+
+### İletişim Sayfası Oluşturma (2025-01-22)
+
+- ✅ Kapsamlı iletişim sayfası oluşturuldu (/contact)
+- ✅ İletişim formu eklendi (ad, email, konu, mesaj)
+- ✅ İletişim bilgileri bölümü eklendi
+- ✅ Hızlı yardım linkleri eklendi
+- ✅ Sosyal medya entegrasyonu eklendi
+- ✅ Footer iletişim linki güncellendi
+
+### Renk Sistemi Değişikliği (2025-01-21)
+
+- ✅ Pembe/mor tonlardan yeşil tema sistemine geçiş
+- ✅ Tüm bileşenlerde renk uyumluluğu sağlandı
+- ✅ SVG dosyalarında renk güncellemeleri yapıldı
+- ✅ CSS gradientleri yeşil tonlarıyla güncellendi
+
+### 3D Efekt Optimizasyonları (2025-01-20)
+
+- ✅ Card3D bileşenindeki aşırı 3D efektler azaltıldı
+- ✅ Hover animasyonları minimal seviyeye indirildi
+- ✅ Gölge efektleri daha subtle hale getirildi
+
 ### UI/UX Improvements (2025-01-27)
 
 - ✅ Pastel tema sistemi eklendi (lavender, rose, sky, mint, cream, peach)

@@ -78,7 +78,7 @@ export default function KVKKPage() {
                         <strong>KVKK:</strong> mehmet.erdem.akin@outlook.com
                       </li>
                       <li>
-                        <strong>Web:</strong> www.kurbanaliz.com
+                        <strong>Web:</strong> kurbanlikanaliz.netlify.app
                       </li>
                     </ul>
                   </div>
@@ -265,35 +265,51 @@ export default function KVKKPage() {
                 6. Veri Saklama Süreleri
               </h2>
               <div className="bg-gradient-to-r from-primary-50 to-accent-50 p-6 rounded-lg mb-6">
+                <div className="text-center mb-6">
+                  <div className="text-4xl font-bold text-green-600 mb-4">
+                    🚫
+                  </div>
+                  <h3 className="text-2xl font-bold text-neutral-900 mb-4">
+                    Veri Saklama Yapılmaz
+                  </h3>
+                  <p className="text-lg text-neutral-700 max-w-2xl mx-auto leading-relaxed">
+                    Kurban-AI platformu veri minimizasyonu prensibini benimser.
+                    Kişisel verileriniz mümkün olan en kısa süre işlenir ve
+                    ardından silinir.
+                  </p>
+                </div>
+
                 <div className="grid md:grid-cols-3 gap-6">
                   <div className="text-center">
-                    <div className="text-3xl font-bold text-primary-600 mb-2">
-                      🗓️
-                    </div>
-                    <h3 className="font-bold text-neutral-900 mb-2">
-                      Hesap Verileri
-                    </h3>
-                    <p className="text-neutral-700">
-                      Hesap aktif olduğu sürece
-                    </p>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-3xl font-bold text-secondary-600 mb-2">
+                    <div className="text-3xl font-bold text-green-600 mb-2">
                       📸
                     </div>
                     <h3 className="font-bold text-neutral-900 mb-2">
                       Fotoğraflar
                     </h3>
-                    <p className="text-neutral-700">1 yıl veya silme talebi</p>
+                    <p className="text-neutral-700">
+                      Analiz sonrası anında silinir
+                    </p>
                   </div>
                   <div className="text-center">
-                    <div className="text-3xl font-bold text-accent-600 mb-2">
+                    <div className="text-3xl font-bold text-blue-600 mb-2">
                       📊
                     </div>
                     <h3 className="font-bold text-neutral-900 mb-2">
                       Analiz Sonuçları
                     </h3>
-                    <p className="text-neutral-700">2 yıl</p>
+                    <p className="text-neutral-700">
+                      Geçici olarak işlenir, saklanmaz
+                    </p>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-3xl font-bold text-purple-600 mb-2">
+                      🗂️
+                    </div>
+                    <h3 className="font-bold text-neutral-900 mb-2">
+                      Kişisel Veriler
+                    </h3>
+                    <p className="text-neutral-700">Kalıcı saklama yapılmaz</p>
                   </div>
                 </div>
               </div>
@@ -367,7 +383,7 @@ export default function KVKKPage() {
                     </h4>
                     <ul className="text-blue-700 space-y-1">
                       <li>• E-posta: mehmet.erdem.akin@outlook.com</li>
-                      <li>• Online form: www.kurbanaliz.com/kvkk</li>
+                      <li>• Online form: kurbanlikanaliz.netlify.app/kvkk</li>
                       <li>• Güvenli iletişim kanalları</li>
                     </ul>
                   </div>

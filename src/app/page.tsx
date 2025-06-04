@@ -934,9 +934,12 @@ export default function Home() {
             >
               KVKK
             </Link>
-            <a href="#" className="hover:text-primary-600 transition-colors">
+            <Link
+              href="/contact"
+              className="hover:text-primary-600 transition-colors"
+            >
               İletişim
-            </a>
+            </Link>
           </div>
           <div className="mt-6 pt-6 border-t border-neutral-200">
             <p className="text-neutral-500">

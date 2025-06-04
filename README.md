@@ -1,41 +1,36 @@
-# 🐄 Kurbanlık Analiz - AI Livestock Analysis
+# 🐄 Kurban-AI - Livestock Analysis Platform
 
-**Yapay zeka destekli kurbanlık hayvan analiz platformu**
+**AI-powered livestock analysis platform for smart decision making**
 
-Kurbanlık hayvan satın alırken daha bilinçli kararlar verin! Fotoğraf çekip anında hayvanın özelliklerini, değerini ve et miktarını öğrenin.
+Kurbanlık hayvan satın alırken daha bilinçli kararlar verin! Çoklu fotoğraf çekip anında hayvanın özelliklerini, değerini ve et miktarını öğrenin.
 
 ## ✨ Özellikler
 
-- 📸 **AI Fotoğraf Analizi** - Hayvan fotoğraflarını yapay zeka ile analiz edin
+- 📸 **AI Fotoğraf Analizi** - Yapay zeka ile hayvan fotoğraflarını analiz edin
+- 🔄 **Çoklu Fotoğraf Desteği** - Farklı açılardan birden fazla fotoğraf çekin
 - 💰 **Akıllı Değer Hesaplama** - Güncel piyasa fiyatlarına göre değer analizi
-- 📊 **Detaylı Raporlama** - Tür, kilo, et miktarı, sağlık durumu
-- 👤 **Kullanıcı Hesabı** - Analiz geçmişi ve favoriler
+- 📊 **Detaylı Raporlama** - Tür, ağırlık, et miktarı, sağlık durumu
 - 📱 **Responsive Tasarım** - Mobil ve masaüstü uyumlu
-- 🔒 **Güvenli** - Kullanıcı verilerinin güvenliği
+- 🔒 **Gizlilik Odaklı** - Veriler analiz sonrası silinir
+- 🆓 **Tamamen Ücretsiz** - Hiçbir ücret veya kayıt gerektirmez
 
 ## 🚀 Canlı Demo
 
-[https://kurbanaliz.vercel.app](https://kurbanaliz.vercel.app)
-
-**Demo Giriş:**
-
-- Email: `demo@kurbanaliz.com`
-- Şifre: `demo123`
+**🌐 [https://kurbanlikanaliz.netlify.app](https://kurbanlikanaliz.netlify.app)**
 
 ## 🛠 Teknolojiler
 
 - **Frontend:** Next.js 15, React, TypeScript, Tailwind CSS
-- **Backend:** Next.js API Routes
-- **AI:** Google Gemini API (planlı)
-- **Database:** JSON file based (ücretsiz)
-- **Deployment:** Vercel (ücretsiz)
-- **Styling:** Tailwind CSS + Custom Components
+- **Styling:** Tailwind CSS + Custom Components + Parallax Effects
+- **Deployment:** Netlify
+- **Analytics:** Simulated AI Analysis (Demo)
+- **Animations:** CSS Animations, 3D Effects, Floating Elements
 
 ## 📦 Kurulum
 
 ```bash
 # Repository'yi klonlayın
-git clone https://github.com/username/kurban-ai.git
+git clone https://github.com/Mehmet-Erdem-Akin/kurban-ai.git
 cd kurban-ai
 
 # Bağımlılıkları yükleyin
@@ -47,38 +42,34 @@ npm run dev
 
 Uygulama [http://localhost:3000](http://localhost:3000) adresinde çalışmaya başlayacak.
 
-## 🔧 API Endpoints
-
-### Authentication
-
-- `POST /api/auth/login` - Kullanıcı girişi
-- `POST /api/auth/register` - Yeni kullanıcı kaydı
-
-### Analysis
-
-- `POST /api/analyze` - Hayvan fotoğrafı analizi
-- `GET /api/market/prices` - Güncel piyasa fiyatları
-
-### User
-
-- `GET /api/user/history` - Kullanıcı analiz geçmişi
-- `POST /api/user/history` - Analiz kaydetme
-
 ## 🎯 Kullanım
 
-1. **Kayıt Olun** - Ücretsiz hesap oluşturun
-2. **Fotoğraf Çekin** - Kurbanlık hayvanın fotoğrafını çekin
-3. **Analiz Edin** - AI analizi sonuçlarını bekleyin
-4. **Karar Verin** - Detaylı raporu inceleyin
+1. **Ana Sayfayı Ziyaret Edin** - Özellikler hakkında bilgi alın
+2. **Analiz Başlatın** - "Analiz Başlat" butonuna tıklayın
+3. **Fotoğraf Çekin** - Çoklu fotoğraf çekme özelliğini kullanın
+4. **Sonuçları İnceleyin** - Detaylı analiz raporu alın
 
-## 🌟 Özellik Roadmap
+## 🌟 Öne Çıkan Özellikler
 
-- [ ] **Gerçek AI Entegrasyonu** - Google Gemini API
-- [ ] **Veritabanı Geçişi** - Supabase entegrasyonu
-- [ ] **Push Bildirimleri** - Piyasa güncellemeleri
-- [ ] **Sosyal Özellikler** - Analiz paylaşımı
-- [ ] **Mobil Uygulama** - React Native
-- [ ] **Çoklu Dil** - İngilizce, Arapça
+### 📸 Çoklu Fotoğraf Analizi
+
+- Farklı açılardan birden fazla fotoğraf çekebilme
+- Her fotoğraf çekiminde kameranın açık kalması
+- Fotoğraf sayacı ve dinamik rehberlik
+
+### 🎨 Modern UI/UX
+
+- Parallax arkaplan efektleri
+- 3D hover animasyonları
+- Floating geometrik şekiller
+- Yeşil tema ile doğa dostu tasarım
+
+### 📊 Kapsamlı Analiz
+
+- 9 farklı analiz parametresi
+- Hayvan türü, ağırlık, sağlık durumu
+- Pazar değeri hesaplama
+- Et miktarı tahmini
 
 ## 📊 Proje Yapısı
 
@@ -86,45 +77,60 @@ Uygulama [http://localhost:3000](http://localhost:3000) adresinde çalışmaya b
 kurban-ai/
 ├── src/
 │   ├── app/                    # Next.js App Router
-│   │   ├── api/               # API Routes
 │   │   ├── analyze/           # Analiz sayfası
-│   │   ├── login/             # Giriş sayfası
-│   │   ├── register/          # Kayıt sayfası
+│   │   ├── contact/           # İletişim sayfası
+│   │   ├── privacy/           # Gizlilik politikası
+│   │   ├── kvkk/              # KVKK metni
+│   │   ├── terms/             # Kullanım şartları
 │   │   └── globals.css        # Global stiller
 │   ├── components/            # React bileşenleri
-│   ├── types/                 # TypeScript tipler
-│   └── lib/                   # Utility fonksiyonlar
-├── data/                      # JSON database
-├── public/                    # Statik dosyalar
-└── docs/                      # Dökümentasyon
+│   │   ├── ParallaxBackground.tsx
+│   │   └── Card3D.tsx
+│   └── public/                # Statik dosyalar (SVG assets)
+├── public/
+│   ├── bg-pattern.svg
+│   ├── animal-silhouette.svg
+│   ├── floating-shapes.svg
+│   └── tech-pattern.svg
+└── README.md
 ```
+
+## 🔒 Gizlilik ve Güvenlik
+
+- **Veri Minimizasyonu:** Veriler yalnızca analiz sırasında işlenir
+- **Otomatik Silme:** Fotoğraflar analiz sonrası anında silinir
+- **KVKK Uyumu:** Türk veri koruma mevzuatına uygun
+- **Şeffaflık:** Açık kaynak ve denetlenebilir kod
 
 ## 💡 Katkıda Bulunma
 
-1. Fork edin
+1. Repository'yi fork edin
 2. Feature branch oluşturun (`git checkout -b feature/amazing-feature`)
-3. Commit edin (`git commit -m 'Add amazing feature'`)
-4. Push edin (`git push origin feature/amazing-feature`)
+3. Değişikliklerinizi commit edin (`git commit -m 'Add amazing feature'`)
+4. Branch'inizi push edin (`git push origin feature/amazing-feature`)
 5. Pull Request açın
 
 ## 📄 Lisans
 
-Bu proje MIT lisansı altında lisanslanmıştır. Detaylar için [LICENSE](LICENSE) dosyasına bakın.
+Bu proje bireysel geliştirme projesi olarak MIT lisansı altında lisanslanmıştır.
 
 ## 👥 İletişim
 
-- **Geliştirici:** [Your Name]
-- **Email:** contact@kurbanaliz.com
-- **LinkedIn:** [Your LinkedIn]
-- **Twitter:** [@kurbanaliz](https://twitter.com/kurbanaliz)
+- **Geliştirici:** Mehmet Erdem Akın
+- **Email:** mehmet.erdem.akin@outlook.com
+- **LinkedIn:** [Mehmet Erdem Akın](https://www.linkedin.com/in/mehmet-erdem-akin-77453b1a0/)
+- **Twitter:** [@Mehmetoloji\_](https://x.com/Mehmetoloji_)
+- **GitHub:** [Mehmet-Erdem-Akin](https://github.com/Mehmet-Erdem-Akin/kurban-ai)
 
 ## 🙏 Teşekkürler
 
-- [Next.js](https://nextjs.org/) - Framework
-- [Tailwind CSS](https://tailwindcss.com/) - Styling
-- [Vercel](https://vercel.com/) - Hosting
-- [Lucide Icons](https://lucide.dev/) - İkonlar
+- [Next.js](https://nextjs.org/) - React framework
+- [Tailwind CSS](https://tailwindcss.com/) - CSS framework
+- [Netlify](https://netlify.com/) - Hosting platform
+- [Lucide Icons](https://lucide.dev/) - Icon library
 
 ---
 
-**🌟 Beğendiyseniz star vermeyi unutmayın!**
+**🌟 Beğendiyseniz ⭐ vermeyi unutmayın!**
+
+**🔗 Demo:** [kurbanlikanaliz.netlify.app](https://kurbanlikanaliz.netlify.app)

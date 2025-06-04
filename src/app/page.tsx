@@ -37,7 +37,9 @@ export default function Home() {
           </div>
           <h1 className="text-6xl font-bold mb-6 leading-tight">
             <span className="text-neutral-900 mr-2">Akıllı Kurbanlık</span>
-            <span className="gradient-text-animated">Analizi</span>
+            <span className="gradient-text-animated block sm:inline">
+              Analizi
+            </span>
           </h1>
           <p className="text-xl text-neutral-600 mb-10 max-w-4xl mx-auto leading-relaxed">
             Kurbanlık hayvan seçiminde daha bilinçli kararlar verin. Çoklu

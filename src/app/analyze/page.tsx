@@ -637,7 +637,10 @@ export default function AnalyzePage() {
               Kurbanlık Analiz
             </span>
           </Link>
-          <Link href="/" className="btn btn-secondary btn-md">
+          <Link
+            href="/"
+            className="btn btn-secondary btn-md hidden sm:block"
+          >
             Ana Sayfa
           </Link>
         </nav>
@@ -655,7 +658,7 @@ export default function AnalyzePage() {
           </div>
 
           {!selectedImages.length && !analysisResult && !showCamera && (
-            <div className="card p-12 text-center animate-fade-in">
+            <div className="card p-4 sm:p-12 text-center animate-fade-in">
               <div className="icon-container-primary mx-auto mb-6">
                 <svg
                   className="w-8 h-8"
@@ -746,7 +749,7 @@ export default function AnalyzePage() {
 
           {/* Camera Preview */}
           {showCamera && (
-            <div className="card p-8 text-center animate-scale-in">
+            <div className="card p-4 sm:p-8 text-center animate-scale-in">
               <div className="flex items-center justify-between mb-6">
                 <h3 className="text-2xl font-bold text-neutral-900">
                   Kamera Görünümü
@@ -1063,7 +1066,7 @@ export default function AnalyzePage() {
           )}
 
           {selectedImages.length > 0 && !analysisResult && !isAnalyzing && (
-            <div className="card p-8 animate-scale-in">
+            <div className="card p-4 sm:p-8 animate-scale-in">
               <div className="text-center mb-6">
                 <h3 className="text-2xl font-bold text-neutral-900 mb-2">
                   Seçilen Fotoğraflar ({selectedImages.length})
@@ -1120,7 +1123,7 @@ export default function AnalyzePage() {
 
               {/* Post-Upload Questionnaire */}
               <div className="mb-6">
-                <div className="card p-6">
+                <div className="card p-4 sm:p-6">
                   <div className="text-center mb-6">
                     <h3 className="text-xl font-bold text-neutral-900 mb-2">
                       🎯 Analiz Doğruluğunu Artırın
@@ -1132,7 +1135,7 @@ export default function AnalyzePage() {
                     </p>
                   </div>
 
-                  <div className="bg-blue-50 p-6 rounded-lg border border-blue-200">
+                  <div className="bg-blue-50 p-4 sm:p-6 rounded-lg border border-blue-200">
                     <div className="grid md:grid-cols-2 gap-4">
                       {/* Hayvan Kategorisi */}
                       <div>
@@ -1355,7 +1358,7 @@ export default function AnalyzePage() {
                 {/* Tek fotoğraf analizi için ana buton */}
                 <button
                   onClick={handleAnalyze}
-                  className="btn btn-primary btn-lg"
+                  className="btn btn-primary btn-lg text-sm sm:text-base"
                 >
                   <svg
                     className="w-5 h-5 mr-2"
@@ -1447,13 +1450,13 @@ export default function AnalyzePage() {
           {analysisResult && (
             <div className="space-y-6 animate-slide-up">
               {/* Download Buttons */}
-              <div className="flex justify-center gap-4 mb-6">
+              <div className="flex flex-col sm:flex-row justify-center gap-4 mb-6">
                 <button
                   onClick={handleDownloadImage}
-                  className="btn btn-secondary btn-md"
+                  className="btn btn-secondary btn-md text-sm sm:text-base"
                 >
                   <svg
-                    className="w-4 h-4 mr-2"
+                    className="w-8 h-8 mr-2"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -1470,10 +1473,10 @@ export default function AnalyzePage() {
 
                 <button
                   onClick={handleDownloadPDF}
-                  className="btn btn-accent btn-md"
+                  className="btn btn-accent btn-md text-sm sm:text-base"
                 >
                   <svg
-                    className="w-4 h-4 mr-2"
+                    className="w-8 h-8 mr-2"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -1490,11 +1493,14 @@ export default function AnalyzePage() {
               </div>
 
               {/* Analysis Results Container - This will be captured for download */}
-              <div ref={analysisContainerRef} className="space-y-6 bg-white p-6 rounded-lg">
+              <div
+                ref={analysisContainerRef}
+                className="space-y-6 bg-white p-0 sm:p-6 rounded-lg"
+              >
                 {/* AI Analysis Disclaimer */}
                 <div className="card p-4 bg-gradient-to-r from-amber-50 to-orange-50 border-amber-200">
                   <div className="flex items-start">
-                    <div className="flex-shrink-0">
+                    <div className="flex-shrink-0 hidden sm:block">
                       <svg
                         className="w-6 h-6 text-amber-600 mt-0.5"
                         fill="none"

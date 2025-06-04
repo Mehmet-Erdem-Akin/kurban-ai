@@ -22,7 +22,10 @@ export default function Home() {
             </span>
           </div>
           <div className="flex items-center space-x-4">
-            <Link href="/analyze" className="btn btn-primary btn-md">
+            <Link
+              href="/analyze"
+              className="btn btn-primary btn-md hidden sm:block"
+            >
               Analiz Başlat
             </Link>
           </div>

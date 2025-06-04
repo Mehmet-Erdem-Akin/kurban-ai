@@ -40,6 +40,7 @@ const ParallaxBackground = () => {
           transform: `translateY(${scrollY * 0.15}px) rotate(${scrollY * 0.02}deg)`,
         }}
       >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src="/animal-silhouette.svg"
           alt=""
@@ -53,6 +54,7 @@ const ParallaxBackground = () => {
           transform: `translateY(${scrollY * -0.1}px) rotate(${-scrollY * 0.01}deg)`,
         }}
       >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src="/animal-silhouette.svg"
           alt=""
@@ -66,6 +68,7 @@ const ParallaxBackground = () => {
           transform: `translateY(${scrollY * 0.08}px) rotate(${scrollY * 0.015}deg)`,
         }}
       >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src="/animal-silhouette.svg"
           alt=""
@@ -80,6 +83,7 @@ const ParallaxBackground = () => {
           transform: `translateY(${scrollY * 0.08}px) translateX(${scrollY * 0.02}px)`,
         }}
       >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/floating-shapes.svg" alt="" className="w-full h-full" />
       </div>
 
@@ -89,6 +93,7 @@ const ParallaxBackground = () => {
           transform: `translateY(${scrollY * -0.12}px) translateX(${-scrollY * 0.03}px)`,
         }}
       >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/floating-shapes.svg" alt="" className="w-full h-full" />
       </div>
 
@@ -98,6 +103,7 @@ const ParallaxBackground = () => {
           transform: `translateY(${scrollY * 0.06}px) translateX(${scrollY * -0.02}px)`,
         }}
       >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/floating-shapes.svg" alt="" className="w-full h-full" />
       </div>
 

@@ -88,110 +88,151 @@ export default function KVKKPage() {
               <h2 className="text-2xl font-bold text-neutral-900 mb-4">
                 2. Kişisel Verilerin İşlenme Amaçları
               </h2>
-              <p className="mb-4 text-neutral-700 leading-relaxed">
-                Kişisel verileriniz aşağıdaki amaçlarla işlenmektedir:
-              </p>
-              <div className="grid md:grid-cols-2 gap-6 mb-6">
-                <div className="bg-success-50 border border-success-200 p-4 rounded-lg">
-                  <h3 className="font-bold text-success-800 mb-3">
-                    🎯 Birincil Amaçlar
+
+              <div className="bg-gradient-to-r from-blue-50 to-green-50 border border-blue-200 p-8 rounded-lg mb-6">
+                <div className="text-center mb-6">
+                  <div className="text-4xl font-bold text-blue-600 mb-4">
+                    🎯
+                  </div>
+                  <h3 className="text-2xl font-bold text-neutral-900 mb-4">
+                    Kişisel Veri İşleme Amacı Yok
                   </h3>
-                  <ul className="list-disc list-inside text-success-700 space-y-1">
-                    <li>Yapay zeka destekli analiz hizmeti sunmak</li>
-                    <li>Kullanıcı hesabı oluşturmak ve yönetmek</li>
-                    <li>Hizmet kalitesini artırmak</li>
-                    <li>Müşteri memnuniyetini sağlamak</li>
-                  </ul>
+                  <p className="text-lg text-neutral-700 max-w-3xl mx-auto leading-relaxed mb-6">
+                    Kurban-AI platformu kişisel veri toplamadığı için,
+                    <strong>kişisel veri işleme amacı bulunmamaktadır</strong>.
+                    Platform yalnızca teknik hizmet sunumu için gerekli
+                    işlemleri yapar.
+                  </p>
                 </div>
-                <div className="bg-primary-50 border border-primary-200 p-4 rounded-lg">
-                  <h3 className="font-bold text-primary-800 mb-3">
-                    🔧 Destek Amaçları
-                  </h3>
-                  <ul className="list-disc list-inside text-primary-700 space-y-1">
-                    <li>Teknik destek sağlamak</li>
-                    <li>Güvenlik önlemleri almak</li>
-                    <li>Yasal yükümlülükleri yerine getirmek</li>
-                    <li>İstatistiksel analizler yapmak</li>
-                  </ul>
+
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div className="bg-white/70 backdrop-blur-sm border border-green-200 p-6 rounded-lg">
+                    <h3 className="font-bold text-green-800 mb-3">
+                      ✅ Platform Amaçları
+                    </h3>
+                    <ul className="list-disc list-inside text-green-700 space-y-2">
+                      <li>Yapay zeka destekli görsel analiz hizmeti sunmak</li>
+                      <li>Fotoğraf işleme ve değerlendirme yapmak</li>
+                      <li>Analiz sonuçlarını kullanıcıya iletmek</li>
+                      <li>Hizmet kalitesini teknik olarak sağlamak</li>
+                    </ul>
+                  </div>
+
+                  <div className="bg-white/70 backdrop-blur-sm border border-blue-200 p-6 rounded-lg">
+                    <h3 className="font-bold text-blue-800 mb-3">
+                      🚫 Yapılmayan İşlemler
+                    </h3>
+                    <ul className="list-disc list-inside text-blue-700 space-y-2">
+                      <li>Kullanıcı hesabı oluşturma ve yönetme</li>
+                      <li>Kişisel bilgi toplama ve saklama</li>
+                      <li>Pazarlama ve reklam amaçlı işlemler</li>
+                      <li>Profil oluşturma ve takip etme</li>
+                    </ul>
+                  </div>
+                </div>
+
+                <div className="mt-8 p-4 bg-gray-50 border border-gray-200 rounded-lg">
+                  <div className="flex items-start space-x-3">
+                    <div className="text-gray-600 text-xl flex-shrink-0 mt-1">
+                      💡
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-gray-800 mb-2">
+                        Hizmet Modeli
+                      </h4>
+                      <p className="text-gray-700 text-sm leading-relaxed">
+                        Platform,{" "}
+                        <strong>
+                          geleneksel hesap tabanlı sistemlerden farklı
+                        </strong>
+                        olarak çalışır. Her kullanım oturumu bağımsızdır ve
+                        kullanıcı kimliği gerektirmez.
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
 
               <h2 className="text-2xl font-bold text-neutral-900 mb-4">
                 3. Toplanan Kişisel Veri Kategorileri
               </h2>
-              <div className="overflow-x-auto mb-6">
-                <table className="w-full border-collapse border border-neutral-300">
-                  <thead>
-                    <tr className="bg-neutral-100">
-                      <th className="border border-neutral-300 p-3 text-left">
-                        Veri Kategorisi
-                      </th>
-                      <th className="border border-neutral-300 p-3 text-left">
-                        Veri Türü
-                      </th>
-                      <th className="border border-neutral-300 p-3 text-left">
-                        Toplama Yöntemi
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td className="border border-neutral-300 p-3 font-semibold">
-                        Kimlik Verileri
-                      </td>
-                      <td className="border border-neutral-300 p-3">
-                        Ad, soyad, e-posta
-                      </td>
-                      <td className="border border-neutral-300 p-3">
-                        Kayıt formu
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="border border-neutral-300 p-3 font-semibold">
-                        İletişim Verileri
-                      </td>
-                      <td className="border border-neutral-300 p-3">
-                        Telefon, adres (isteğe bağlı)
-                      </td>
-                      <td className="border border-neutral-300 p-3">
-                        Profil ayarları
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="border border-neutral-300 p-3 font-semibold">
-                        Görsel Veriler
-                      </td>
-                      <td className="border border-neutral-300 p-3">
-                        Hayvan fotoğrafları
-                      </td>
-                      <td className="border border-neutral-300 p-3">
-                        Dosya yükleme
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="border border-neutral-300 p-3 font-semibold">
-                        Teknik Veriler
-                      </td>
-                      <td className="border border-neutral-300 p-3">
-                        IP adresi, tarayıcı bilgisi
-                      </td>
-                      <td className="border border-neutral-300 p-3">
-                        Otomatik toplama
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="border border-neutral-300 p-3 font-semibold">
-                        İşlem Verileri
-                      </td>
-                      <td className="border border-neutral-300 p-3">
-                        Analiz sonuçları, geçmiş
-                      </td>
-                      <td className="border border-neutral-300 p-3">
-                        Sistem kayıtları
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+
+              <div className="bg-gradient-to-r from-green-50 to-blue-50 border border-green-200 p-8 rounded-lg mb-6">
+                <div className="text-center mb-6">
+                  <div className="text-5xl font-bold text-green-600 mb-4">
+                    🚫
+                  </div>
+                  <h3 className="text-2xl font-bold text-neutral-900 mb-4">
+                    Kişisel Veri Toplanmaz
+                  </h3>
+                  <p className="text-lg text-neutral-700 max-w-3xl mx-auto leading-relaxed mb-6">
+                    Kurban-AI platformu,{" "}
+                    <strong>veri minimizasyonu prensibi</strong> gereğince
+                    kişisel verilerinizi kalıcı olarak toplamaz ve saklamaz. Tüm
+                    işlemler geçici olarak yapılır ve işlem sonrası veriler
+                    silinir.
+                  </p>
+                </div>
+
+                <div className="grid md:grid-cols-3 gap-6">
+                  <div className="bg-white/70 backdrop-blur-sm p-6 rounded-lg text-center">
+                    <div className="text-3xl font-bold text-blue-600 mb-3">
+                      📸
+                    </div>
+                    <h4 className="font-bold text-neutral-900 mb-2">
+                      Fotoğraf Analizi
+                    </h4>
+                    <p className="text-neutral-700 text-sm">
+                      Yüklenen fotoğraflar yalnızca analiz süresince geçici
+                      olarak işlenir, sonrasında otomatik olarak silinir.
+                    </p>
+                  </div>
+
+                  <div className="bg-white/70 backdrop-blur-sm p-6 rounded-lg text-center">
+                    <div className="text-3xl font-bold text-green-600 mb-3">
+                      🔄
+                    </div>
+                    <h4 className="font-bold text-neutral-900 mb-2">
+                      Geçici İşlem
+                    </h4>
+                    <p className="text-neutral-700 text-sm">
+                      Tüm veriler yalnızca hizmet sunumu süresince RAM&apos;de
+                      tutulur, kalıcı depolama yapılmaz.
+                    </p>
+                  </div>
+
+                  <div className="bg-white/70 backdrop-blur-sm p-6 rounded-lg text-center">
+                    <div className="text-3xl font-bold text-purple-600 mb-3">
+                      🛡️
+                    </div>
+                    <h4 className="font-bold text-neutral-900 mb-2">
+                      Gizlilik Koruması
+                    </h4>
+                    <p className="text-neutral-700 text-sm">
+                      Hiçbir kişisel veri veritabanında saklanmaz, üçüncü
+                      taraflarla paylaşılmaz.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="mt-8 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                  <div className="flex items-start space-x-3">
+                    <div className="text-yellow-600 text-xl flex-shrink-0 mt-1">
+                      ℹ️
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-yellow-800 mb-2">
+                        Teknik Detay
+                      </h4>
+                      <p className="text-yellow-700 text-sm leading-relaxed">
+                        Platform tamamen <strong>stateless</strong> (durumsuz)
+                        olarak çalışır. Bu, her analiz işleminin bağımsız olduğu
+                        ve önceki işlemlerle herhangi bir bağlantısının olmadığı
+                        anlamına gelir.
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
 
               <h2 className="text-2xl font-bold text-neutral-900 mb-4">

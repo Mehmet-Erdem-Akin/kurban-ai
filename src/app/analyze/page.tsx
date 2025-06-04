@@ -220,8 +220,7 @@ export default function AnalyzePage() {
             setSelectedImages(newImages);
             setCurrentImageIndex(newImages.length - 1);
 
-            // Kamerayı kapat
-            stopCamera();
+            // Kamerayı KAPATMA - çoklu çekim için açık bırak
 
             console.log("✅ Fotoğraf başarıyla eklendi. Toplam:", newImages.length);
         } catch (error) {
@@ -674,9 +673,16 @@ export default function AnalyzePage() {
                     {/* Camera Preview */}
                     {showCamera && (
                         <div className="card p-8 text-center animate-scale-in">
-                            <h3 className="text-2xl font-bold text-neutral-900 mb-6">
-                                Kamera Görünümü
-                            </h3>
+                            <div className="flex items-center justify-between mb-6">
+                                <h3 className="text-2xl font-bold text-neutral-900">
+                                    Kamera Görünümü
+                                </h3>
+                                {selectedImages.length > 0 && (
+                                    <div className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
+                                        📸 {selectedImages.length} fotoğraf çekildi
+                                    </div>
+                                )}
+                            </div>
 
                             <div className="relative w-full max-w-lg mx-auto mb-6">
                                 <video
@@ -697,7 +703,9 @@ export default function AnalyzePage() {
                                 {/* Kamera frame overlay */}
                                 <div className="absolute inset-0 border-2 border-dashed border-white/50 rounded-lg pointer-events-none">
                                     <div className="absolute top-4 left-4 right-4 text-white text-sm font-medium bg-black/50 rounded px-2 py-1">
-                                        Hayvanı çerçeveye yerleştirin
+                                        {selectedImages.length === 0
+                                            ? "Hayvanı çerçeveye yerleştirin"
+                                            : "Farklı açıdan fotoğraf çekin"}
                                     </div>
                                 </div>
                             </div>
@@ -717,7 +725,7 @@ export default function AnalyzePage() {
                                             strokeLinecap="round"
                                             strokeLinejoin="round"
                                             strokeWidth={2}
-                                            d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
+                                            d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0118.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
                                         />
                                         <path
                                             strokeLinecap="round"
@@ -726,8 +734,30 @@ export default function AnalyzePage() {
                                             d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
                                         />
                                     </svg>
-                                    Fotoğraf Çek
+                                    {selectedImages.length === 0 ? "Fotoğraf Çek" : "Başka Çek"}
                                 </button>
+
+                                {selectedImages.length > 0 && (
+                                    <button
+                                        onClick={stopCamera}
+                                        className="btn btn-accent btn-lg"
+                                    >
+                                        <svg
+                                            className="w-5 h-5 mr-2"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            viewBox="0 0 24 24"
+                                        >
+                                            <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth={2}
+                                                d="M5 13l4 4L19 7"
+                                            />
+                                        </svg>
+                                        Çekimi Bitir ({selectedImages.length})
+                                    </button>
+                                )}
 
                                 <button
                                     onClick={stopCamera}
@@ -749,6 +779,15 @@ export default function AnalyzePage() {
                                     İptal
                                 </button>
                             </div>
+
+                            {selectedImages.length > 0 && (
+                                <div className="mt-6 p-4 bg-green-50 rounded-lg">
+                                    <p className="text-green-800 text-sm">
+                                        💡 <strong>İpucu:</strong> Hayvanın farklı açılarından (önden, yandan, arkadan)
+                                        fotoğraf çekerek daha doğru analiz sonucu alabilirsiniz.
+                                    </p>
+                                </div>
+                            )}
                         </div>
                     )}
 

@@ -513,6 +513,27 @@
   }
 }
 
+/* New gradient movement animation */
+@keyframes gradientMove {
+  0% {
+    background-position: 200% 50%;
+  }
+
+  100% {
+    background-position: -200% 50%;
+  }
+}
+
+/* Animated gradient text class */
+.gradient-text-animated {
+  background: linear-gradient(90deg, #059669, #10b981, #06b6d4, #0891b2, #059669, #10b981, #06b6d4, #0891b2);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradientMove 8s linear infinite;
+}
+
 /* New floating orb animations */
 @keyframes floatMove1 {
 

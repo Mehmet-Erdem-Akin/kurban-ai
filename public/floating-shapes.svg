@@ -1,0 +1,32 @@
+<svg width="300" height="300" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="shapeGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:rgba(132, 204, 22, 0.2);stop-opacity:1" />
+      <stop offset="100%" style="stop-color:rgba(74, 222, 128, 0.1);stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="shapeGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:rgba(34, 197, 94, 0.2);stop-opacity:1" />
+      <stop offset="100%" style="stop-color:rgba(6, 182, 212, 0.1);stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Floating triangles -->
+  <polygon points="50,20 70,60 30,60" fill="url(#shapeGrad1)" opacity="0.4"/>
+  <polygon points="200,150 220,190 180,190" fill="url(#shapeGrad2)" opacity="0.3"/>
+  
+  <!-- Floating diamonds -->
+  <polygon points="150,50 170,70 150,90 130,70" fill="rgba(6, 182, 212, 0.15)" opacity="0.5"/>
+  <polygon points="80,200 100,220 80,240 60,220" fill="rgba(34, 197, 94, 0.15)" opacity="0.4"/>
+  
+  <!-- Floating hexagons -->
+  <polygon points="250,80 270,90 270,110 250,120 230,110 230,90" fill="url(#shapeGrad1)" opacity="0.3"/>
+  
+  <!-- Abstract curved shapes -->
+  <path d="M20,150 Q50,130 80,150 Q110,170 140,150" stroke="rgba(34, 197, 94, 0.3)" stroke-width="3" fill="none"/>
+  <path d="M200,250 Q230,230 260,250 Q290,270 320,250" stroke="rgba(6, 182, 212, 0.3)" stroke-width="3" fill="none"/>
+  
+  <!-- Small circles -->
+  <circle cx="40" cy="100" r="8" fill="rgba(132, 204, 22, 0.2)" opacity="0.6"/>
+  <circle cx="180" cy="80" r="6" fill="rgba(34, 197, 94, 0.2)" opacity="0.5"/>
+  <circle cx="260" cy="200" r="10" fill="rgba(21, 128, 61, 0.2)" opacity="0.4"/>
+</svg> 

@@ -1,12 +1,17 @@
 "use client";
 
 import Link from "next/link";
+import ParallaxBackground from "@/components/ParallaxBackground";
+import Card3D from "@/components/Card3D";
 
 export default function Home() {
   return (
-    <div className="min-h-screen hero-gradient">
+    <div className="min-h-screen hero-gradient relative">
+      {/* Parallax Background */}
+      <ParallaxBackground />
+
       {/* Header */}
-      <header className="container mx-auto px-4 py-6">
+      <header className="container mx-auto px-4 py-6 relative z-10">
         <nav className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <div className="w-10 h-10 bg-gradient-to-br from-green-600 to-green-700 rounded-xl flex items-center justify-center shadow-soft">
@@ -25,7 +30,7 @@ export default function Home() {
       </header>
 
       {/* Hero Section */}
-      <main className="container mx-auto px-4 py-16">
+      <main className="container mx-auto px-4 py-16 relative z-10">
         <div className="text-center mb-20 animate-fade-in">
           <div className="inline-flex items-center px-4 py-2 rounded-full bg-primary-100 text-primary-700 text-sm font-medium mb-6">
             🚀 Yapay Zeka Destekli Analiz
@@ -73,7 +78,7 @@ export default function Home() {
 
         {/* Features Section */}
         <div className="grid md:grid-cols-3 gap-8 mb-20 animate-slide-up">
-          <div className="card card-hover p-8">
+          <Card3D className="card card-hover p-8">
             <div className="icon-container-accent mb-6">
               <svg
                 className="w-6 h-6"
@@ -102,9 +107,9 @@ export default function Home() {
               Kamera ile çekin veya galeriden seçin. Gelişmiş yapay zeka
               teknolojisi ile hayvanın özelliklerini anında analiz eder.
             </p>
-          </div>
+          </Card3D>
 
-          <div className="card card-hover p-8">
+          <Card3D className="card card-hover p-8">
             <div className="icon-container-secondary mb-6">
               <svg
                 className="w-6 h-6"
@@ -127,9 +132,9 @@ export default function Home() {
               Güncel piyasa fiyatları ve hayvan özelliklerine göre gerçekçi
               değer tahmini alın.
             </p>
-          </div>
+          </Card3D>
 
-          <div className="card card-hover p-8">
+          <Card3D className="card card-hover p-8">
             <div className="icon-container-primary mb-6">
               <svg
                 className="w-6 h-6"
@@ -152,11 +157,11 @@ export default function Home() {
               Hayvan türü, cinsi, ağırlık tahmini, sağlık durumu ve et miktarı
               hakkında kapsamlı bilgi.
             </p>
-          </div>
+          </Card3D>
         </div>
 
         {/* Stats Section */}
-        <div className="card p-12 mb-20 bg-gradient-to-r from-primary-50 to-accent-50 border-primary-200 animate-fade-in">
+        <Card3D className="card p-12 mb-20 bg-gradient-to-r from-primary-50 to-accent-50 border-primary-200 animate-fade-in">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold text-neutral-900 mb-4">
               Yapay Zeka Destekli Analiz
@@ -190,7 +195,7 @@ export default function Home() {
               <p className="text-neutral-500 text-sm">Anında analiz</p>
             </div>
           </div>
-        </div>
+        </Card3D>
 
         {/* How It Works Section */}
         <div className="mb-20">
@@ -204,7 +209,7 @@ export default function Home() {
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            <div className="text-center animate-slide-up">
+            <Card3D className="text-center animate-slide-up">
               <div className="w-20 h-20 bg-gradient-to-br from-primary-500 to-primary-600 rounded-full flex items-center justify-center text-white text-2xl font-bold mx-auto mb-6 shadow-large">
                 1
               </div>
@@ -215,9 +220,9 @@ export default function Home() {
                 Hayvanın net bir fotoğrafını çekin veya galeriden bir fotoğraf
                 seçin
               </p>
-            </div>
+            </Card3D>
 
-            <div className="text-center animate-slide-up">
+            <Card3D className="text-center animate-slide-up">
               <div className="w-20 h-20 bg-gradient-to-br from-secondary-500 to-secondary-600 rounded-full flex items-center justify-center text-white text-2xl font-bold mx-auto mb-6 shadow-large">
                 2
               </div>
@@ -228,9 +233,9 @@ export default function Home() {
                 Yapay zeka modelimiz fotoğrafı analiz eder ve özellikleri
                 belirler
               </p>
-            </div>
+            </Card3D>
 
-            <div className="text-center animate-slide-up">
+            <Card3D className="text-center animate-slide-up">
               <div className="w-20 h-20 bg-gradient-to-br from-accent-500 to-accent-600 rounded-full flex items-center justify-center text-white text-2xl font-bold mx-auto mb-6 shadow-large">
                 3
               </div>
@@ -240,12 +245,12 @@ export default function Home() {
               <p className="text-neutral-600 leading-relaxed">
                 Detaylı analiz raporu ile hayvan hakkında tüm bilgileri öğrenin
               </p>
-            </div>
+            </Card3D>
           </div>
         </div>
 
         {/* CTA Section */}
-        <div className="card p-12 text-center bg-gradient-to-r from-primary-600 to-accent-600 text-white animate-scale-in">
+        <Card3D className="card p-12 text-center bg-gradient-to-r from-primary-600 to-accent-600 text-white animate-scale-in">
           <h2 className="text-4xl font-bold mb-6">Hemen Başlayın!</h2>
           <p className="text-xl mb-8 text-primary-100 max-w-3xl mx-auto">
             Kurbanlık hayvan seçiminizde akıllı analiz teknolojisinden
@@ -278,12 +283,12 @@ export default function Home() {
               Ücretsiz Analiz Yap
             </Link>
           </div>
-        </div>
+        </Card3D>
       </main>
 
       {/* Footer */}
-      <footer className="container mx-auto px-4 py-12 mt-20">
-        <div className="text-center">
+      <footer className="container mx-auto px-4 py-12 mt-20 relative z-10">
+        <Card3D className="text-center bg-white/30 backdrop-blur-md rounded-3xl p-8 border border-white/50">
           <div className="flex items-center justify-center space-x-3 mb-4">
             <div className="w-8 h-8 bg-gradient-to-br from-primary-600 to-primary-700 rounded-lg flex items-center justify-center">
               <span className="text-white text-sm font-bold">KA</span>
@@ -323,7 +328,7 @@ export default function Home() {
               &copy; 2025 Kurbanlık Analiz. Tüm hakları saklıdır.
             </p>
           </div>
-        </div>
+        </Card3D>
       </footer>
     </div>
   );

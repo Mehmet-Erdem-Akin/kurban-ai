@@ -688,7 +688,7 @@ export default function Home() {
                 KVKK Uyumu
               </h3>
               <p className="text-neutral-600">
-                Kişisel Verilerin Korunması Kanunu'na tam uyum. Verileriniz
+                Kişisel Verilerin Korunması Kanunu&apos;na tam uyum. Verileriniz
                 güvenli şekilde işlenir.
               </p>
             </Card3D>
@@ -747,9 +747,9 @@ export default function Home() {
               </div>
               <div className="flex text-yellow-400 mb-4">⭐⭐⭐⭐⭐</div>
               <p className="text-neutral-600 italic">
-                "3 farklı açıdan fotoğraf çekip analiz ettirdim. Sonuçlar çok
+                &quot;3 farklı açıdan fotoğraf çekip analiz ettirdim. Sonuçlar çok
                 doğruydu! Artık hayvan alırken kendimi çok daha güvende
-                hissediyorum."
+                hissediyorum.&quot;
               </p>
             </Card3D>
 
@@ -767,8 +767,8 @@ export default function Home() {
               </div>
               <div className="flex text-yellow-400 mb-4">⭐⭐⭐⭐⭐</div>
               <p className="text-neutral-600 italic">
-                "Koyunlarımın yaş ve ağırlık tahminleri gerçekten doğru çıktı.
-                Özellikle değer hesaplama özelliği çok yararlı."
+                &quot;Koyunlarımın yaş ve ağırlık tahminleri gerçekten doğru çıktı.
+                Özellikle değer hesaplama özelliği çok yararlı.&quot;
               </p>
             </Card3D>
 
@@ -786,8 +786,8 @@ export default function Home() {
               </div>
               <div className="flex text-yellow-400 mb-4">⭐⭐⭐⭐⭐</div>
               <p className="text-neutral-600 italic">
-                "Ücretsiz olması harika! Çoklu fotoğraf özelliği sayesinde daha
-                detaylı analiz alabildim. Herkese tavsiye ederim."
+                &quot;Ücretsiz olması harika! Çoklu fotoğraf özelliği sayesinde daha
+                detaylı analiz alabildim. Herkese tavsiye ederim.&quot;
               </p>
             </Card3D>
           </div>

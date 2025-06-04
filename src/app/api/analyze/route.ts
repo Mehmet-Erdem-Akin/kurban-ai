@@ -3,16 +3,16 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 
 // Define proper types for additionalInfo
 interface AdditionalInfo {
-    animalCategory?: string;
-    animalType?: string;
-    estimatedAge?: string;
-    gender?: string;
-    healthCondition?: string;
-    feedingStatus?: string;
-    pregnancyStatus?: string;
-    region?: string;
-    specialNotes?: string;
-    weight?: string;
+  animalCategory?: string;
+  animalType?: string;
+  estimatedAge?: string;
+  gender?: string;
+  healthCondition?: string;
+  feedingStatus?: string;
+  pregnancyStatus?: string;
+  region?: string;
+  specialNotes?: string;
+  weight?: string;
 }
 
 // Initialize Gemini API
@@ -20,58 +20,58 @@ const genAI = new GoogleGenerativeAI(process.env.GOOGLE_AI_API_KEY!);
 
 // Real Gemini API implementation
 const analyzeImageWithGemini = async (
-    imageData: string,
-    additionalInfo?: AdditionalInfo,
+  imageData: string,
+  additionalInfo?: AdditionalInfo,
 ) => {
-    try {
-        console.log("🔍 Gemini analizi başlatılıyor...");
-        console.log("📊 Image data uzunluğu:", imageData.length);
-        console.log("📋 Ek bilgiler:", additionalInfo);
+  try {
+    console.log("🔍 Gemini analizi başlatılıyor...");
+    console.log("📊 Image data uzunluğu:", imageData.length);
+    console.log("📋 Ek bilgiler:", additionalInfo);
 
-        // Use Gemini 2.0 Flash for cost-effectiveness
-        const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
-        console.log("✅ Model oluşturuldu: gemini-2.0-flash");
+    // Use Gemini 2.0 Flash for cost-effectiveness
+    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+    console.log("✅ Model oluşturuldu: gemini-2.0-flash");
 
-        // Build dynamic prompt with user provided information
-        let userInfoSection = "";
-        if (additionalInfo && Object.keys(additionalInfo).length > 0) {
-            userInfoSection = "\n\nKULLANICI TARAFINDAN VERİLEN EK BİLGİLER:\n";
-            userInfoSection +=
-                "Bu bilgileri analizinde dikkate al ve fotoğraftaki gözlemlerinle karşılaştır:\n";
+    // Build dynamic prompt with user provided information
+    let userInfoSection = "";
+    if (additionalInfo && Object.keys(additionalInfo).length > 0) {
+      userInfoSection = "\n\nKULLANICI TARAFINDAN VERİLEN EK BİLGİLER:\n";
+      userInfoSection +=
+        "Bu bilgileri analizinde dikkate al ve fotoğraftaki gözlemlerinle karşılaştır:\n";
 
-            if (additionalInfo.animalCategory) {
-                userInfoSection += `- Hayvan Kategorisi: ${additionalInfo.animalCategory === "büyükbaş" ? "Büyükbaş (Sığır, Dana vb.)" : "Küçükbaş (Koyun, Keçi vb.)"}\n`;
-            }
-            if (additionalInfo.animalType) {
-                userInfoSection += `- Hayvan Türü: ${additionalInfo.animalType}\n`;
-            }
-            if (additionalInfo.gender) {
-                userInfoSection += `- Cinsiyet: ${additionalInfo.gender === "erkek" ? "Erkek" : "Dişi"}\n`;
-            }
-            if (additionalInfo.estimatedAge) {
-                userInfoSection += `- Tahmini Yaş: ${additionalInfo.estimatedAge}\n`;
-            }
-            if (additionalInfo.weight) {
-                userInfoSection += `- Kullanıcı Tahmini Ağırlık: ${additionalInfo.weight} (Bu bilgiyi göz önünde bulundur!)\n`;
-            }
-            if (additionalInfo.healthCondition) {
-                userInfoSection += `- Sağlık Durumu: ${additionalInfo.healthCondition}\n`;
-            }
-            if (additionalInfo.pregnancyStatus) {
-                userInfoSection += `- Gebelik Durumu: ${additionalInfo.pregnancyStatus}\n`;
-            }
-            if (additionalInfo.region) {
-                userInfoSection += `- Bölge: ${additionalInfo.region}\n`;
-            }
-            if (additionalInfo.specialNotes) {
-                userInfoSection += `- Özel Notlar: ${additionalInfo.specialNotes}\n`;
-            }
+      if (additionalInfo.animalCategory) {
+        userInfoSection += `- Hayvan Kategorisi: ${additionalInfo.animalCategory === "büyükbaş" ? "Büyükbaş (Sığır, Dana vb.)" : "Küçükbaş (Koyun, Keçi vb.)"}\n`;
+      }
+      if (additionalInfo.animalType) {
+        userInfoSection += `- Hayvan Türü: ${additionalInfo.animalType}\n`;
+      }
+      if (additionalInfo.gender) {
+        userInfoSection += `- Cinsiyet: ${additionalInfo.gender === "erkek" ? "Erkek" : "Dişi"}\n`;
+      }
+      if (additionalInfo.estimatedAge) {
+        userInfoSection += `- Tahmini Yaş: ${additionalInfo.estimatedAge}\n`;
+      }
+      if (additionalInfo.weight) {
+        userInfoSection += `- Kullanıcı Tahmini Ağırlık: ${additionalInfo.weight} (Bu bilgiyi göz önünde bulundur!)\n`;
+      }
+      if (additionalInfo.healthCondition) {
+        userInfoSection += `- Sağlık Durumu: ${additionalInfo.healthCondition}\n`;
+      }
+      if (additionalInfo.pregnancyStatus) {
+        userInfoSection += `- Gebelik Durumu: ${additionalInfo.pregnancyStatus}\n`;
+      }
+      if (additionalInfo.region) {
+        userInfoSection += `- Bölge: ${additionalInfo.region}\n`;
+      }
+      if (additionalInfo.specialNotes) {
+        userInfoSection += `- Özel Notlar: ${additionalInfo.specialNotes}\n`;
+      }
 
-            userInfoSection +=
-                "\nÖNEMLİ: Kullanıcının verdiği bilgileri fotoğraftaki gözlemlerinle birleştir. Eğer kullanıcı ağırlık vermiş ise, bu bilgiyi dikkate al ve çok farklı bir ağırlık tahmin etme.\n";
-        }
+      userInfoSection +=
+        "\nÖNEMLİ: Kullanıcının verdiği bilgileri fotoğraftaki gözlemlerinle birleştir. Eğer kullanıcı ağırlık vermiş ise, bu bilgiyi dikkate al ve çok farklı bir ağırlık tahmin etme.\n";
+    }
 
-        const prompt = `Bu fotoğraftaki kurbanlık hayvanı analiz et ve detaylı bilgi ver.
+    const prompt = `Bu fotoğraftaki kurbanlık hayvanı analiz et ve detaylı bilgi ver.
 
         ÖNEMLİ KONTROL KURALLARI:
         1. ÖNCE fotoğrafta herhangi bir hayvan olup olmadığını kontrol et
@@ -174,8 +174,9 @@ const analyzeImageWithGemini = async (
         • Olgun yaş: Üst aralık
         
         5️⃣ KULLANICI BİLGİSİ VALİDASYONU:
-        ${additionalInfo?.weight
-                ? `
+        ${
+          additionalInfo?.weight
+            ? `
         KULLANICI AĞIRLIK TAHMİNİ: ${additionalInfo.weight}
         
         ÖNEMLİ KURALAR:
@@ -185,12 +186,12 @@ const analyzeImageWithGemini = async (
         • Eğer kullanıcı verisi çok farklı ise, görsel analizini öncelikle
         • Kullanıcı verisi ile uyumlu olması güvenilirliği artırır
         `
-                : `
+            : `
         KULLANICI AĞIRLIK BİLGİSİ: Verilmemiş
         • Tamamen görsel analiz yaparak ağırlığı hesapla
         • Yukarıdaki standart aralıkları kullan
         `
-            }
+        }
         
         6️⃣ SON KONTROL VE VALİDASYON:
         • Tahmin edilen ağırlık, türün standart aralığında mı?
@@ -329,405 +330,405 @@ const analyzeImageWithGemini = async (
         ${userInfoSection}
         TÜM YANITLARI TÜRKÇE VER!`;
 
-        console.log("📝 Prompt hazırlandı, uzunluk:", prompt.length);
+    console.log("📝 Prompt hazırlandı, uzunluk:", prompt.length);
 
-        const imagePart = {
-            inlineData: {
-                data: imageData,
-                mimeType: "image/jpeg",
-            },
-        };
+    const imagePart = {
+      inlineData: {
+        data: imageData,
+        mimeType: "image/jpeg",
+      },
+    };
 
-        console.log("🖼️ Image data hazırlandı");
-        console.log("🚀 generateContent başlatılıyor...");
+    console.log("🖼️ Image data hazırlandı");
+    console.log("🚀 generateContent başlatılıyor...");
 
-        const result = await model.generateContent([prompt, imagePart]);
-        const response = await result.response;
-        const text = response.text();
+    const result = await model.generateContent([prompt, imagePart]);
+    const response = await result.response;
+    const text = response.text();
 
-        console.log("✅ Gemini yanıtı alındı, uzunluk:", text.length);
-        console.log("📄 İlk 500 karakter:", text.substring(0, 500));
+    console.log("✅ Gemini yanıtı alındı, uzunluk:", text.length);
+    console.log("📄 İlk 500 karakter:", text.substring(0, 500));
 
-        // Check for empty response
-        if (!text || text.trim().length === 0) {
-            console.error("❌ Boş yanıt alındı!");
-            throw new Error("Gemini boş yanıt döndü");
-        }
-
-        // Try to parse JSON response
-        try {
-            const jsonMatch = text.match(/\{[\s\S]*\}/);
-            if (jsonMatch) {
-                const analysis = JSON.parse(jsonMatch[0]);
-                console.log("✅ JSON parse başarılı:", Object.keys(analysis));
-
-                // Check if it's an error response (no animal detected or invalid animal)
-                if (analysis.error === true) {
-                    console.log(
-                        "🚫 Hayvan tespit edilemedi veya geçersiz hayvan:",
-                        analysis,
-                    );
-                    return analysis; // Return the error as-is
-                }
-
-                // Validate required fields for successful analysis
-                if (
-                    !analysis.animalType ||
-                    !analysis.breed ||
-                    !analysis.estimatedWeight
-                ) {
-                    console.warn("⚠️ Gerekli alanlar eksik:", {
-                        animalType: analysis.animalType,
-                        breed: analysis.breed,
-                        estimatedWeight: analysis.estimatedWeight,
-                    });
-
-                    // Return error if required fields are missing
-                    return {
-                        error: true,
-                        errorType: "INCOMPLETE_ANALYSIS",
-                        message: "Analiz sonucu eksik - hayvan net olarak tespit edilemedi",
-                        confidence: 0,
-                    };
-                }
-
-                return analysis;
-            } else {
-                console.warn("⚠️ JSON bulunamadı, fallback kullanılıyor");
-                console.log("📄 Tam yanıt:", text);
-                throw new Error("JSON not found in response");
-            }
-        } catch (parseError) {
-            console.warn("❌ JSON parse başarısız:", parseError);
-            console.log("📄 Parse edilemeyen yanıt:", text);
-        }
-
-        // Instead of fallback data, return analysis failure error
-        console.log(
-            "🚫 JSON parse başarısız - analiz başarısız olarak döndürülüyor",
-        );
-        return {
-            error: true,
-            errorType: "ANALYSIS_FAILED",
-            message: "Fotoğraf analizi başarısız - tekrar deneyin",
-            confidence: 0,
-        };
-    } catch (error) {
-        console.error("❌ Gemini API hatası:", error);
-        console.error("🔍 Hata detayları:", {
-            name: error instanceof Error ? error.name : "UnknownError",
-            message: error instanceof Error ? error.message : String(error),
-            stack: error instanceof Error ? error.stack?.split("\n")[0] : undefined, // İlk satır
-        });
-
-        // Return API error instead of random mock data
-        return {
-            error: true,
-            errorType: "API_ERROR",
-            message:
-                "Yapay zeka servisinde geçici bir sorun oluştu - lütfen tekrar deneyin",
-            confidence: 0,
-        };
+    // Check for empty response
+    if (!text || text.trim().length === 0) {
+      console.error("❌ Boş yanıt alındı!");
+      throw new Error("Gemini boş yanıt döndü");
     }
+
+    // Try to parse JSON response
+    try {
+      const jsonMatch = text.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        const analysis = JSON.parse(jsonMatch[0]);
+        console.log("✅ JSON parse başarılı:", Object.keys(analysis));
+
+        // Check if it's an error response (no animal detected or invalid animal)
+        if (analysis.error === true) {
+          console.log(
+            "🚫 Hayvan tespit edilemedi veya geçersiz hayvan:",
+            analysis,
+          );
+          return analysis; // Return the error as-is
+        }
+
+        // Validate required fields for successful analysis
+        if (
+          !analysis.animalType ||
+          !analysis.breed ||
+          !analysis.estimatedWeight
+        ) {
+          console.warn("⚠️ Gerekli alanlar eksik:", {
+            animalType: analysis.animalType,
+            breed: analysis.breed,
+            estimatedWeight: analysis.estimatedWeight,
+          });
+
+          // Return error if required fields are missing
+          return {
+            error: true,
+            errorType: "INCOMPLETE_ANALYSIS",
+            message: "Analiz sonucu eksik - hayvan net olarak tespit edilemedi",
+            confidence: 0,
+          };
+        }
+
+        return analysis;
+      } else {
+        console.warn("⚠️ JSON bulunamadı, fallback kullanılıyor");
+        console.log("📄 Tam yanıt:", text);
+        throw new Error("JSON not found in response");
+      }
+    } catch (parseError) {
+      console.warn("❌ JSON parse başarısız:", parseError);
+      console.log("📄 Parse edilemeyen yanıt:", text);
+    }
+
+    // Instead of fallback data, return analysis failure error
+    console.log(
+      "🚫 JSON parse başarısız - analiz başarısız olarak döndürülüyor",
+    );
+    return {
+      error: true,
+      errorType: "ANALYSIS_FAILED",
+      message: "Fotoğraf analizi başarısız - tekrar deneyin",
+      confidence: 0,
+    };
+  } catch (error) {
+    console.error("❌ Gemini API hatası:", error);
+    console.error("🔍 Hata detayları:", {
+      name: error instanceof Error ? error.name : "UnknownError",
+      message: error instanceof Error ? error.message : String(error),
+      stack: error instanceof Error ? error.stack?.split("\n")[0] : undefined, // İlk satır
+    });
+
+    // Return API error instead of random mock data
+    return {
+      error: true,
+      errorType: "API_ERROR",
+      message:
+        "Yapay zeka servisinde geçici bir sorun oluştu - lütfen tekrar deneyin",
+      confidence: 0,
+    };
+  }
 };
 
 const calculateDetailedAnalysis = (basicAnalysis: {
-    animalType: string;
-    estimatedWeight: number;
-    healthScore: number;
+  animalType: string;
+  estimatedWeight: number;
+  healthScore: number;
 }) => {
-    const { animalType, estimatedWeight, healthScore } = basicAnalysis;
+  const { animalType, estimatedWeight, healthScore } = basicAnalysis;
 
-    // Calculate meat amounts based on Turkish livestock industry standards
-    let karkasYieldPercentage,
-        bonelessYieldPercentage,
-        bonelessMeatPricePerKg,
-        karkasMeatPricePerKg;
+  // Calculate meat amounts based on Turkish livestock industry standards
+  let karkasYieldPercentage,
+    bonelessYieldPercentage,
+    bonelessMeatPricePerKg,
+    karkasMeatPricePerKg;
 
-    if (
-        animalType === "Dana" ||
-        animalType === "Tosun" ||
-        animalType === "Boğa" ||
-        animalType === "İnek" ||
-        animalType === "Manda" ||
-        animalType === "Buzağı"
-    ) {
-        // Büyükbaş (Cattle/Buffalo) yield ratios - Kullanıcı formülüne göre
-        karkasYieldPercentage = 55; // 55% karkas yield from live weight (0.55)
-        bonelessYieldPercentage = 72; // ~72% boneless from karkas
-        bonelessMeatPricePerKg = 450; // Dana et price TL/kg (June 2025) - kemiksiz et
-        karkasMeatPricePerKg = 440; // Karkas et fiyatı (kemikli et) - kullanıcı formülü
-    } else {
-        // Küçükbaş (Small livestock: sheep/goat) yield ratios - Kullanıcı formülüne göre
-        karkasYieldPercentage = 50; // 50% karkas yield from live weight (0.50)
-        bonelessYieldPercentage = 70; // ~70% boneless from karkas
-        bonelessMeatPricePerKg = 520; // Kuzu et price TL/kg (June 2025) - kemiksiz et
-        karkasMeatPricePerKg = 470; // Karkas et fiyatı (kemikli et) - kullanıcı formülü
-    }
+  if (
+    animalType === "Dana" ||
+    animalType === "Tosun" ||
+    animalType === "Boğa" ||
+    animalType === "İnek" ||
+    animalType === "Manda" ||
+    animalType === "Buzağı"
+  ) {
+    // Büyükbaş (Cattle/Buffalo) yield ratios - Kullanıcı formülüne göre
+    karkasYieldPercentage = 55; // 55% karkas yield from live weight (0.55)
+    bonelessYieldPercentage = 72; // ~72% boneless from karkas
+    bonelessMeatPricePerKg = 450; // Dana et price TL/kg (June 2025) - kemiksiz et
+    karkasMeatPricePerKg = 440; // Karkas et fiyatı (kemikli et) - kullanıcı formülü
+  } else {
+    // Küçükbaş (Small livestock: sheep/goat) yield ratios - Kullanıcı formülüne göre
+    karkasYieldPercentage = 50; // 50% karkas yield from live weight (0.50)
+    bonelessYieldPercentage = 70; // ~70% boneless from karkas
+    bonelessMeatPricePerKg = 520; // Kuzu et price TL/kg (June 2025) - kemiksiz et
+    karkasMeatPricePerKg = 470; // Karkas et fiyatı (kemikli et) - kullanıcı formülü
+  }
 
-    // Calculate meat amounts using proper livestock industry standards
-    const karkasWeight = Math.floor(
-        estimatedWeight * (karkasYieldPercentage / 100),
-    );
-    const bonelessWeight = Math.floor(
-        karkasWeight * (bonelessYieldPercentage / 100),
-    );
-    const boneWeight = karkasWeight - bonelessWeight;
+  // Calculate meat amounts using proper livestock industry standards
+  const karkasWeight = Math.floor(
+    estimatedWeight * (karkasYieldPercentage / 100),
+  );
+  const bonelessWeight = Math.floor(
+    karkasWeight * (bonelessYieldPercentage / 100),
+  );
+  const boneWeight = karkasWeight - bonelessWeight;
 
-    // Calculate market price using KARKAS weight (kemikli + kemiksiz et)
-    const calculatedMarketPrice = karkasWeight * karkasMeatPricePerKg;
+  // Calculate market price using KARKAS weight (kemikli + kemiksiz et)
+  const calculatedMarketPrice = karkasWeight * karkasMeatPricePerKg;
 
-    // Always use our calculated price for consistency with the formula
-    const finalMarketPrice = calculatedMarketPrice;
+  // Always use our calculated price for consistency with the formula
+  const finalMarketPrice = calculatedMarketPrice;
 
-    // Calculate shares (hisse)
-    const shares =
-        animalType === "Dana" ||
-            animalType === "Tosun" ||
-            animalType === "Boğa" ||
-            animalType === "İnek" ||
-            animalType === "Manda" ||
-            animalType === "Buzağı"
-            ? 7
-            : 1;
-    const shareWeight = Math.floor(bonelessWeight / shares);
-    const sharePrice = Math.floor(finalMarketPrice / shares);
+  // Calculate shares (hisse)
+  const shares =
+    animalType === "Dana" ||
+    animalType === "Tosun" ||
+    animalType === "Boğa" ||
+    animalType === "İnek" ||
+    animalType === "Manda" ||
+    animalType === "Buzağı"
+      ? 7
+      : 1;
+  const shareWeight = Math.floor(bonelessWeight / shares);
+  const sharePrice = Math.floor(finalMarketPrice / shares);
 
-    // Generate recommendations based on analysis
-    const recommendations = [];
+  // Generate recommendations based on analysis
+  const recommendations = [];
 
-    if (healthScore > 90)
-        recommendations.push("Mükemmel sağlık durumu - premium kalite");
-    else if (healthScore > 80) recommendations.push("İyi sağlık durumu");
-    else recommendations.push("Sağlık kontrolü önerilir");
+  if (healthScore > 90)
+    recommendations.push("Mükemmel sağlık durumu - premium kalite");
+  else if (healthScore > 80) recommendations.push("İyi sağlık durumu");
+  else recommendations.push("Sağlık kontrolü önerilir");
 
-    if (karkasYieldPercentage >= 50) recommendations.push("Yüksek et verimi");
-    else recommendations.push("Orta düzey et verimi");
+  if (karkasYieldPercentage >= 50) recommendations.push("Yüksek et verimi");
+  else recommendations.push("Orta düzey et verimi");
 
-    // Price comparison based on karkas calculation method
-    const expectedPrice = karkasWeight * karkasMeatPricePerKg;
-    if (finalMarketPrice > expectedPrice * 1.2)
-        recommendations.push("Piyasa ortalaması üstü fiyat");
-    else if (finalMarketPrice < expectedPrice * 0.8)
-        recommendations.push("Uygun fiyat - iyi değer");
-    else recommendations.push("Piyasa ortalaması fiyat");
+  // Price comparison based on karkas calculation method
+  const expectedPrice = karkasWeight * karkasMeatPricePerKg;
+  if (finalMarketPrice > expectedPrice * 1.2)
+    recommendations.push("Piyasa ortalaması üstü fiyat");
+  else if (finalMarketPrice < expectedPrice * 0.8)
+    recommendations.push("Uygun fiyat - iyi değer");
+  else recommendations.push("Piyasa ortalaması fiyat");
 
-    return {
-        totalMeatKg: bonelessWeight, // Kemiksiz et miktarı
-        karkasWeight, // Karkas ağırlığı (kemikli + kemiksiz)
-        bonelessWeight, // Kemiksiz et ağırlığı
-        boneWeight, // Kemik ağırlığı
-        pricePerKg: Math.floor(finalMarketPrice / estimatedWeight), // Canlı kg fiyatı
-        bonelessMeatPricePerKg, // Kemiksiz et kg fiyatı
-        karkasMeatPricePerKg, // Karkas et kg fiyatı (kemikli)
-        estimatedMeatValue: expectedPrice, // Hesaplanan et değeri (karkas üzerinden)
-        calculatedMarketPrice, // Karkas metoduyla hesaplanan fiyat
-        shares,
-        shareWeight,
-        sharePrice,
-        yieldRatios: {
-            karkasYield: karkasYieldPercentage,
-            bonelessYield: bonelessYieldPercentage,
-            totalYield: Math.floor((bonelessWeight / estimatedWeight) * 100),
-        },
-        recommendations,
-    };
+  return {
+    totalMeatKg: bonelessWeight, // Kemiksiz et miktarı
+    karkasWeight, // Karkas ağırlığı (kemikli + kemiksiz)
+    bonelessWeight, // Kemiksiz et ağırlığı
+    boneWeight, // Kemik ağırlığı
+    pricePerKg: Math.floor(finalMarketPrice / estimatedWeight), // Canlı kg fiyatı
+    bonelessMeatPricePerKg, // Kemiksiz et kg fiyatı
+    karkasMeatPricePerKg, // Karkas et kg fiyatı (kemikli)
+    estimatedMeatValue: expectedPrice, // Hesaplanan et değeri (karkas üzerinden)
+    calculatedMarketPrice, // Karkas metoduyla hesaplanan fiyat
+    shares,
+    shareWeight,
+    sharePrice,
+    yieldRatios: {
+      karkasYield: karkasYieldPercentage,
+      bonelessYield: bonelessYieldPercentage,
+      totalYield: Math.floor((bonelessWeight / estimatedWeight) * 100),
+    },
+    recommendations,
+  };
 };
 
 export async function POST(request: NextRequest) {
-    try {
-        // Parse JSON data instead of FormData
-        const body = await request.json();
-        const {
-            image,
-            images,
-            imageIndex,
-            totalImages,
-            analysisType,
-            additionalInfo,
-        } = body;
+  try {
+    // Parse JSON data instead of FormData
+    const body = await request.json();
+    const {
+      image,
+      images,
+      imageIndex,
+      totalImages,
+      analysisType,
+      additionalInfo,
+    } = body;
 
-        // Çoklu fotoğraf analizi - Aynı hayvana ait farklı açılardan fotoğraflar
-        if (analysisType === "multiple" && images && Array.isArray(images)) {
-            console.log(
-                `🔬 Aynı hayvana ait ${images.length} fotoğraf analiz ediliyor...`,
-            );
+    // Çoklu fotoğraf analizi - Aynı hayvana ait farklı açılardan fotoğraflar
+    if (analysisType === "multiple" && images && Array.isArray(images)) {
+      console.log(
+        `🔬 Aynı hayvana ait ${images.length} fotoğraf analiz ediliyor...`,
+      );
 
-            try {
-                // Basitleştirilmiş yaklaşım: Sadece ilk fotoğrafı analiz et, ama çoklu fotoğraf olduğunu belirt
-                const firstImage = images[0];
-                const base64Image = firstImage.replace(
-                    /^data:image\/[a-z]+;base64,/,
-                    "",
-                );
+      try {
+        // Basitleştirilmiş yaklaşım: Sadece ilk fotoğrafı analiz et, ama çoklu fotoğraf olduğunu belirt
+        const firstImage = images[0];
+        const base64Image = firstImage.replace(
+          /^data:image\/[a-z]+;base64,/,
+          "",
+        );
 
-                console.log("📸 İlk fotoğraf seçildi, boyut:", base64Image.length);
+        console.log("📸 İlk fotoğraf seçildi, boyut:", base64Image.length);
 
-                console.log("📝 Çoklu fotoğraf prompt hazırlandı");
-
-                // Simulate processing time
-                await new Promise((resolve) => setTimeout(resolve, 2000));
-
-                // Tek fotoğraf ile Gemini API çağrısı (daha basit)
-                const basicAnalysis = await analyzeImageWithGemini(
-                    base64Image,
-                    additionalInfo,
-                );
-
-                console.log("✅ Çoklu fotoğraf analizi tamamlandı:", basicAnalysis);
-
-                // Check if analysis returned an error
-                if (basicAnalysis.error === true) {
-                    console.log("🚫 Çoklu fotoğraf analizinde hata:", basicAnalysis);
-                    return NextResponse.json(
-                        {
-                            success: false,
-                            error: basicAnalysis.errorType,
-                            message: basicAnalysis.message,
-                            detectedType: basicAnalysis.detectedType || null,
-                            analysisType: "multiple_same_animal",
-                            totalImages: images.length,
-                            confidence: 0,
-                        },
-                        { status: 400 },
-                    );
-                }
-
-                // Güven skorunu artır (çoklu fotoğraf için)
-                if (basicAnalysis.confidence && basicAnalysis.confidence < 90) {
-                    basicAnalysis.confidence = Math.min(
-                        95,
-                        basicAnalysis.confidence + 10,
-                    );
-                }
-
-                const detailedAnalysis = calculateDetailedAnalysis(basicAnalysis);
-
-                const multipleImageResult = {
-                    success: true,
-                    analysisType: "multiple_same_animal",
-                    totalImages: images.length,
-                    animalType: basicAnalysis.animalType,
-                    breed: basicAnalysis.breed,
-                    estimatedWeight: basicAnalysis.estimatedWeight,
-                    healthScore: basicAnalysis.healthScore,
-                    marketValue: basicAnalysis.marketPrice,
-                    meatYield: {
-                        totalMeat: detailedAnalysis.totalMeatKg,
-                        karkasWeight: detailedAnalysis.karkasWeight,
-                        bonelessMeat: detailedAnalysis.totalMeatKg,
-                        boneWeight: detailedAnalysis.boneWeight,
-                        yieldRatios: detailedAnalysis.yieldRatios,
-                    },
-                    pricing: {
-                        liveWeightPrice: detailedAnalysis.pricePerKg,
-                        meatPrice: detailedAnalysis.karkasMeatPricePerKg,
-                        estimatedMeatValue: detailedAnalysis.estimatedMeatValue,
-                    },
-                    costPerShare: detailedAnalysis.sharePrice,
-                    confidence: basicAnalysis.confidence,
-                    recommendations: detailedAnalysis.recommendations,
-                    analysisDate: new Date().toISOString(),
-                    analysisNote: `Aynı hayvana ait ${images.length} farklı açıdan çekilmiş fotoğraf analiz edildi - yüksek güvenilirlik`,
-                };
-
-                console.log(
-                    `✅ Aynı hayvana ait ${images.length} fotoğraf başarıyla analiz edildi`,
-                );
-                return NextResponse.json(multipleImageResult);
-            } catch (error) {
-                console.error("❌ Çoklu resim analiz hatası:", error);
-
-                // Return error instead of fallback analysis
-                return NextResponse.json(
-                    {
-                        success: false,
-                        error: "ANALYSIS_ERROR",
-                        message:
-                            "Çoklu fotoğraf analizi başarısız oldu - lütfen tekrar deneyin",
-                        analysisType: "multiple_same_animal",
-                        totalImages: images.length,
-                        confidence: 0,
-                    },
-                    { status: 500 },
-                );
-            }
-        }
-
-        // Tek fotoğraf analizi (mevcut kod)
-        if (!image) {
-            return NextResponse.json(
-                { error: "Resim verisi gerekli" },
-                { status: 400 },
-            );
-        }
-
-        // Remove data:image/jpeg;base64, prefix if present
-        const base64Image = image.replace(/^data:image\/[a-z]+;base64,/, "");
+        console.log("📝 Çoklu fotoğraf prompt hazırlandı");
 
         // Simulate processing time
         await new Promise((resolve) => setTimeout(resolve, 2000));
 
-        // Get AI analysis
+        // Tek fotoğraf ile Gemini API çağrısı (daha basit)
         const basicAnalysis = await analyzeImageWithGemini(
-            base64Image,
-            additionalInfo,
+          base64Image,
+          additionalInfo,
         );
+
+        console.log("✅ Çoklu fotoğraf analizi tamamlandı:", basicAnalysis);
 
         // Check if analysis returned an error
         if (basicAnalysis.error === true) {
-            console.log("🚫 Tek fotoğraf analizinde hata:", basicAnalysis);
-            return NextResponse.json(
-                {
-                    success: false,
-                    error: basicAnalysis.errorType,
-                    message: basicAnalysis.message,
-                    detectedType: basicAnalysis.detectedType || null,
-                    analysisType: "single",
-                    imageIndex: imageIndex || 1,
-                    totalImages: totalImages || 1,
-                    confidence: 0,
-                },
-                { status: 400 },
-            );
+          console.log("🚫 Çoklu fotoğraf analizinde hata:", basicAnalysis);
+          return NextResponse.json(
+            {
+              success: false,
+              error: basicAnalysis.errorType,
+              message: basicAnalysis.message,
+              detectedType: basicAnalysis.detectedType || null,
+              analysisType: "multiple_same_animal",
+              totalImages: images.length,
+              confidence: 0,
+            },
+            { status: 400 },
+          );
+        }
+
+        // Güven skorunu artır (çoklu fotoğraf için)
+        if (basicAnalysis.confidence && basicAnalysis.confidence < 90) {
+          basicAnalysis.confidence = Math.min(
+            95,
+            basicAnalysis.confidence + 10,
+          );
         }
 
         const detailedAnalysis = calculateDetailedAnalysis(basicAnalysis);
 
-        const result = {
-            success: true,
-            analysisType: "single",
-            animalType: basicAnalysis.animalType,
-            breed: basicAnalysis.breed,
-            estimatedWeight: basicAnalysis.estimatedWeight,
-            healthScore: basicAnalysis.healthScore,
-            marketValue: basicAnalysis.marketPrice,
-            meatYield: {
-                totalMeat: detailedAnalysis.totalMeatKg, // Kemiksiz et
-                karkasWeight: detailedAnalysis.karkasWeight, // Karkas ağırlığı
-                bonelessMeat: detailedAnalysis.totalMeatKg, // Kemiksiz et (aynı değer)
-                boneWeight: detailedAnalysis.boneWeight, // Kemik ağırlığı
-                yieldRatios: detailedAnalysis.yieldRatios, // Verim oranları
-            },
-            pricing: {
-                liveWeightPrice: detailedAnalysis.pricePerKg, // Canlı kg fiyatı
-                meatPrice: detailedAnalysis.karkasMeatPricePerKg, // Karkas et kg fiyatı
-                estimatedMeatValue: detailedAnalysis.estimatedMeatValue, // Tahmini et değeri
-            },
-            costPerShare: detailedAnalysis.sharePrice,
-            confidence: basicAnalysis.confidence,
-            recommendations: detailedAnalysis.recommendations,
-            analysisDate: new Date().toISOString(),
-            imageIndex: imageIndex || 1,
-            totalImages: totalImages || 1,
+        const multipleImageResult = {
+          success: true,
+          analysisType: "multiple_same_animal",
+          totalImages: images.length,
+          animalType: basicAnalysis.animalType,
+          breed: basicAnalysis.breed,
+          estimatedWeight: basicAnalysis.estimatedWeight,
+          healthScore: basicAnalysis.healthScore,
+          marketValue: basicAnalysis.marketPrice,
+          meatYield: {
+            totalMeat: detailedAnalysis.totalMeatKg,
+            karkasWeight: detailedAnalysis.karkasWeight,
+            bonelessMeat: detailedAnalysis.totalMeatKg,
+            boneWeight: detailedAnalysis.boneWeight,
+            yieldRatios: detailedAnalysis.yieldRatios,
+          },
+          pricing: {
+            liveWeightPrice: detailedAnalysis.pricePerKg,
+            meatPrice: detailedAnalysis.karkasMeatPricePerKg,
+            estimatedMeatValue: detailedAnalysis.estimatedMeatValue,
+          },
+          costPerShare: detailedAnalysis.sharePrice,
+          confidence: basicAnalysis.confidence,
+          recommendations: detailedAnalysis.recommendations,
+          analysisDate: new Date().toISOString(),
+          analysisNote: `Aynı hayvana ait ${images.length} farklı açıdan çekilmiş fotoğraf analiz edildi - yüksek güvenilirlik`,
         };
 
-        return NextResponse.json(result);
-    } catch (error) {
-        console.error("Analysis error:", error);
-        return NextResponse.json(
-            { error: "Analiz sırasında hata oluştu" },
-            { status: 500 },
+        console.log(
+          `✅ Aynı hayvana ait ${images.length} fotoğraf başarıyla analiz edildi`,
         );
+        return NextResponse.json(multipleImageResult);
+      } catch (error) {
+        console.error("❌ Çoklu resim analiz hatası:", error);
+
+        // Return error instead of fallback analysis
+        return NextResponse.json(
+          {
+            success: false,
+            error: "ANALYSIS_ERROR",
+            message:
+              "Çoklu fotoğraf analizi başarısız oldu - lütfen tekrar deneyin",
+            analysisType: "multiple_same_animal",
+            totalImages: images.length,
+            confidence: 0,
+          },
+          { status: 500 },
+        );
+      }
     }
+
+    // Tek fotoğraf analizi (mevcut kod)
+    if (!image) {
+      return NextResponse.json(
+        { error: "Resim verisi gerekli" },
+        { status: 400 },
+      );
+    }
+
+    // Remove data:image/jpeg;base64, prefix if present
+    const base64Image = image.replace(/^data:image\/[a-z]+;base64,/, "");
+
+    // Simulate processing time
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+
+    // Get AI analysis
+    const basicAnalysis = await analyzeImageWithGemini(
+      base64Image,
+      additionalInfo,
+    );
+
+    // Check if analysis returned an error
+    if (basicAnalysis.error === true) {
+      console.log("🚫 Tek fotoğraf analizinde hata:", basicAnalysis);
+      return NextResponse.json(
+        {
+          success: false,
+          error: basicAnalysis.errorType,
+          message: basicAnalysis.message,
+          detectedType: basicAnalysis.detectedType || null,
+          analysisType: "single",
+          imageIndex: imageIndex || 1,
+          totalImages: totalImages || 1,
+          confidence: 0,
+        },
+        { status: 400 },
+      );
+    }
+
+    const detailedAnalysis = calculateDetailedAnalysis(basicAnalysis);
+
+    const result = {
+      success: true,
+      analysisType: "single",
+      animalType: basicAnalysis.animalType,
+      breed: basicAnalysis.breed,
+      estimatedWeight: basicAnalysis.estimatedWeight,
+      healthScore: basicAnalysis.healthScore,
+      marketValue: basicAnalysis.marketPrice,
+      meatYield: {
+        totalMeat: detailedAnalysis.totalMeatKg, // Kemiksiz et
+        karkasWeight: detailedAnalysis.karkasWeight, // Karkas ağırlığı
+        bonelessMeat: detailedAnalysis.totalMeatKg, // Kemiksiz et (aynı değer)
+        boneWeight: detailedAnalysis.boneWeight, // Kemik ağırlığı
+        yieldRatios: detailedAnalysis.yieldRatios, // Verim oranları
+      },
+      pricing: {
+        liveWeightPrice: detailedAnalysis.pricePerKg, // Canlı kg fiyatı
+        meatPrice: detailedAnalysis.karkasMeatPricePerKg, // Karkas et kg fiyatı
+        estimatedMeatValue: detailedAnalysis.estimatedMeatValue, // Tahmini et değeri
+      },
+      costPerShare: detailedAnalysis.sharePrice,
+      confidence: basicAnalysis.confidence,
+      recommendations: detailedAnalysis.recommendations,
+      analysisDate: new Date().toISOString(),
+      imageIndex: imageIndex || 1,
+      totalImages: totalImages || 1,
+    };
+
+    return NextResponse.json(result);
+  } catch (error) {
+    console.error("Analysis error:", error);
+    return NextResponse.json(
+      { error: "Analiz sırasında hata oluştu" },
+      { status: 500 },
+    );
+  }
 }

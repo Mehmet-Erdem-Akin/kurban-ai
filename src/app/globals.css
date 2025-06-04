@@ -73,7 +73,12 @@
   .floating-orb-1 {
     width: 120px;
     height: 120px;
-    background: radial-gradient(circle at 30% 30%, rgba(34, 197, 94, 0.3), rgba(34, 197, 94, 0.1), transparent 70%);
+    background: radial-gradient(
+      circle at 30% 30%,
+      rgba(34, 197, 94, 0.3),
+      rgba(34, 197, 94, 0.1),
+      transparent 70%
+    );
     top: 10%;
     left: 5%;
     animation: floatMove1 25s ease-in-out infinite;
@@ -82,7 +87,12 @@
   .floating-orb-2 {
     width: 80px;
     height: 80px;
-    background: radial-gradient(circle at 30% 30%, rgba(74, 222, 128, 0.25), rgba(74, 222, 128, 0.08), transparent 70%);
+    background: radial-gradient(
+      circle at 30% 30%,
+      rgba(74, 222, 128, 0.25),
+      rgba(74, 222, 128, 0.08),
+      transparent 70%
+    );
     top: 20%;
     right: 10%;
     animation: floatMove2 20s ease-in-out infinite;
@@ -91,7 +101,12 @@
   .floating-orb-3 {
     width: 100px;
     height: 100px;
-    background: radial-gradient(circle at 30% 30%, rgba(6, 182, 212, 0.3), rgba(6, 182, 212, 0.1), transparent 70%);
+    background: radial-gradient(
+      circle at 30% 30%,
+      rgba(6, 182, 212, 0.3),
+      rgba(6, 182, 212, 0.1),
+      transparent 70%
+    );
     top: 60%;
     left: 8%;
     animation: floatMove3 30s ease-in-out infinite;
@@ -100,7 +115,12 @@
   .floating-orb-4 {
     width: 60px;
     height: 60px;
-    background: radial-gradient(circle at 30% 30%, rgba(132, 204, 22, 0.25), rgba(132, 204, 22, 0.08), transparent 70%);
+    background: radial-gradient(
+      circle at 30% 30%,
+      rgba(132, 204, 22, 0.25),
+      rgba(132, 204, 22, 0.08),
+      transparent 70%
+    );
     top: 40%;
     right: 15%;
     animation: floatMove4 18s ease-in-out infinite;
@@ -109,7 +129,12 @@
   .floating-orb-5 {
     width: 140px;
     height: 140px;
-    background: radial-gradient(circle at 30% 30%, rgba(21, 128, 61, 0.2), rgba(21, 128, 61, 0.05), transparent 70%);
+    background: radial-gradient(
+      circle at 30% 30%,
+      rgba(21, 128, 61, 0.2),
+      rgba(21, 128, 61, 0.05),
+      transparent 70%
+    );
     bottom: 20%;
     right: 20%;
     animation: floatMove5 35s ease-in-out infinite;
@@ -135,10 +160,12 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(135deg,
-        transparent 30%,
-        rgba(255, 255, 255, 0.1) 50%,
-        transparent 70%);
+    background: linear-gradient(
+      135deg,
+      transparent 30%,
+      rgba(255, 255, 255, 0.1) 50%,
+      transparent 70%
+    );
     opacity: 0;
     transition: opacity 0.3s ease;
     pointer-events: none;
@@ -151,7 +178,6 @@
 }
 
 @layer components {
-
   /* Enhanced Button Components - Green Theme */
   .btn {
     @apply inline-flex items-center justify-center rounded-2xl font-semibold transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 shadow-lg;
@@ -160,13 +186,18 @@
   }
 
   .btn::before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent
+    );
     transition: left 0.5s ease;
   }
 
@@ -217,16 +248,18 @@
   }
 
   .card::before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(135deg,
-        rgba(255, 255, 255, 0.1) 0%,
-        transparent 50%,
-        rgba(34, 197, 94, 0.05) 100%);
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.1) 0%,
+      transparent 50%,
+      rgba(34, 197, 94, 0.05) 100%
+    );
     pointer-events: none;
   }
 
@@ -293,13 +326,15 @@
   }
 
   .icon-container::after {
-    content: '';
+    content: "";
     position: absolute;
     inset: -2px;
     border-radius: 18px;
     padding: 2px;
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), transparent);
-    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
     mask-composite: subtract;
   }
 
@@ -366,16 +401,28 @@
   }
 
   .hero-gradient::before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
     background:
-      radial-gradient(circle at 20% 80%, rgba(34, 197, 94, 0.15) 0%, transparent 50%),
-      radial-gradient(circle at 80% 20%, rgba(6, 182, 212, 0.15) 0%, transparent 50%),
-      radial-gradient(circle at 40% 40%, rgba(74, 222, 128, 0.1) 0%, transparent 50%);
+      radial-gradient(
+        circle at 20% 80%,
+        rgba(34, 197, 94, 0.15) 0%,
+        transparent 50%
+      ),
+      radial-gradient(
+        circle at 80% 20%,
+        rgba(6, 182, 212, 0.15) 0%,
+        transparent 50%
+      ),
+      radial-gradient(
+        circle at 40% 40%,
+        rgba(74, 222, 128, 0.1) 0%,
+        transparent 50%
+      );
     pointer-events: none;
   }
 
@@ -406,15 +453,23 @@
   }
 
   .animal-cta::before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
     background:
-      radial-gradient(circle at 30% 70%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
-      radial-gradient(circle at 70% 30%, rgba(255, 255, 255, 0.08) 0%, transparent 50%);
+      radial-gradient(
+        circle at 30% 70%,
+        rgba(255, 255, 255, 0.1) 0%,
+        transparent 50%
+      ),
+      radial-gradient(
+        circle at 70% 30%,
+        rgba(255, 255, 255, 0.08) 0%,
+        transparent 50%
+      );
     pointer-events: none;
   }
 
@@ -482,7 +537,6 @@
 }
 
 @keyframes parallax {
-
   0%,
   100% {
     transform: translateY(0px) rotate(0deg);
@@ -502,7 +556,6 @@
 }
 
 @keyframes float {
-
   0%,
   100% {
     transform: translateY(0px);
@@ -526,7 +579,17 @@
 
 /* Animated gradient text class */
 .gradient-text-animated {
-  background: linear-gradient(90deg, #059669, #10b981, #06b6d4, #0891b2, #059669, #10b981, #06b6d4, #0891b2);
+  background: linear-gradient(
+    90deg,
+    #059669,
+    #10b981,
+    #06b6d4,
+    #0891b2,
+    #059669,
+    #10b981,
+    #06b6d4,
+    #0891b2
+  );
   background-size: 200% 100%;
   -webkit-background-clip: text;
   background-clip: text;
@@ -536,7 +599,6 @@
 
 /* New floating orb animations */
 @keyframes floatMove1 {
-
   0%,
   100% {
     transform: translate(0, 0) rotate(0deg);
@@ -556,7 +618,6 @@
 }
 
 @keyframes floatMove2 {
-
   0%,
   100% {
     transform: translate(0, 0) rotate(0deg);
@@ -572,7 +633,6 @@
 }
 
 @keyframes floatMove3 {
-
   0%,
   100% {
     transform: translate(0, 0) rotate(0deg);
@@ -596,7 +656,6 @@
 }
 
 @keyframes floatMove4 {
-
   0%,
   100% {
     transform: translate(0, 0) rotate(0deg);
@@ -608,7 +667,6 @@
 }
 
 @keyframes floatMove5 {
-
   0%,
   100% {
     transform: translate(0, 0) rotate(0deg);

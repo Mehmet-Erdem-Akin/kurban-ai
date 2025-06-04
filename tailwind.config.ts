@@ -24,7 +24,7 @@ const config: Config = {
             800: "#952640",
             900: "#80243e",
           },
-          // Soft Purples  
+          // Soft Purples
           lavender: {
             50: "#faf8ff",
             100: "#f3f0ff",
@@ -178,14 +178,15 @@ const config: Config = {
         medium:
           "0 4px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
         large: "0 10px 50px -12px rgba(0, 0, 0, 0.25)",
-        pastel: "0 4px 15px -3px rgba(139, 120, 255, 0.15), 0 8px 25px -5px rgba(242, 116, 144, 0.1)",
+        pastel:
+          "0 4px 15px -3px rgba(139, 120, 255, 0.15), 0 8px 25px -5px rgba(242, 116, 144, 0.1)",
       },
       animation: {
         "fade-in": "fadeIn 0.5s ease-in-out",
         "slide-up": "slideUp 0.5s ease-out",
         "scale-in": "scaleIn 0.3s ease-out",
-        "parallax": "parallax 20s ease-in-out infinite",
-        "float": "float 6s ease-in-out infinite",
+        parallax: "parallax 20s ease-in-out infinite",
+        float: "float 6s ease-in-out infinite",
         "bounce-slow": "bounce 2s infinite",
       },
       keyframes: {

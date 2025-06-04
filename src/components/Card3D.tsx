@@ -1,18 +1,14 @@
 "use client";
 
-import { ReactNode } from 'react';
+import { ReactNode } from "react";
 
 interface Card3DProps {
-    children: ReactNode;
-    className?: string;
+  children: ReactNode;
+  className?: string;
 }
 
-const Card3D = ({ children, className = '' }: Card3DProps) => {
-    return (
-        <div className={className}>
-            {children}
-        </div>
-    );
+const Card3D = ({ children, className = "" }: Card3DProps) => {
+  return <div className={className}>{children}</div>;
 };
 
-export default Card3D; 
+export default Card3D;

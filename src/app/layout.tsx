@@ -15,6 +15,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="tr">
+      <head>
+        <meta
+          name="google-site-verification"
+          content={process.env.NEXT_PUBLIC_GOOGLE_VERIFICATION || ""}
+        />
+      </head>
       <body className="antialiased">{children}</body>
     </html>
   );

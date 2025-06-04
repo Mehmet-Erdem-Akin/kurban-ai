@@ -752,8 +752,8 @@ export default function Home() {
               </div>
               <div className="flex text-yellow-400 mb-4">⭐⭐⭐⭐⭐</div>
               <p className="text-neutral-600 italic">
-                &quot;3 farklı açıdan fotoğraf çekip analiz ettirdim. Sonuçlar çok
-                doğruydu! Artık hayvan alırken kendimi çok daha güvende
+                &quot;3 farklı açıdan fotoğraf çekip analiz ettirdim. Sonuçlar
+                çok doğruydu! Artık hayvan alırken kendimi çok daha güvende
                 hissediyorum.&quot;
               </p>
             </Card3D>
@@ -772,8 +772,8 @@ export default function Home() {
               </div>
               <div className="flex text-yellow-400 mb-4">⭐⭐⭐⭐⭐</div>
               <p className="text-neutral-600 italic">
-                &quot;Koyunlarımın yaş ve ağırlık tahminleri gerçekten doğru çıktı.
-                Özellikle değer hesaplama özelliği çok yararlı.&quot;
+                &quot;Koyunlarımın yaş ve ağırlık tahminleri gerçekten doğru
+                çıktı. Özellikle değer hesaplama özelliği çok yararlı.&quot;
               </p>
             </Card3D>
 
@@ -791,8 +791,8 @@ export default function Home() {
               </div>
               <div className="flex text-yellow-400 mb-4">⭐⭐⭐⭐⭐</div>
               <p className="text-neutral-600 italic">
-                &quot;Ücretsiz olması harika! Çoklu fotoğraf özelliği sayesinde daha
-                detaylı analiz alabildim. Herkese tavsiye ederim.&quot;
+                &quot;Ücretsiz olması harika! Çoklu fotoğraf özelliği sayesinde
+                daha detaylı analiz alabildim. Herkese tavsiye ederim.&quot;
               </p>
             </Card3D>
           </div>

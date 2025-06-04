@@ -570,15 +570,17 @@ export default function AnalyzePage() {
         height: analysisContainerRef.current.scrollHeight,
       });
 
-      const link = document.createElement('a');
+      const link = document.createElement("a");
       link.download = `hayvan-analizi-${new Date().toISOString().slice(0, 10)}.png`;
-      link.href = canvas.toDataURL('image/png');
+      link.href = canvas.toDataURL("image/png");
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
     } catch (error) {
-      console.error('Görüntü indirme hatası:', error);
-      alert('Görüntü indirme sırasında bir hata oluştu. Lütfen tekrar deneyin.');
+      console.error("Görüntü indirme hatası:", error);
+      alert(
+        "Görüntü indirme sırasında bir hata oluştu. Lütfen tekrar deneyin.",
+      );
     }
   };
 
@@ -591,11 +593,11 @@ export default function AnalyzePage() {
         allowTaint: false,
       });
 
-      const imgData = canvas.toDataURL('image/png');
+      const imgData = canvas.toDataURL("image/png");
       const pdf = new jsPDF({
-        orientation: 'portrait',
-        unit: 'mm',
-        format: 'a4',
+        orientation: "portrait",
+        unit: "mm",
+        format: "a4",
       });
 
       const imgWidth = 210; // A4 width in mm
@@ -606,21 +608,21 @@ export default function AnalyzePage() {
       let position = 0;
 
       // Add the image to PDF
-      pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+      pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
       heightLeft -= pageHeight;
 
       // Add new pages if content is longer than one page
       while (heightLeft >= 0) {
         position = heightLeft - imgHeight;
         pdf.addPage();
-        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+        pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
         heightLeft -= pageHeight;
       }
 
       pdf.save(`hayvan-analizi-${new Date().toISOString().slice(0, 10)}.pdf`);
     } catch (error) {
-      console.error('PDF indirme hatası:', error);
-      alert('PDF indirme sırasında bir hata oluştu. Lütfen tekrar deneyin.');
+      console.error("PDF indirme hatası:", error);
+      alert("PDF indirme sırasında bir hata oluştu. Lütfen tekrar deneyin.");
     }
   };
 
@@ -637,10 +639,7 @@ export default function AnalyzePage() {
               Kurbanlık Analiz
             </span>
           </Link>
-          <Link
-            href="/"
-            className="btn btn-secondary btn-md hidden sm:block"
-          >
+          <Link href="/" className="btn btn-secondary btn-md hidden sm:block">
             Ana Sayfa
           </Link>
         </nav>
@@ -1045,20 +1044,20 @@ export default function AnalyzePage() {
                     )}
                     {(analysisError.errorType === "INCOMPLETE_ANALYSIS" ||
                       analysisError.errorType === "ANALYSIS_FAILED") && (
-                        <>
-                          <p>• Daha yüksek çözünürlüklü fotoğraf deneyin</p>
-                          <p>• Hayvanın yakın plan fotoğrafını çekin</p>
-                          <p>• Farklı açıdan fotoğraf deneyebilirsiniz</p>
-                        </>
-                      )}
+                      <>
+                        <p>• Daha yüksek çözünürlüklü fotoğraf deneyin</p>
+                        <p>• Hayvanın yakın plan fotoğrafını çekin</p>
+                        <p>• Farklı açıdan fotoğraf deneyebilirsiniz</p>
+                      </>
+                    )}
                     {(analysisError.errorType === "API_ERROR" ||
                       analysisError.errorType === "NETWORK_ERROR") && (
-                        <>
-                          <p>• İnternet bağlantınızı kontrol edin</p>
-                          <p>• Birkaç dakika sonra tekrar deneyin</p>
-                          <p>• Sayfayı yenileyip tekrar deneyin</p>
-                        </>
-                      )}
+                      <>
+                        <p>• İnternet bağlantınızı kontrol edin</p>
+                        <p>• Birkaç dakika sonra tekrar deneyin</p>
+                        <p>• Sayfayı yenileyip tekrar deneyin</p>
+                      </>
+                    )}
                   </div>
                 </div>
               </div>
@@ -1086,10 +1085,11 @@ export default function AnalyzePage() {
                         alt={`Fotoğraf ${index + 1}`}
                         width={64}
                         height={64}
-                        className={`w-16 h-16 object-cover rounded cursor-pointer border-2 transition-all ${currentImageIndex === index
-                          ? "border-green-500 ring-2 ring-green-200"
-                          : "border-gray-200 hover:border-gray-300"
-                          }`}
+                        className={`w-16 h-16 object-cover rounded cursor-pointer border-2 transition-all ${
+                          currentImageIndex === index
+                            ? "border-green-500 ring-2 ring-green-200"
+                            : "border-gray-200 hover:border-gray-300"
+                        }`}
                         onClick={() => switchImage(index)}
                       />
                       <button
@@ -1524,10 +1524,10 @@ export default function AnalyzePage() {
                           Bu analiz yapay zeka tarafından oluşturulmuştur ve
                           sadece tahmini bilgiler içermektedir.
                         </strong>
-                        Gerçek hayvan değerlendirmesi için mutlaka uzman veteriner
-                        hekim ve deneyimli besicilik uzmanlarından görüş alınız.
-                        Kesin alım-satım kararları vermeden önce profesyonel
-                        inceleme yaptırmanız önerilir.
+                        Gerçek hayvan değerlendirmesi için mutlaka uzman
+                        veteriner hekim ve deneyimli besicilik uzmanlarından
+                        görüş alınız. Kesin alım-satım kararları vermeden önce
+                        profesyonel inceleme yaptırmanız önerilir.
                       </p>
                       <div className="mt-2 text-xs text-amber-600">
                         📋 Bu rapor referans amaçlıdır • 🧑‍⚕️ Veteriner kontrolü
@@ -1539,8 +1539,8 @@ export default function AnalyzePage() {
 
                 {/* Analysis Success Header */}
                 <div className="card p-6 bg-gradient-to-r from-success/10 to-primary-50 border-success/20">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                    <div className="flex items-start">
                       <div className="icon-container bg-success/20 text-success mr-4">
                         <svg
                           className="w-6 h-6"
@@ -1557,18 +1557,24 @@ export default function AnalyzePage() {
                         </svg>
                       </div>
                       <div>
-                        <h3 className="text-xl font-bold text-neutral-900">
+                        <h3 className="text-xl font-bold text-neutral-900 mb-2">
                           Analiz Tamamlandı!
                         </h3>
-                        <p className="text-neutral-600">
-                          %{analysisResult.confidence} güven oranı •{" "}
-                          {analysisResult.analysisType === "multiple_same_animal"
-                            ? `${analysisResult.totalImages} fotoğraf analizi`
-                            : "Tek fotoğraf analizi"}
-                        </p>
+                        <div className="flex flex-col sm:flex-row sm:items-center sm:gap-2 text-neutral-600">
+                          <span className="font-medium">
+                            %{analysisResult.confidence} güven oranı
+                          </span>
+                          <span className="hidden sm:inline">•</span>
+                          <span>
+                            {analysisResult.analysisType ===
+                            "multiple_same_animal"
+                              ? `${analysisResult.totalImages} fotoğraf analizi`
+                              : "Tek fotoğraf analizi"}
+                          </span>
+                        </div>
                       </div>
                     </div>
-                    <div className="text-right">
+                    <div className="text-center sm:text-right">
                       <div className="text-2xl font-bold text-primary-600">
                         {analysisResult.pricing?.estimatedMeatValue?.toLocaleString()}{" "}
                         ₺
@@ -1582,10 +1588,10 @@ export default function AnalyzePage() {
 
                 {/* Analiz Edilen Fotoğraflar */}
                 <div className="card">
-                  <div className="card-header">
-                    <h3 className="text-xl font-bold text-neutral-900 flex items-center">
+                  <div className="card-header p-4 sm:p-6">
+                    <h3 className="text-xl font-bold text-neutral-900 flex items-center flex-col sm:flex-row text-center sm:text-left">
                       <svg
-                        className="w-5 h-5 mr-2 text-blue-600"
+                        className="w-8 h-8 mr-2 text-blue-600"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -1604,7 +1610,7 @@ export default function AnalyzePage() {
                       </span>
                     </h3>
                   </div>
-                  <div className="card-body">
+                  <div className="card-body p-4 sm:p-6">
                     {selectedImages.length === 1 ? (
                       /* Tek Fotoğraf Görünümü */
                       <div className="flex flex-col items-center">
@@ -1652,9 +1658,9 @@ export default function AnalyzePage() {
                       <div>
                         <div className="mb-4 p-3 bg-blue-50 rounded-lg">
                           <p className="text-sm text-blue-800 text-center">
-                            <strong>Çoklu Fotoğraf Analizi:</strong> Aynı hayvana
-                            ait {selectedImages.length} farklı açıdan fotoğraf
-                            analiz edildi
+                            <strong>Çoklu Fotoğraf Analizi:</strong> Aynı
+                            hayvana ait {selectedImages.length} farklı açıdan
+                            fotoğraf analiz edildi
                           </p>
                         </div>
 
@@ -1717,7 +1723,7 @@ export default function AnalyzePage() {
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {/* Hayvan Bilgileri */}
                   <div className="card">
-                    <div className="card-header">
+                    <div className="card-header p-4 sm:p-6">
                       <h3 className="text-xl font-bold text-neutral-900 flex items-center">
                         <svg
                           className="w-5 h-5 mr-2 text-primary-600"
@@ -1735,7 +1741,7 @@ export default function AnalyzePage() {
                         Hayvan Bilgileri
                       </h3>
                     </div>
-                    <div className="card-body space-y-4">
+                    <div className="card-body space-y-4 p-4 sm:p-6 text-sm sm:text-base">
                       <div className="flex justify-between items-center">
                         <span className="text-neutral-600">Tür:</span>
                         <span className="font-semibold text-primary-700">
@@ -1750,7 +1756,7 @@ export default function AnalyzePage() {
                       </div>
                       <div className="flex justify-between items-center">
                         <span className="text-neutral-600">Canlı Ağırlık:</span>
-                        <span className="font-semibold text-lg">
+                        <span className="font-semibold">
                           {analysisResult?.estimatedWeight} kg
                         </span>
                       </div>
@@ -1782,7 +1788,7 @@ export default function AnalyzePage() {
 
                   {/* Et Verimi Analizi */}
                   <div className="card">
-                    <div className="card-header">
+                    <div className="card-header p-4 sm:p-6">
                       <h3 className="text-xl font-bold text-neutral-900 flex items-center">
                         <svg
                           className="w-5 h-5 mr-2 text-orange-600"
@@ -1800,7 +1806,7 @@ export default function AnalyzePage() {
                         Et Verimi
                       </h3>
                     </div>
-                    <div className="card-body space-y-4">
+                    <div className="card-body space-y-4 p-4 sm:p-6 text-sm sm:text-base">
                       <div className="bg-orange-50 p-3 rounded-lg">
                         <div className="flex justify-between items-center mb-2">
                           <span className="text-neutral-600">
@@ -1825,7 +1831,10 @@ export default function AnalyzePage() {
                         </div>
                         <div className="text-xs text-neutral-500">
                           Kemiksiz Verimi: %
-                          {analysisResult?.meatYield?.yieldRatios?.bonelessYield}
+                          {
+                            analysisResult?.meatYield?.yieldRatios
+                              ?.bonelessYield
+                          }
                         </div>
                       </div>
 
@@ -1848,7 +1857,7 @@ export default function AnalyzePage() {
 
                   {/* Fiyat Analizi */}
                   <div className="card">
-                    <div className="card-header">
+                    <div className="card-header p-4 sm:p-6">
                       <h3 className="text-xl font-bold text-neutral-900 flex items-center">
                         <svg
                           className="w-5 h-5 mr-2 text-success-600"
@@ -1866,10 +1875,10 @@ export default function AnalyzePage() {
                         Fiyat Analizi
                       </h3>
                     </div>
-                    <div className="card-body space-y-4">
+                    <div className="card-body space-y-4 p-4 sm:p-6 text-sm sm:text-base">
                       <div className="flex justify-between items-center">
                         <span className="text-neutral-600">Tahmini Değer:</span>
-                        <span className="font-bold text-xl text-success-700">
+                        <span className="font-bold text-lg text-success-700">
                           ₺
                           {analysisResult?.pricing?.estimatedMeatValue?.toLocaleString()}
                         </span>
@@ -1977,7 +1986,7 @@ export default function AnalyzePage() {
                 <div className="grid md:grid-cols-2 gap-6">
                   {/* Öneriler */}
                   <div className="card">
-                    <div className="card-header">
+                    <div className="card-header p-4 sm:p-6">
                       <h3 className="text-xl font-bold text-neutral-900 flex items-center">
                         <svg
                           className="w-5 h-5 mr-2 text-indigo-600"
@@ -1995,7 +2004,7 @@ export default function AnalyzePage() {
                         Öneriler
                       </h3>
                     </div>
-                    <div className="card-body">
+                    <div className="card-body p-4 sm:p-6 text-sm sm:text-base">
                       <ul className="space-y-3">
                         {analysisResult?.recommendations?.map(
                           (recommendation: string, index: number) => (
@@ -2025,7 +2034,7 @@ export default function AnalyzePage() {
 
                   {/* Analiz Detayları */}
                   <div className="card">
-                    <div className="card-header">
+                    <div className="card-header p-4 sm:p-6">
                       <h3 className="text-xl font-bold text-neutral-900 flex items-center">
                         <svg
                           className="w-5 h-5 mr-2 text-gray-600"
@@ -2043,11 +2052,12 @@ export default function AnalyzePage() {
                         Analiz Bilgileri
                       </h3>
                     </div>
-                    <div className="card-body space-y-3">
+                    <div className="card-body p-4 sm:p-6 text-sm sm:text-base space-y-3">
                       <div className="flex justify-between">
                         <span className="text-neutral-600">Analiz Türü:</span>
                         <span className="font-semibold">
-                          {analysisResult?.analysisType === "multiple_same_animal"
+                          {analysisResult?.analysisType ===
+                          "multiple_same_animal"
                             ? "Çoklu Fotoğraf"
                             : "Tek Fotoğraf"}
                         </span>
@@ -2081,99 +2091,100 @@ export default function AnalyzePage() {
                       {Object.keys(additionalInfo).some(
                         (key) => additionalInfo[key as keyof AdditionalInfo],
                       ) && (
-                          <>
-                            <hr className="my-3" />
-                            <div className="text-sm">
-                              <h4 className="font-semibold text-green-700 mb-2">
-                                📋 Analiz İçin Kullanılan Ek Bilgiler:
-                              </h4>
-                              <div className="bg-green-50 p-3 rounded-lg space-y-1">
-                                {additionalInfo.animalCategory && (
-                                  <div className="flex justify-between text-xs">
-                                    <span>Kategori:</span>
-                                    <span className="font-medium">
-                                      {additionalInfo.animalCategory === "büyükbaş"
-                                        ? "🐄 Büyükbaş"
-                                        : "🐑 Küçükbaş"}
-                                    </span>
-                                  </div>
-                                )}
-                                {additionalInfo.animalType && (
-                                  <div className="flex justify-between text-xs">
-                                    <span>Tür:</span>
-                                    <span className="font-medium">
-                                      {additionalInfo.animalType}
-                                    </span>
-                                  </div>
-                                )}
-                                {additionalInfo.gender && (
-                                  <div className="flex justify-between text-xs">
-                                    <span>Cinsiyet:</span>
-                                    <span className="font-medium">
-                                      {additionalInfo.gender === "erkek"
-                                        ? "♂️ Erkek"
-                                        : "♀️ Dişi"}
-                                    </span>
-                                  </div>
-                                )}
-                                {additionalInfo.estimatedAge && (
-                                  <div className="flex justify-between text-xs">
-                                    <span>Yaş:</span>
-                                    <span className="font-medium">
-                                      {additionalInfo.estimatedAge}
-                                    </span>
-                                  </div>
-                                )}
-                                {additionalInfo.healthCondition && (
-                                  <div className="flex justify-between text-xs">
-                                    <span>Sağlık:</span>
-                                    <span className="font-medium">
-                                      {additionalInfo.healthCondition}
-                                    </span>
-                                  </div>
-                                )}
-                                {additionalInfo.pregnancyStatus && (
-                                  <div className="flex justify-between text-xs">
-                                    <span>Gebelik:</span>
-                                    <span className="font-medium">
-                                      {additionalInfo.pregnancyStatus}
-                                    </span>
-                                  </div>
-                                )}
-                                {additionalInfo.weight && (
-                                  <div className="flex justify-between text-xs">
-                                    <span>Tahmini Ağırlık:</span>
-                                    <span className="font-medium">
-                                      {additionalInfo.weight}
-                                    </span>
-                                  </div>
-                                )}
-                                {additionalInfo.region && (
-                                  <div className="flex justify-between text-xs">
-                                    <span>Bölge:</span>
-                                    <span className="font-medium">
-                                      {additionalInfo.region}
-                                    </span>
-                                  </div>
-                                )}
-                                {additionalInfo.specialNotes && (
-                                  <div className="text-xs mt-2">
-                                    <span className="font-medium">
-                                      Özel Notlar:
-                                    </span>
-                                    <p className="mt-1 text-gray-600 italic">
-                                      &ldquo;{additionalInfo.specialNotes}&rdquo;
-                                    </p>
-                                  </div>
-                                )}
-                              </div>
-                              <p className="text-xs text-green-600 mt-2 text-center">
-                                ✅ Bu bilgiler AI analizinin doğruluğunu artırmak
-                                için kullanıldı
-                              </p>
+                        <>
+                          <hr className="my-3" />
+                          <div className="text-sm">
+                            <h4 className="font-semibold text-green-700 mb-2">
+                              📋 Analiz İçin Kullanılan Ek Bilgiler:
+                            </h4>
+                            <div className="bg-green-50 p-3 rounded-lg space-y-1">
+                              {additionalInfo.animalCategory && (
+                                <div className="flex justify-between text-xs">
+                                  <span>Kategori:</span>
+                                  <span className="font-medium">
+                                    {additionalInfo.animalCategory ===
+                                    "büyükbaş"
+                                      ? "🐄 Büyükbaş"
+                                      : "🐑 Küçükbaş"}
+                                  </span>
+                                </div>
+                              )}
+                              {additionalInfo.animalType && (
+                                <div className="flex justify-between text-xs">
+                                  <span>Tür:</span>
+                                  <span className="font-medium">
+                                    {additionalInfo.animalType}
+                                  </span>
+                                </div>
+                              )}
+                              {additionalInfo.gender && (
+                                <div className="flex justify-between text-xs">
+                                  <span>Cinsiyet:</span>
+                                  <span className="font-medium">
+                                    {additionalInfo.gender === "erkek"
+                                      ? "♂️ Erkek"
+                                      : "♀️ Dişi"}
+                                  </span>
+                                </div>
+                              )}
+                              {additionalInfo.estimatedAge && (
+                                <div className="flex justify-between text-xs">
+                                  <span>Yaş:</span>
+                                  <span className="font-medium">
+                                    {additionalInfo.estimatedAge}
+                                  </span>
+                                </div>
+                              )}
+                              {additionalInfo.healthCondition && (
+                                <div className="flex justify-between text-xs">
+                                  <span>Sağlık:</span>
+                                  <span className="font-medium">
+                                    {additionalInfo.healthCondition}
+                                  </span>
+                                </div>
+                              )}
+                              {additionalInfo.pregnancyStatus && (
+                                <div className="flex justify-between text-xs">
+                                  <span>Gebelik:</span>
+                                  <span className="font-medium">
+                                    {additionalInfo.pregnancyStatus}
+                                  </span>
+                                </div>
+                              )}
+                              {additionalInfo.weight && (
+                                <div className="flex justify-between text-xs">
+                                  <span>Tahmini Ağırlık:</span>
+                                  <span className="font-medium">
+                                    {additionalInfo.weight}
+                                  </span>
+                                </div>
+                              )}
+                              {additionalInfo.region && (
+                                <div className="flex justify-between text-xs">
+                                  <span>Bölge:</span>
+                                  <span className="font-medium">
+                                    {additionalInfo.region}
+                                  </span>
+                                </div>
+                              )}
+                              {additionalInfo.specialNotes && (
+                                <div className="text-xs mt-2">
+                                  <span className="font-medium">
+                                    Özel Notlar:
+                                  </span>
+                                  <p className="mt-1 text-gray-600 italic">
+                                    &ldquo;{additionalInfo.specialNotes}&rdquo;
+                                  </p>
+                                </div>
+                              )}
                             </div>
-                          </>
-                        )}
+                            <p className="text-xs text-green-600 mt-2 text-center">
+                              ✅ Bu bilgiler AI analizinin doğruluğunu artırmak
+                              için kullanıldı
+                            </p>
+                          </div>
+                        </>
+                      )}
 
                       {analysisResult?.analysisNote && (
                         <div className="bg-blue-50 p-3 rounded-lg mt-4">

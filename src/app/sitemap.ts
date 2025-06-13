@@ -1,46 +1,49 @@
 import { MetadataRoute } from 'next'
 
 export default function sitemap(): MetadataRoute.Sitemap {
+    const baseUrl = 'https://kurban-ai.vercel.app'
+    const currentDate = new Date()
+
     return [
         {
-            url: 'https://kurban-ai.vercel.app',
-            lastModified: '2024-12-20',
+            url: baseUrl,
+            lastModified: currentDate,
             changeFrequency: 'daily',
             priority: 1,
         },
         {
-            url: 'https://kurban-ai.vercel.app/analyze',
-            lastModified: '2024-12-20',
+            url: `${baseUrl}/analyze`,
+            lastModified: currentDate,
             changeFrequency: 'weekly',
             priority: 0.8,
         },
         {
-            url: 'https://kurban-ai.vercel.app/demo',
-            lastModified: '2024-12-20',
+            url: `${baseUrl}/demo`,
+            lastModified: currentDate,
             changeFrequency: 'weekly',
             priority: 0.8,
         },
         {
-            url: 'https://kurban-ai.vercel.app/contact',
-            lastModified: '2024-12-20',
+            url: `${baseUrl}/contact`,
+            lastModified: currentDate,
             changeFrequency: 'monthly',
             priority: 0.6,
         },
         {
-            url: 'https://kurban-ai.vercel.app/privacy',
-            lastModified: '2024-12-20',
+            url: `${baseUrl}/privacy`,
+            lastModified: currentDate,
             changeFrequency: 'yearly',
             priority: 0.3,
         },
         {
-            url: 'https://kurban-ai.vercel.app/terms',
-            lastModified: '2024-12-20',
+            url: `${baseUrl}/terms`,
+            lastModified: currentDate,
             changeFrequency: 'yearly',
             priority: 0.3,
         },
         {
-            url: 'https://kurban-ai.vercel.app/kvkk',
-            lastModified: '2024-12-20',
+            url: `${baseUrl}/kvkk`,
+            lastModified: currentDate,
             changeFrequency: 'yearly',
             priority: 0.3,
         },

@@ -1,8 +1,19 @@
 User-agent: *
 Allow: /
 
+# Block unnecessary crawling of API routes
+Disallow: /api/
+
+# Block unnecessary files
+Disallow: /_next/
+Disallow: /manifest.json
+Disallow: /browserconfig.xml
+
 # Sitemap location
 Sitemap: https://kurban-ai.vercel.app/sitemap.xml
 
 # Crawl-delay (optional - helps prevent server overload)
-Crawl-delay: 1 
+Crawl-delay: 1
+
+# Host directive for preferred domain
+Host: https://kurban-ai.vercel.app 

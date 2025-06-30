@@ -1,51 +1,47 @@
 {
-    "name": "Kurbanlık Analiz - Yapay Zeka ile Hayvan Analizi",
-    "short_name": "Kurbanlık Analiz",
-    "description": "Yapay zeka teknolojisi ile kurbanlık hayvan analizi ve fiyat tahmini",
-    "start_url": "/",
-    "display": "standalone",
-    "background_color": "#ffffff",
-    "theme_color": "#059669",
-    "orientation": "portrait-primary",
-    "scope": "/",
-    "lang": "tr",
-    "categories": [
-        "productivity",
-        "utilities",
-        "education"
-    ],
-    "icons": [
-        {
-            "src": "/android-chrome-192x192.png",
-            "sizes": "192x192",
-            "type": "image/png",
-            "purpose": "maskable any"
-        },
-        {
-            "src": "/android-chrome-512x512.png",
-            "sizes": "512x512",
-            "type": "image/png",
-            "purpose": "maskable any"
-        },
-        {
-            "src": "/icon.svg",
-            "sizes": "any",
-            "type": "image/svg+xml",
-            "purpose": "any"
-        }
-    ],
-    "screenshots": [
-        {
-            "src": "/screenshot-mobile.png",
-            "sizes": "375x812",
-            "type": "image/png",
-            "form_factor": "narrow"
-        },
-        {
-            "src": "/screenshot-desktop.png",
-            "sizes": "1920x1080",
-            "type": "image/png",
-            "form_factor": "wide"
-        }
-    ]
+  "name": "Kurbanlık Analiz - Yapay Zeka ile Hayvan Analizi",
+  "short_name": "Kurbanlık Analiz",
+  "description": "Yapay zeka teknolojisi ile kurbanlık hayvan analizi ve fiyat tahmini",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#059669",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "tr",
+  "categories": ["productivity", "utilities", "education"],
+  "icons": [
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshot-mobile.png",
+      "sizes": "375x812",
+      "type": "image/png",
+      "form_factor": "narrow"
+    },
+    {
+      "src": "/screenshot-desktop.png",
+      "sizes": "1920x1080",
+      "type": "image/png",
+      "form_factor": "wide"
+    }
+  ]
 }

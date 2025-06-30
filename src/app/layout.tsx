@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import Analytics from "@/components/Analytics";
 import "./globals.css";
 
 export const metadata: Metadata = {
   title: {
     default: "Kurbanlık Analiz - Yapay Zeka ile Hayvan Analizi",
-    template: "%s | Kurbanlık Analiz"
+    template: "%s | Kurbanlık Analiz",
   },
   description:
     "Kurbanlık hayvan seçiminde daha bilinçli kararlar verin. Yapay zeka teknolojisi ile hayvan fotoğraflarını analiz edin, et fiyatı tahmini alın ve doğru seçim yapın.",
@@ -23,7 +24,7 @@ export const metadata: Metadata = {
     "AI hayvan analizi",
     "kurban fiyat",
     "et kalitesi",
-    "hayvan seçimi"
+    "hayvan seçimi",
   ],
   authors: [{ name: "Kurbanlık Analiz" }],
   creator: "Kurbanlık Analiz",
@@ -33,35 +34,37 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL('https://kurban-ai.vercel.app'),
+  metadataBase: new URL("https://kurban-ai.vercel.app"),
   alternates: {
-    canonical: '/',
+    canonical: "/",
     languages: {
-      'tr-TR': '/',
+      "tr-TR": "/",
     },
   },
   openGraph: {
-    type: 'website',
-    locale: 'tr_TR',
-    url: 'https://kurban-ai.vercel.app',
-    title: 'Kurbanlık Analiz - Yapay Zeka ile Hayvan Analizi',
-    description: 'Kurbanlık hayvan seçiminde daha bilinçli kararlar verin. Yapay zeka teknolojisi ile hayvan fotoğraflarını analiz edin, et fiyatı tahmini alın.',
-    siteName: 'Kurbanlık Analiz',
+    type: "website",
+    locale: "tr_TR",
+    url: "https://kurban-ai.vercel.app",
+    title: "Kurbanlık Analiz - Yapay Zeka ile Hayvan Analizi",
+    description:
+      "Kurbanlık hayvan seçiminde daha bilinçli kararlar verin. Yapay zeka teknolojisi ile hayvan fotoğraflarını analiz edin, et fiyatı tahmini alın.",
+    siteName: "Kurbanlık Analiz",
     images: [
       {
-        url: '/og-image.jpg',
+        url: "/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: 'Kurbanlık Analiz - Yapay Zeka ile Hayvan Analizi',
+        alt: "Kurbanlık Analiz - Yapay Zeka ile Hayvan Analizi",
       },
     ],
   },
   twitter: {
-    card: 'summary_large_image',
-    title: 'Kurbanlık Analiz - Yapay Zeka ile Hayvan Analizi',
-    description: 'Yapay zeka ile kurbanlık hayvan analizi. Et fiyatı tahmini ve doğru seçim rehberi.',
-    images: ['/og-image.jpg'],
-    creator: '@kurbananaliz',
+    card: "summary_large_image",
+    title: "Kurbanlık Analiz - Yapay Zeka ile Hayvan Analizi",
+    description:
+      "Yapay zeka ile kurbanlık hayvan analizi. Et fiyatı tahmini ve doğru seçim rehberi.",
+    images: ["/og-image.jpg"],
+    creator: "@kurbananaliz",
   },
   robots: {
     index: true,
@@ -69,15 +72,15 @@ export const metadata: Metadata = {
     googleBot: {
       index: true,
       follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
     },
   },
   verification: {
     google: process.env.NEXT_PUBLIC_GOOGLE_VERIFICATION,
   },
-  category: 'technology',
+  category: "technology",
 };
 
 export default function RootLayout({
@@ -103,31 +106,39 @@ export default function RootLayout({
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "WebApplication",
-              "name": "Kurbanlık Analiz",
-              "description": "Yapay zeka teknolojisi ile kurbanlık hayvan analizi ve fiyat tahmini",
-              "url": "https://kurban-ai.vercel.app",
-              "applicationCategory": "AI Analysis Tool",
-              "operatingSystem": "Web Browser",
-              "offers": {
+              name: "Kurbanlık Analiz",
+              description:
+                "Yapay zeka teknolojisi ile kurbanlık hayvan analizi ve fiyat tahmini",
+              url: "https://kurban-ai.vercel.app",
+              applicationCategory: "AI Analysis Tool",
+              operatingSystem: "Web Browser",
+              offers: {
                 "@type": "Offer",
-                "price": "0",
-                "priceCurrency": "TRY"
+                price: "0",
+                priceCurrency: "TRY",
               },
-              "creator": {
+              creator: {
                 "@type": "Organization",
-                "name": "Kurbanlık Analiz"
+                name: "Kurbanlık Analiz",
               },
-              "featureList": [
+              featureList: [
                 "Yapay zeka ile hayvan analizi",
                 "Et fiyatı tahmini",
                 "Hayvan seçim rehberi",
-                "Fotoğraf tabanlı analiz"
-              ]
-            })
+                "Fotoğraf tabanlı analiz",
+              ],
+            }),
           }}
         />
       </head>
       <body className="antialiased">
+        {/* Google AdSense */}
+        <Script
+          src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_GOOGLE_ADSENSE}`}
+          crossOrigin="anonymous"
+          strategy="beforeInteractive"
+        />
+
         {children}
         <Analytics />
       </body>

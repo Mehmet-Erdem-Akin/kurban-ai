@@ -98,6 +98,7 @@ export default function RootLayout({
         <meta name="theme-color" content="#059669" />
         <meta name="msapplication-TileColor" content="#059669" />
         <meta name="msapplication-config" content="/browserconfig.xml" />
+        <meta name="google-adsense-account" content={process.env.NEXT_PUBLIC_GOOGLE_ADSENSE} />
 
         {/* Structured Data - JSON-LD */}
         <script

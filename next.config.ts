@@ -35,6 +35,13 @@ const nextConfig: NextConfig = {
             key: "Referrer-Policy",
             value: "origin-when-cross-origin",
           },
+        ],
+      },
+      {
+        // Next zaten hash'li chunk'lara cache verir; tüm siteye 1 yıl + immutable
+        // vermek geliştirmede (ve bazen prod'da) eski HTML/CSS/JS'nin takılmasına yol açar.
+        source: "/_next/static/:path*",
+        headers: [
           {
             key: "Cache-Control",
             value: "public, max-age=31536000, immutable",

@@ -1,7 +1,20 @@
 import type { Metadata } from "next";
 import Script from "next/script";
+import { DM_Sans, Fraunces } from "next/font/google";
 import Analytics from "@/components/Analytics";
 import "./globals.css";
+
+const dmSans = DM_Sans({
+  subsets: ["latin"],
+  variable: "--font-dm-sans",
+  display: "swap",
+});
+
+const fraunces = Fraunces({
+  subsets: ["latin"],
+  variable: "--font-display",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: {
@@ -89,14 +102,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="tr">
+    <html lang="tr" className={`${dmSans.variable} ${fraunces.variable}`}>
       <head>
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="icon" href="/icon.svg" type="image/svg+xml" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <link rel="manifest" href="/manifest.json" />
-        <meta name="theme-color" content="#059669" />
-        <meta name="msapplication-TileColor" content="#059669" />
+        <meta name="theme-color" content="#047857" />
+        <meta name="msapplication-TileColor" content="#047857" />
         <meta name="msapplication-config" content="/browserconfig.xml" />
         <meta name="google-adsense-account" content={process.env.NEXT_PUBLIC_GOOGLE_ADSENSE} />
 
@@ -132,14 +145,22 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="antialiased">
+      <body className="font-sans antialiased">
+        <a
+          href="#icerik"
+          className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-emerald-900 focus:px-4 focus:py-2 focus:text-white focus:outline-none focus:ring-2 focus:ring-emerald-400"
+        >
+          İçeriğe atla
+        </a>
         {/* Google AdSense */}
         <Script
           src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_GOOGLE_ADSENSE}`}
           crossOrigin="anonymous"
         />
 
-        {children}
+        <div id="icerik" tabIndex={-1} className="outline-none">
+          {children}
+        </div>
         <Analytics />
       </body>
     </html>

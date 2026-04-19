@@ -1,31 +1,17 @@
 import Link from "next/link";
+import AppPageShell from "@/components/AppPageShell";
+import SiteFooter from "@/components/SiteFooter";
+import SiteHeader from "@/components/SiteHeader";
 
 export default function KVKKPage() {
   return (
-    <div className="min-h-screen bg-neutral-50">
-      {/* Header */}
-      <header className="bg-white shadow-sm border-b">
-        <div className="container mx-auto px-4 py-4">
-          <nav className="flex items-center justify-between">
-            <Link href="/" className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-primary-600 to-primary-700 rounded-xl flex items-center justify-center shadow-soft">
-                <span className="text-white text-lg font-bold">KA</span>
-              </div>
-              <span className="text-2xl font-bold text-neutral-800">
-                Kurbanlık Analiz
-              </span>
-            </Link>
-            <Link href="/" className="btn btn-secondary btn-md">
-              Ana Sayfa
-            </Link>
-          </nav>
-        </div>
-      </header>
+    <AppPageShell>
+      <SiteHeader />
 
-      <main className="container mx-auto px-4 py-12">
+      <main className="relative z-10 container mx-auto px-4 py-12">
         <div className="max-w-4xl mx-auto">
           <div className="card p-8">
-            <h1 className="text-4xl font-bold text-neutral-900 mb-2">
+            <h1 className="font-display text-4xl font-semibold text-neutral-900 mb-2">
               KVKK Aydınlatma Metni
             </h1>
             <p className="text-neutral-600 mb-8">
@@ -669,14 +655,9 @@ export default function KVKKPage() {
         </div>
       </main>
 
-      {/* Footer */}
-      <footer className="bg-neutral-800 text-white py-8">
-        <div className="container mx-auto px-4 text-center">
-          <p className="text-neutral-400">
-            &copy; 2025 Kurbanlık Analiz. Tüm hakları saklıdır.
-          </p>
-        </div>
-      </footer>
-    </div>
+      <div className="relative z-10">
+        <SiteFooter />
+      </div>
+    </AppPageShell>
   );
 }

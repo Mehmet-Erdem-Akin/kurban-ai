@@ -1,44 +1,25 @@
 "use client";
 
 import Link from "next/link";
-import ParallaxBackground from "@/components/ParallaxBackground";
+import AppPageShell from "@/components/AppPageShell";
 import Card3D from "@/components/Card3D";
+import SiteFooter from "@/components/SiteFooter";
+import SiteHeader from "@/components/SiteHeader";
 
 export default function Contact() {
   return (
-    <div className="min-h-screen hero-gradient relative">
-      {/* Parallax Background */}
-      <ParallaxBackground />
+    <AppPageShell>
+      <SiteHeader />
 
-      {/* Header */}
-      <header className="container mx-auto px-4 py-6 relative z-10">
-        <nav className="flex items-center justify-between">
-          <Link href="/" className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-green-600 to-green-700 rounded-xl flex items-center justify-center shadow-soft">
-              <span className="text-white text-lg font-bold">KA</span>
-            </div>
-            <span className="text-2xl font-bold text-neutral-800">
-              Kurbanlık Analiz
-            </span>
-          </Link>
-          <div className="flex items-center space-x-4">
-            <Link href="/analyze" className="btn btn-primary btn-md">
-              Analiz Başlat
-            </Link>
-          </div>
-        </nav>
-      </header>
-
-      {/* Main Content */}
-      <main className="container mx-auto px-4 py-16 relative z-10">
+      <main className="relative z-10 mx-auto max-w-6xl px-4 py-12 sm:py-16">
         {/* Hero Section */}
         <div className="text-center mb-20 animate-fade-in">
-          <div className="inline-flex items-center px-4 py-2 rounded-full bg-green-100 text-green-700 text-sm font-medium mb-6">
-            📞 Bizimle İletişime Geçin
+          <div className="hero-pill mb-6">
+            Bizimle iletişime geçin
           </div>
-          <h1 className="text-6xl font-bold mb-6 leading-tight">
-            <span className="text-neutral-900 mr-2">İletişim</span>
-            <span className="gradient-text-animated">Bilgileri</span>
+          <h1 className="mb-6 font-display text-4xl font-semibold leading-tight tracking-tight text-stone-900 sm:text-5xl">
+            <span className="mr-2">İletişim</span>
+            <span className="gradient-text">bilgileri</span>
           </h1>
           <p className="text-xl text-neutral-600 mb-10 max-w-4xl mx-auto leading-relaxed">
             Sorularınız, önerileriniz veya destek ihtiyaçlarınız için aşağıdaki
@@ -74,8 +55,15 @@ export default function Contact() {
                   <h3 className="text-lg font-semibold text-neutral-900 mb-1">
                     Proje Sahibi
                   </h3>
-                  <p className="text-neutral-600 font-medium">
-                    Mehmet Erdem Akın
+                  <p className="font-medium text-neutral-600">
+                    <a
+                      href="https://www.linkedin.com/in/mehmet-erdem-akin-77453b1a0/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-emerald-800 underline decoration-emerald-200 underline-offset-2 transition hover:text-emerald-950"
+                    >
+                      Mehmet Erdem Akın
+                    </a>
                   </p>
                   <p className="text-neutral-500 text-sm">
                     Yazılım Geliştirici & AI Uzmanı
@@ -164,17 +152,36 @@ export default function Contact() {
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold text-neutral-900 mb-1">
-                    Web Sitesi
+                    Web siteleri
                   </h3>
-                  <a
-                    href="https://kurbanlikanaliz.netlify.app"
-                    className="text-green-600 hover:text-green-700 transition-colors"
-                  >
-                    kurbanlikanaliz.netlify.app
-                  </a>
-                  <p className="text-neutral-500 text-sm mt-1">
-                    Kurban-AI Platformu
-                  </p>
+                  <ul className="mt-1 space-y-2 text-sm">
+                    <li>
+                      <a
+                        href="https://kurban-ai.vercel.app"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="font-medium text-emerald-700 transition hover:text-emerald-900"
+                      >
+                        kurban-ai.vercel.app
+                      </a>
+                      <span className="block text-xs text-neutral-500">
+                        Güncel canlı sürüm
+                      </span>
+                    </li>
+                    <li>
+                      <a
+                        href="https://kurbanlikanaliz.netlify.app"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="font-medium text-emerald-700 transition hover:text-emerald-900"
+                      >
+                        kurbanlikanaliz.netlify.app
+                      </a>
+                      <span className="block text-xs text-neutral-500">
+                        Önceki dağıtım
+                      </span>
+                    </li>
+                  </ul>
                 </div>
               </div>
             </div>
@@ -191,14 +198,25 @@ export default function Contact() {
                 <h3 className="text-lg font-semibold text-neutral-900 mb-2">
                   📋 Proje Detayları
                 </h3>
-                <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                <div className="rounded-lg border border-emerald-200 bg-emerald-50/80 p-4">
                   <ul className="space-y-2 text-neutral-700">
                     <li>
-                      <strong>Proje Türü:</strong> Bireysel geliştirilen AI
+                      <strong>Proje türü:</strong> Bireysel geliştirilen AI
                       platform
                     </li>
                     <li>
                       <strong>Teknoloji:</strong> Next.js, TypeScript, AI/ML
+                    </li>
+                    <li>
+                      <strong>Kaynak kodu:</strong>{" "}
+                      <a
+                        href="https://github.com/Mehmet-Erdem-Akin/kurban-ai"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="font-medium text-emerald-800 underline decoration-emerald-300 underline-offset-2 transition hover:text-emerald-950"
+                      >
+                        GitHub deposu
+                      </a>
                     </li>
                     <li>
                       <strong>Lisans:</strong> Özel kullanım
@@ -227,26 +245,30 @@ export default function Contact() {
                   📞 İletişim Konuları
                 </h3>
                 <div className="grid grid-cols-2 gap-3">
-                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 text-center">
-                    <div className="text-blue-600 text-sm font-medium">
-                      Teknik Destek
-                    </div>
-                  </div>
-                  <div className="bg-green-50 border border-green-200 rounded-lg p-3 text-center">
-                    <div className="text-green-600 text-sm font-medium">
-                      Geri Bildirim
-                    </div>
-                  </div>
-                  <div className="bg-purple-50 border border-purple-200 rounded-lg p-3 text-center">
-                    <div className="text-purple-600 text-sm font-medium">
-                      İş Birliği
-                    </div>
-                  </div>
-                  <div className="bg-orange-50 border border-orange-200 rounded-lg p-3 text-center">
-                    <div className="text-orange-600 text-sm font-medium">
-                      Hata Bildirimi
-                    </div>
-                  </div>
+                  <a
+                    href="mailto:mehmet.erdem.akin@outlook.com?subject=Kurbanl%C4%B1k%20Analiz%20-%20Teknik%20destek"
+                    className="rounded-lg border border-sky-200 bg-sky-50 p-3 text-center text-sm font-medium text-sky-800 transition hover:border-sky-300 hover:bg-sky-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-600 focus-visible:ring-offset-2"
+                  >
+                    Teknik destek
+                  </a>
+                  <a
+                    href="mailto:mehmet.erdem.akin@outlook.com?subject=Kurbanl%C4%B1k%20Analiz%20-%20Geri%20bildirim"
+                    className="rounded-lg border border-emerald-200 bg-emerald-50 p-3 text-center text-sm font-medium text-emerald-900 transition hover:border-emerald-300 hover:bg-emerald-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700 focus-visible:ring-offset-2"
+                  >
+                    Geri bildirim
+                  </a>
+                  <a
+                    href="mailto:mehmet.erdem.akin@outlook.com?subject=Kurbanl%C4%B1k%20Analiz%20-%20%C4%B0%C5%9F%20birli%C4%9Fi"
+                    className="rounded-lg border border-violet-200 bg-violet-50 p-3 text-center text-sm font-medium text-violet-900 transition hover:border-violet-300 hover:bg-violet-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-600 focus-visible:ring-offset-2"
+                  >
+                    İş birliği
+                  </a>
+                  <a
+                    href="mailto:mehmet.erdem.akin@outlook.com?subject=Kurbanl%C4%B1k%20Analiz%20-%20Hata%20bildirimi"
+                    className="rounded-lg border border-amber-200 bg-amber-50 p-3 text-center text-sm font-medium text-amber-900 transition hover:border-amber-300 hover:bg-amber-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-600 focus-visible:ring-offset-2"
+                  >
+                    Hata bildirimi
+                  </a>
                 </div>
               </div>
             </div>
@@ -265,8 +287,8 @@ export default function Contact() {
             </p>
             <div className="space-y-3">
               <Link
-                href="/#faq"
-                className="flex items-center text-green-600 hover:text-green-700 transition-colors"
+                href="/#sss"
+                className="flex items-center rounded-lg text-emerald-700 transition hover:bg-emerald-50 hover:text-emerald-900"
               >
                 <svg
                   className="w-4 h-4 mr-2"
@@ -284,8 +306,8 @@ export default function Contact() {
                 Sıkça Sorulan Sorular
               </Link>
               <Link
-                href="/analyze"
-                className="flex items-center text-green-600 hover:text-green-700 transition-colors"
+                href="/#nasil"
+                className="flex items-center rounded-lg text-emerald-700 transition hover:bg-emerald-50 hover:text-emerald-900"
               >
                 <svg
                   className="w-4 h-4 mr-2"
@@ -300,11 +322,11 @@ export default function Contact() {
                     d="M9 5l7 7-7 7"
                   />
                 </svg>
-                Analiz Nasıl Yapılır?
+                Analiz nasıl çalışır?
               </Link>
               <Link
-                href="/#features"
-                className="flex items-center text-green-600 hover:text-green-700 transition-colors"
+                href="/#ozellikler"
+                className="flex items-center rounded-lg text-emerald-700 transition hover:bg-emerald-50 hover:text-emerald-900"
               >
                 <svg
                   className="w-4 h-4 mr-2"
@@ -319,11 +341,30 @@ export default function Contact() {
                     d="M9 5l7 7-7 7"
                   />
                 </svg>
-                Özellikler ve Yetenekler
+                Özellikler ve yetenekler
+              </Link>
+              <Link
+                href="/analyze"
+                className="flex items-center rounded-lg text-emerald-700 transition hover:bg-emerald-50 hover:text-emerald-900"
+              >
+                <svg
+                  className="w-4 h-4 mr-2"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 5l7 7-7 7"
+                  />
+                </svg>
+                Analiz aracını aç
               </Link>
               <Link
                 href="/privacy"
-                className="flex items-center text-green-600 hover:text-green-700 transition-colors"
+                className="flex items-center rounded-lg text-emerald-700 transition hover:bg-emerald-50 hover:text-emerald-900"
               >
                 <svg
                   className="w-4 h-4 mr-2"
@@ -341,14 +382,15 @@ export default function Contact() {
                 Gizlilik Politikası
               </Link>
               <Link
-                href="/kvkk"
-                className="flex items-center text-green-600 hover:text-green-700 transition-colors"
+                href="/terms"
+                className="flex items-center rounded-lg px-1 py-0.5 text-emerald-700 transition hover:bg-emerald-50 hover:text-emerald-900"
               >
                 <svg
-                  className="w-4 h-4 mr-2"
+                  className="mr-2 h-4 w-4 shrink-0"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
+                  aria-hidden
                 >
                   <path
                     strokeLinecap="round"
@@ -357,7 +399,27 @@ export default function Contact() {
                     d="M9 5l7 7-7 7"
                   />
                 </svg>
-                KVKK Aydınlatma Metni
+                Kullanım şartları
+              </Link>
+              <Link
+                href="/kvkk"
+                className="flex items-center rounded-lg px-1 py-0.5 text-emerald-700 transition hover:bg-emerald-50 hover:text-emerald-900"
+              >
+                <svg
+                  className="mr-2 h-4 w-4 shrink-0"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  aria-hidden
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 5l7 7-7 7"
+                  />
+                </svg>
+                KVKK aydınlatma metni
               </Link>
             </div>
           </Card3D>
@@ -370,29 +432,41 @@ export default function Contact() {
             <p className="text-neutral-600 mb-6">
               İletişim türüne göre ortalama yanıt sürelerimiz.
             </p>
-            <div className="space-y-4">
-              <div className="flex items-center justify-between p-3 bg-green-50 border border-green-200 rounded-lg">
-                <span className="text-neutral-700">Genel Sorular</span>
-                <span className="text-green-600 font-medium">24 saat</span>
-              </div>
-              <div className="flex items-center justify-between p-3 bg-blue-50 border border-blue-200 rounded-lg">
-                <span className="text-neutral-700">Teknik Destek</span>
-                <span className="text-blue-600 font-medium">48 saat</span>
-              </div>
-              <div className="flex items-center justify-between p-3 bg-orange-50 border border-orange-200 rounded-lg">
-                <span className="text-neutral-700">Hata Bildirimi</span>
-                <span className="text-orange-600 font-medium">12 saat</span>
-              </div>
-              <div className="flex items-center justify-between p-3 bg-purple-50 border border-purple-200 rounded-lg">
-                <span className="text-neutral-700">İş Birliği</span>
-                <span className="text-purple-600 font-medium">72 saat</span>
-              </div>
+            <div className="space-y-3">
+              <a
+                href="mailto:mehmet.erdem.akin@outlook.com?subject=Kurbanl%C4%B1k%20Analiz%20-%20Genel%20soru"
+                className="flex items-center justify-between rounded-lg border border-emerald-200 bg-emerald-50/80 p-3 text-neutral-700 transition hover:border-emerald-300 hover:bg-emerald-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 focus-visible:ring-offset-2"
+              >
+                <span>Genel sorular</span>
+                <span className="font-medium text-emerald-800">24 saat</span>
+              </a>
+              <a
+                href="mailto:mehmet.erdem.akin@outlook.com?subject=Kurbanl%C4%B1k%20Analiz%20-%20Teknik%20destek"
+                className="flex items-center justify-between rounded-lg border border-sky-200 bg-sky-50/80 p-3 text-neutral-700 transition hover:border-sky-300 hover:bg-sky-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-600 focus-visible:ring-offset-2"
+              >
+                <span>Teknik destek</span>
+                <span className="font-medium text-sky-800">48 saat</span>
+              </a>
+              <a
+                href="mailto:mehmet.erdem.akin@outlook.com?subject=Kurbanl%C4%B1k%20Analiz%20-%20Hata%20bildirimi"
+                className="flex items-center justify-between rounded-lg border border-amber-200 bg-amber-50/80 p-3 text-neutral-700 transition hover:border-amber-300 hover:bg-amber-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-600 focus-visible:ring-offset-2"
+              >
+                <span>Hata bildirimi</span>
+                <span className="font-medium text-amber-900">12 saat</span>
+              </a>
+              <a
+                href="mailto:mehmet.erdem.akin@outlook.com?subject=Kurbanl%C4%B1k%20Analiz%20-%20%C4%B0%C5%9F%20birli%C4%9Fi"
+                className="flex items-center justify-between rounded-lg border border-violet-200 bg-violet-50/80 p-3 text-neutral-700 transition hover:border-violet-300 hover:bg-violet-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-600 focus-visible:ring-offset-2"
+              >
+                <span>İş birliği</span>
+                <span className="font-medium text-violet-900">72 saat</span>
+              </a>
             </div>
           </Card3D>
         </div>
 
         {/* Social Media & Additional Info */}
-        <Card3D className="card p-12 text-center bg-gradient-to-r from-green-50 to-emerald-50 border-green-200">
+        <Card3D className="card border-emerald-100 bg-emerald-50/60 p-12 text-center">
           <h2 className="text-3xl font-bold text-neutral-900 mb-6">
             Sosyal Medyada Takip Edin
           </h2>
@@ -433,83 +507,62 @@ export default function Contact() {
               </svg>
             </a>
             <a
-              href="#"
-              className="w-14 h-14 bg-gradient-to-br from-red-500 to-red-600 rounded-xl flex items-center justify-center text-white hover:scale-105 transition-transform duration-300"
+              href="mailto:mehmet.erdem.akin@outlook.com?subject=Kurbanl%C4%B1k%20Analiz%20-%20Video%20%2F%20i%C3%A7erik%20%C3%B6nerisi"
+              className="flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br from-red-500 to-red-600 text-white transition-transform duration-300 hover:scale-105 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-400 focus-visible:ring-offset-2"
+              aria-label="Video veya içerik önerisi için e-posta gönder"
             >
-              <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+              <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden>
                 <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
               </svg>
             </a>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8 max-w-3xl mx-auto">
-            <div className="text-center">
-              <div className="text-3xl font-bold text-green-600 mb-2">🚀</div>
-              <div className="text-2xl font-bold text-neutral-900 mb-1">
-                Bireysel Proje
+          <div className="mx-auto grid max-w-3xl gap-8 md:grid-cols-3">
+            <a
+              href="https://github.com/Mehmet-Erdem-Akin/kurban-ai"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group rounded-2xl border border-stone-200/80 bg-white/80 p-6 text-center shadow-sm transition hover:border-emerald-200 hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 focus-visible:ring-offset-2"
+            >
+              <div className="mb-2 text-3xl font-bold text-emerald-600">🚀</div>
+              <div className="mb-1 text-xl font-bold text-neutral-900 group-hover:text-emerald-900">
+                Kaynak kod
               </div>
-              <p className="text-neutral-600 text-sm">Kişisel geliştirme</p>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-blue-600 mb-2">📧</div>
-              <div className="text-2xl font-bold text-neutral-900 mb-1">
+              <p className="text-sm text-neutral-600">
+                GitHub üzerinden inceleyin
+              </p>
+            </a>
+            <a
+              href="mailto:mehmet.erdem.akin@outlook.com?subject=Kurbanl%C4%B1k%20Analiz"
+              className="group rounded-2xl border border-stone-200/80 bg-white/80 p-6 text-center shadow-sm transition hover:border-emerald-200 hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 focus-visible:ring-offset-2"
+            >
+              <div className="mb-2 text-3xl font-bold text-sky-600">📧</div>
+              <div className="mb-1 text-xl font-bold text-neutral-900 group-hover:text-emerald-900">
                 E-posta
               </div>
-              <p className="text-neutral-600 text-sm">
-                En hızlı iletişim yöntemi
+              <p className="text-sm text-neutral-600">
+                Doğrudan mesaj gönderin
               </p>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-purple-600 mb-2">🤝</div>
-              <div className="text-2xl font-bold text-neutral-900 mb-1">
-                Açık İletişim
+            </a>
+            <Link
+              href="/analyze"
+              className="group rounded-2xl border border-stone-200/80 bg-white/80 p-6 text-center shadow-sm transition hover:border-emerald-200 hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 focus-visible:ring-offset-2"
+            >
+              <div className="mb-2 text-3xl font-bold text-violet-600">🤝</div>
+              <div className="mb-1 text-xl font-bold text-neutral-900 group-hover:text-emerald-900">
+                Analize başla
               </div>
-              <p className="text-neutral-600 text-sm">
-                Her türlü görüş değerli
+              <p className="text-sm text-neutral-600">
+                Hayvan fotoğrafını yükleyin
               </p>
-            </div>
+            </Link>
           </div>
         </Card3D>
       </main>
 
-      {/* Footer */}
-      <footer className="container mx-auto px-4 py-12 mt-20 relative z-10">
-        <Card3D className="text-center bg-white/30 backdrop-blur-md rounded-3xl p-8 border border-white/50">
-          <div className="flex items-center justify-center space-x-3 mb-4">
-            <div className="w-8 h-8 bg-gradient-to-br from-green-600 to-green-700 rounded-lg flex items-center justify-center">
-              <span className="text-white text-sm font-bold">KA</span>
-            </div>
-            <span className="text-xl font-bold text-neutral-800">
-              Kurbanlık Analiz
-            </span>
-          </div>
-          <p className="text-neutral-600 mb-6">
-            Yapay zeka ile daha bilinçli kararlar
-          </p>
-          <div className="flex justify-center space-x-6 text-neutral-500">
-            <Link href="/" className="hover:text-green-600 transition-colors">
-              Ana Sayfa
-            </Link>
-            <Link
-              href="/analyze"
-              className="hover:text-green-600 transition-colors"
-            >
-              Analiz
-            </Link>
-            <Link
-              href="/privacy"
-              className="hover:text-green-600 transition-colors"
-            >
-              Gizlilik
-            </Link>
-          </div>
-          <div className="mt-6 pt-6 border-t border-neutral-200">
-            <p className="text-neutral-500">
-              &copy; 2025 Kurbanlık Analiz. Tüm hakları saklıdır.
-            </p>
-          </div>
-        </Card3D>
-      </footer>
-    </div>
+      <div className="relative z-10">
+        <SiteFooter />
+      </div>
+    </AppPageShell>
   );
 }

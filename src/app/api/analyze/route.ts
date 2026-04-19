@@ -267,23 +267,23 @@ const analyzeImageWithGemini = async (
         
         ÖNEMLİ: Eğer birden fazla fotoğraf yüklendiyse, bunlar AYNI HAYVANA ait farklı açılardan çekilmiş fotoğraflardır. Tutarlı analiz yap.
         
-        TÜRKİYE CANLI HAYVAN PAZAR FİYATLARI (Haziran 2025 - Kurban Sezonu):
-        *Bunlar ÖRNEK referans değerlerdir. Fotoğraftaki spesifik hayvanı analiz et ve gerçek durumuna göre bireysel değerlendirme yap.*
+        TÜRKİYE CANLI HAYVAN PAZAR FİYATLARI (Nisan 2026 - UKON haftalık yağsız karkas kesim ortalamaları, örn. 9 Nisan 2026 bülteni):
+        *Bunlar ÖRNEK referans değerlerdir; bölgelere göre dalgalanır. Fotoğraftaki spesifik hayvanı analiz et ve gerçek durumuna göre bireysel değerlendirme yap.*
         
         BÜYÜKBAŞ (SIĞIR/MANDA) FİYAT HESAPLAMA:
         - Karkas verimi: %55 (0.55)
-        - Karkas et fiyatı: 440 TL/kg
-        - Fiyat hesaplama: (hayvan_ağırlığı × 0.55) × 440 TL/kg
-        - Örnek: 500kg Dana = (500kg × 0.55) × 440 TL = 275kg × 440 TL = 121,000 TL
+        - Karkas et fiyatı (dana ortalaması): ~595 TL/kg (UKON yağsız dana karkas ~595,39 TL/kg)
+        - Fiyat hesaplama: (hayvan_ağırlığı × 0.55) × 595 TL/kg
+        - Örnek: 500kg Dana = (500kg × 0.55) × 595 TL = 275kg × 595 TL ≈ 163,600 TL
         - Premium ırklar: +%20-25 (Simental, Holstein, Angus)
         - Kurban sezonu: +%15-20 prim
         - Kalite ayarlaması: A-kalite +%15, B-kalite -%10
         
         KÜÇÜKBAŞ (KOYUN/KEÇİ) FİYAT HESAPLAMA:
         - Karkas verimi: %50 (0.50)
-        - Karkas et fiyatı: 470 TL/kg
-        - Fiyat hesaplama: (hayvan_ağırlığı × 0.50) × 470 TL/kg
-        - Örnek: 60kg Koç = (60kg × 0.50) × 470 TL = 30kg × 470 TL = 14,100 TL
+        - Karkas et fiyatı (kuzu ortalaması): ~590 TL/kg (UKON yağsız kuzu karkas ~590,16 TL/kg)
+        - Fiyat hesaplama: (hayvan_ağırlığı × 0.50) × 590 TL/kg
+        - Örnek: 60kg Koç = (60kg × 0.50) × 590 TL = 30kg × 590 TL ≈ 17,700 TL
         - Premium hayvanlar: +%20-25
         - Kurban sezonu: +%15-20 prim
         - Kalite ayarlaması: A-kalite +%15, B-kalite -%10
@@ -322,8 +322,8 @@ const analyzeImageWithGemini = async (
         6. Final ağırlığı belirle (makul aralıkta olmalı)
         
         FORMÜL: 
-        - Büyükbaş: (hayvan_ağırlığı × 0.55) × 440 TL = gerçekçi pazar değeri
-        - Küçükbaş: (hayvan_ağırlığı × 0.50) × 470 TL = gerçekçi pazar değeri
+        - Büyükbaş: (hayvan_ağırlığı × 0.55) × 595 TL = gerçekçi pazar değeri (Nisan 2026 UKON dana karkas referansı)
+        - Küçükbaş: (hayvan_ağırlığı × 0.50) × 590 TL = gerçekçi pazar değeri (Nisan 2026 UKON kuzu karkas referansı)
         Sabit örnek değerler kullanma. Fotoğraftaki gerçek hayvana göre bireysel değerlendirme yap.
         
         TEKRAR HATIRLATMA: Emin değilsen, belirsizsen veya fotoğrafta uygun hayvan yoksa MUTLAKA error döndür!
@@ -456,14 +456,14 @@ const calculateDetailedAnalysis = (basicAnalysis: {
     // Büyükbaş (Cattle/Buffalo) yield ratios - Kullanıcı formülüne göre
     karkasYieldPercentage = 55; // 55% karkas yield from live weight (0.55)
     bonelessYieldPercentage = 72; // ~72% boneless from karkas
-    bonelessMeatPricePerKg = 450; // Dana et price TL/kg (June 2025) - kemiksiz et
-    karkasMeatPricePerKg = 440; // Karkas et fiyatı (kemikli et) - kullanıcı formülü
+    bonelessMeatPricePerKg = 608; // Dana kemiksiz referans TL/kg (Nisan 2026 UKON karkas trendiyle uyumlu)
+    karkasMeatPricePerKg = 595; // Yağsız dana karkas ~595,39 TL/kg (UKON 9 Nisan 2026 ort.)
   } else {
     // Küçükbaş (Small livestock: sheep/goat) yield ratios - Kullanıcı formülüne göre
     karkasYieldPercentage = 50; // 50% karkas yield from live weight (0.50)
     bonelessYieldPercentage = 70; // ~70% boneless from karkas
-    bonelessMeatPricePerKg = 520; // Kuzu et price TL/kg (June 2025) - kemiksiz et
-    karkasMeatPricePerKg = 470; // Karkas et fiyatı (kemikli et) - kullanıcı formülü
+    bonelessMeatPricePerKg = 653; // Kuzu/küçükbaş kemiksiz referans TL/kg (Nisan 2026 UKON karkas trendiyle uyumlu)
+    karkasMeatPricePerKg = 590; // Yağsız kuzu karkas ~590,16 TL/kg (UKON 9 Nisan 2026 ort.)
   }
 
   // Calculate meat amounts using proper livestock industry standards

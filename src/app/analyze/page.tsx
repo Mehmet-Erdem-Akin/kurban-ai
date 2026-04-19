@@ -1,6 +1,8 @@
 "use client";
 
-import Link from "next/link";
+import AppPageShell from "@/components/AppPageShell";
+import SiteFooter from "@/components/SiteFooter";
+import SiteHeader from "@/components/SiteHeader";
 import { useState, useRef, useEffect, useCallback } from "react";
 import Image from "next/image";
 import html2canvas from "html2canvas";
@@ -627,32 +629,18 @@ export default function AnalyzePage() {
   };
 
   return (
-    <div className="min-h-screen hero-gradient">
-      {/* Header */}
-      <header className="container mx-auto px-4 py-6">
-        <nav className="flex items-center justify-between">
-          <Link href="/" className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-primary-600 to-primary-700 rounded-xl flex items-center justify-center shadow-soft">
-              <span className="text-white text-lg font-bold">KA</span>
-            </div>
-            <span className="text-2xl font-bold text-neutral-800">
-              Kurbanlık Analiz
-            </span>
-          </Link>
-          <Link href="/" className="btn btn-secondary btn-md hidden sm:block">
-            Ana Sayfa
-          </Link>
-        </nav>
-      </header>
+    <AppPageShell>
+      <SiteHeader />
 
-      <main className="container mx-auto px-4 py-8">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold text-neutral-900 mb-4">
-              Hayvan Analizi
+      <main className="relative z-10 mx-auto max-w-6xl px-4 py-8 sm:py-10">
+        <div className="mx-auto max-w-5xl">
+          <div className="mb-12 text-center">
+            <h1 className="mb-3 font-display text-3xl font-semibold tracking-tight text-stone-900 sm:text-4xl">
+              Hayvan analizi
             </h1>
-            <p className="text-xl text-neutral-600">
-              Fotoğraf yükleyin ve yapay zeka analizini başlatın
+            <p className="mx-auto max-w-xl text-base text-stone-600 sm:text-lg">
+              Net fotoğraf yükleyin veya kameradan çekin; isteğe bağlı bilgilerle
+              doğruluğu artırın.
             </p>
           </div>
 
@@ -1085,10 +1073,10 @@ export default function AnalyzePage() {
                         alt={`Fotoğraf ${index + 1}`}
                         width={64}
                         height={64}
-                        className={`w-16 h-16 object-cover rounded cursor-pointer border-2 transition-all ${
+                        className={`h-16 w-16 cursor-pointer rounded object-cover border-2 transition-all ${
                           currentImageIndex === index
-                            ? "border-green-500 ring-2 ring-green-200"
-                            : "border-gray-200 hover:border-gray-300"
+                            ? "border-emerald-600 ring-2 ring-emerald-200/90"
+                            : "border-stone-200 hover:border-stone-300"
                         }`}
                         onClick={() => switchImage(index)}
                       />
@@ -1448,15 +1436,15 @@ export default function AnalyzePage() {
           )}
 
           {analysisResult && (
-            <div className="space-y-6 animate-slide-up">
+            <div className="space-y-8 animate-slide-up">
               {/* Download Buttons */}
-              <div className="flex flex-col sm:flex-row justify-center gap-4 mb-6">
+              <div className="mb-2 flex flex-col flex-wrap justify-center gap-3 sm:flex-row">
                 <button
                   onClick={handleDownloadImage}
                   className="btn btn-secondary btn-md text-sm sm:text-base"
                 >
                   <svg
-                    className="w-8 h-8 mr-2"
+                    className="mr-2 h-5 w-5 shrink-0"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -1476,7 +1464,7 @@ export default function AnalyzePage() {
                   className="btn btn-accent btn-md text-sm sm:text-base"
                 >
                   <svg
-                    className="w-8 h-8 mr-2"
+                    className="mr-2 h-5 w-5 shrink-0"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -1495,14 +1483,14 @@ export default function AnalyzePage() {
               {/* Analysis Results Container - This will be captured for download */}
               <div
                 ref={analysisContainerRef}
-                className="space-y-6 bg-white p-0 sm:p-6 rounded-lg"
+                className="space-y-8 rounded-2xl border border-stone-200/80 bg-white p-4 shadow-medium sm:p-8"
               >
                 {/* AI Analysis Disclaimer */}
-                <div className="card p-4 bg-gradient-to-r from-amber-50 to-orange-50 border-amber-200">
-                  <div className="flex items-start">
-                    <div className="flex-shrink-0 hidden sm:block">
+                <div className="rounded-2xl border border-amber-200/90 bg-gradient-to-br from-amber-50/95 to-orange-50/70 p-4 shadow-sm sm:p-5">
+                  <div className="flex items-start gap-3">
+                    <div className="hidden shrink-0 sm:block">
                       <svg
-                        className="w-6 h-6 text-amber-600 mt-0.5"
+                        className="mt-0.5 h-6 w-6 text-amber-600"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -1515,11 +1503,11 @@ export default function AnalyzePage() {
                         />
                       </svg>
                     </div>
-                    <div className="ml-3">
-                      <h3 className="text-sm font-bold text-amber-800 mb-1">
-                        ⚠️ Önemli Uyarı
+                    <div className="min-w-0">
+                      <h3 className="mb-1 text-sm font-bold text-amber-900">
+                        Önemli uyarı
                       </h3>
-                      <p className="text-sm text-amber-700 leading-relaxed">
+                      <p className="text-sm leading-relaxed text-amber-800/95">
                         <strong>
                           Bu analiz yapay zeka tarafından oluşturulmuştur ve
                           sadece tahmini bilgiler içermektedir.
@@ -1529,24 +1517,29 @@ export default function AnalyzePage() {
                         görüş alınız. Kesin alım-satım kararları vermeden önce
                         profesyonel inceleme yaptırmanız önerilir.
                       </p>
-                      <div className="mt-2 text-xs text-amber-600">
-                        📋 Bu rapor referans amaçlıdır • 🧑‍⚕️ Veteriner kontrolü
-                        gereklidir • 💰 Piyasa fiyatları değişkendir
+                      <div className="mt-2 text-xs text-amber-700/90">
+                        Bu rapor referans amaçlıdır · Veteriner kontrolü
+                        gereklidir · Piyasa fiyatları değişkendir
                       </div>
                     </div>
                   </div>
                 </div>
 
-                {/* Analysis Success Header */}
-                <div className="card p-6 bg-gradient-to-r from-success/10 to-primary-50 border-success/20">
-                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                    <div className="flex items-start">
-                      <div className="icon-container bg-success/20 text-success mr-4">
+                {/* Analysis summary hero */}
+                <div className="relative overflow-hidden rounded-2xl border border-emerald-200/80 bg-gradient-to-br from-white via-emerald-50/50 to-teal-50/40 p-6 shadow-medium sm:p-8">
+                  <div
+                    className="pointer-events-none absolute -right-24 -top-24 h-48 w-48 rounded-full bg-emerald-400/15 blur-3xl"
+                    aria-hidden
+                  />
+                  <div className="relative flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+                    <div className="flex min-w-0 flex-1 flex-col gap-4 sm:flex-row sm:items-start">
+                      <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-emerald-200/80 bg-gradient-to-br from-emerald-600 to-emerald-900 text-white shadow-lg shadow-emerald-900/25">
                         <svg
-                          className="w-6 h-6"
+                          className="h-7 w-7"
                           fill="none"
                           stroke="currentColor"
                           viewBox="0 0 24 24"
+                          aria-hidden
                         >
                           <path
                             strokeLinecap="round"
@@ -1556,42 +1549,73 @@ export default function AnalyzePage() {
                           />
                         </svg>
                       </div>
-                      <div>
-                        <h3 className="text-xl font-bold text-neutral-900 mb-2">
-                          Analiz Tamamlandı!
+                      <div className="min-w-0">
+                        <p className="text-xs font-bold uppercase tracking-wider text-emerald-800">
+                          Rapor hazır
+                        </p>
+                        <h3 className="font-display text-2xl font-semibold tracking-tight text-stone-900 sm:text-3xl">
+                          {analysisResult.animalType}
+                          <span className="block text-base font-normal text-stone-500 sm:mt-1 sm:inline sm:text-lg">
+                            {analysisResult.breed}
+                          </span>
                         </h3>
-                        <div className="flex flex-col sm:flex-row sm:items-center sm:gap-2 text-neutral-600">
-                          <span className="font-medium">
-                            %{analysisResult.confidence} güven oranı
-                          </span>
-                          <span className="hidden sm:inline">•</span>
-                          <span>
-                            {analysisResult.analysisType ===
-                            "multiple_same_animal"
-                              ? `${analysisResult.totalImages} fotoğraf analizi`
-                              : "Tek fotoğraf analizi"}
-                          </span>
-                        </div>
+                        <p className="mt-2 text-sm text-stone-600">
+                          {analysisResult.analysisType ===
+                          "multiple_same_animal"
+                            ? `${analysisResult.totalImages} fotoğraf birleştirildi`
+                            : "Tek fotoğraf analizi"}
+                        </p>
                       </div>
                     </div>
-                    <div className="text-center sm:text-right">
-                      <div className="text-2xl font-bold text-primary-600">
-                        {analysisResult.pricing?.estimatedMeatValue?.toLocaleString()}{" "}
-                        ₺
+                    <div className="grid w-full grid-cols-2 gap-3 sm:grid-cols-4 lg:w-auto lg:max-w-2xl">
+                      <div className="rounded-xl border border-stone-200/90 bg-white/95 px-3 py-3 text-center shadow-sm sm:px-4">
+                        <p className="text-[10px] font-semibold uppercase tracking-wide text-stone-500 sm:text-[11px]">
+                          Tahmini değer
+                        </p>
+                        <p className="mt-1 font-display text-base font-semibold text-emerald-800 sm:text-lg">
+                          ₺
+                          {analysisResult.pricing?.estimatedMeatValue?.toLocaleString(
+                            "tr-TR",
+                          )}
+                        </p>
                       </div>
-                      <div className="text-sm text-neutral-500">
-                        Tahmini Değer
+                      <div className="rounded-xl border border-stone-200/90 bg-white/95 px-3 py-3 text-center shadow-sm sm:px-4">
+                        <p className="text-[10px] font-semibold uppercase tracking-wide text-stone-500 sm:text-[11px]">
+                          Canlı ağırlık
+                        </p>
+                        <p className="mt-1 font-display text-base font-semibold text-stone-900 sm:text-lg">
+                          {analysisResult.estimatedWeight} kg
+                        </p>
+                      </div>
+                      <div className="rounded-xl border border-stone-200/90 bg-white/95 px-3 py-3 text-center shadow-sm sm:px-4">
+                        <p className="text-[10px] font-semibold uppercase tracking-wide text-stone-500 sm:text-[11px]">
+                          Sağlık skoru
+                        </p>
+                        <p className="mt-1 font-display text-base font-semibold text-stone-900 sm:text-lg">
+                          {analysisResult.healthScore}
+                          <span className="text-sm font-normal text-stone-500">
+                            /100
+                          </span>
+                        </p>
+                      </div>
+                      <div className="rounded-xl border border-stone-200/90 bg-white/95 px-3 py-3 text-center shadow-sm sm:px-4">
+                        <p className="text-[10px] font-semibold uppercase tracking-wide text-stone-500 sm:text-[11px]">
+                          Güven
+                        </p>
+                        <p className="mt-1 font-display text-base font-semibold text-emerald-800 sm:text-lg">
+                          %{analysisResult.confidence}
+                        </p>
                       </div>
                     </div>
                   </div>
                 </div>
 
                 {/* Analiz Edilen Fotoğraflar */}
-                <div className="card">
-                  <div className="card-header p-4 sm:p-6">
-                    <h3 className="text-xl font-bold text-neutral-900 flex items-center flex-col sm:flex-row text-center sm:text-left">
+                <div className="card-hover overflow-hidden">
+                  <div className="border-b border-stone-100 bg-gradient-to-r from-stone-50/80 to-white px-4 py-4 sm:px-6 sm:py-5">
+                    <h3 className="flex flex-col items-center gap-2 text-center font-display text-xl font-semibold text-stone-900 sm:flex-row sm:text-left">
                       <svg
-                        className="w-8 h-8 mr-2 text-blue-600"
+                        className="mr-2 h-8 w-8 shrink-0 text-emerald-700"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -1604,13 +1628,13 @@ export default function AnalyzePage() {
                         />
                       </svg>
                       Analiz Edilen Fotoğraflar
-                      <span className="ml-2 text-sm font-normal text-gray-500">
+                      <span className="text-sm font-normal text-stone-500 sm:ml-2">
                         ({selectedImages.length}{" "}
                         {selectedImages.length === 1 ? "fotoğraf" : "fotoğraf"})
                       </span>
                     </h3>
                   </div>
-                  <div className="card-body p-4 sm:p-6">
+                  <div className="p-4 sm:p-6">
                     {selectedImages.length === 1 ? (
                       /* Tek Fotoğraf Görünümü */
                       <div className="flex flex-col items-center">
@@ -1623,7 +1647,7 @@ export default function AnalyzePage() {
                             alt="Analiz edilen fotoğraf"
                             width={320}
                             height={240}
-                            className="w-64 h-48 object-cover rounded-lg border-2 border-green-200 shadow-md cursor-pointer hover:border-green-400 transition-colors"
+                            className="h-48 w-64 cursor-pointer rounded-xl border-2 border-emerald-200 object-cover shadow-md transition-colors hover:border-emerald-400"
                           />
                           <div className="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-20 transition-opacity rounded-lg flex items-center justify-center">
                             <svg
@@ -1640,25 +1664,25 @@ export default function AnalyzePage() {
                               />
                             </svg>
                           </div>
-                          <div className="absolute top-2 right-2 bg-green-500 text-white px-2 py-1 rounded-full text-xs font-semibold">
-                            ✓ Analiz Edildi
+                          <div className="absolute right-2 top-2 rounded-full bg-emerald-700 px-2 py-1 text-xs font-semibold text-white shadow-sm">
+                            Analiz edildi
                           </div>
                           {/* Büyüteç ikonu */}
                         </div>
-                        <p className="mt-3 text-sm text-gray-600 text-center">
+                        <p className="mt-3 text-center text-sm text-stone-600">
                           Bu fotoğraf üzerinden analiz gerçekleştirildi
                           <br />
-                          <span className="text-blue-600 text-xs">
-                            📷 Büyütmek için tıklayın
+                          <span className="text-xs text-emerald-700">
+                            Büyütmek için tıklayın
                           </span>
                         </p>
                       </div>
                     ) : (
                       /* Çoklu Fotoğraf Grid Görünümü */
                       <div>
-                        <div className="mb-4 p-3 bg-blue-50 rounded-lg">
-                          <p className="text-sm text-blue-800 text-center">
-                            <strong>Çoklu Fotoğraf Analizi:</strong> Aynı
+                        <div className="mb-4 rounded-xl border border-emerald-100 bg-emerald-50/80 p-3">
+                          <p className="text-center text-sm text-emerald-950/90">
+                            <strong>Çoklu fotoğraf analizi:</strong> Aynı
                             hayvana ait {selectedImages.length} farklı açıdan
                             fotoğraf analiz edildi
                           </p>
@@ -1672,15 +1696,15 @@ export default function AnalyzePage() {
                                 alt={`Fotoğraf ${index + 1}`}
                                 width={128}
                                 height={96}
-                                className="w-full h-24 object-cover rounded-lg border-2 border-gray-200 group-hover:border-blue-400 transition-colors cursor-pointer"
+                                className="h-24 w-full cursor-pointer rounded-lg border-2 border-stone-200 object-cover transition-colors group-hover:border-emerald-400"
                                 onClick={() => openImageModal(index)}
                               />
-                              <div className="absolute top-1 right-1 bg-blue-500 text-white px-1.5 py-0.5 rounded-full text-xs font-semibold">
+                              <div className="absolute right-1 top-1 rounded-full bg-stone-700 px-1.5 py-0.5 text-xs font-semibold text-white">
                                 {index + 1}
                               </div>
                               {index === 0 && (
-                                <div className="absolute bottom-1 left-1 bg-green-500 text-white px-1.5 py-0.5 rounded-full text-xs font-semibold">
-                                  Ana Analiz
+                                <div className="absolute bottom-1 left-1 rounded-full bg-emerald-700 px-1.5 py-0.5 text-xs font-semibold text-white">
+                                  Ana analiz
                                 </div>
                               )}
 
@@ -1705,13 +1729,13 @@ export default function AnalyzePage() {
                         </div>
 
                         <div className="mt-4 text-center">
-                          <p className="text-sm text-gray-600">
+                          <p className="text-sm text-stone-600">
                             <strong>Not:</strong> Çoklu fotoğraf analizi daha
                             yüksek doğruluk oranı sağlar. Ana analiz 1. fotoğraf
                             üzerinden yapılıp diğer açılarla desteklenmiştir.
                           </p>
-                          <p className="text-xs text-blue-600 mt-1">
-                            📷 Fotoğrafları büyütmek için tıklayın
+                          <p className="mt-1 text-xs text-emerald-700">
+                            Fotoğrafları büyütmek için tıklayın
                           </p>
                         </div>
                       </div>
@@ -1720,13 +1744,13 @@ export default function AnalyzePage() {
                 </div>
 
                 {/* Main Analysis Grid */}
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid gap-6 md:grid-cols-2 md:gap-8 lg:grid-cols-3">
                   {/* Hayvan Bilgileri */}
-                  <div className="card">
-                    <div className="card-header p-4 sm:p-6">
-                      <h3 className="text-xl font-bold text-neutral-900 flex items-center">
+                  <div className="card-hover overflow-hidden">
+                    <div className="border-b border-stone-100 bg-stone-50/60 px-4 py-4 sm:px-6">
+                      <h3 className="flex items-center font-display text-lg font-semibold text-stone-900 sm:text-xl">
                         <svg
-                          className="w-5 h-5 mr-2 text-primary-600"
+                          className="mr-2 h-5 w-5 shrink-0 text-emerald-700"
                           fill="none"
                           stroke="currentColor"
                           viewBox="0 0 24 24"
@@ -1738,30 +1762,30 @@ export default function AnalyzePage() {
                             d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                           />
                         </svg>
-                        Hayvan Bilgileri
+                        Hayvan bilgileri
                       </h3>
                     </div>
-                    <div className="card-body space-y-4 p-4 sm:p-6 text-sm sm:text-base">
-                      <div className="flex justify-between items-center">
-                        <span className="text-neutral-600">Tür:</span>
-                        <span className="font-semibold text-primary-700">
+                    <div className="space-y-4 p-4 text-sm sm:p-6 sm:text-base">
+                      <div className="flex items-center justify-between">
+                        <span className="text-stone-600">Tür</span>
+                        <span className="font-semibold text-emerald-800">
                           {analysisResult?.animalType}
                         </span>
                       </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-neutral-600">Cins:</span>
-                        <span className="font-semibold">
+                      <div className="flex items-center justify-between">
+                        <span className="text-stone-600">Cins</span>
+                        <span className="font-semibold text-stone-900">
                           {analysisResult?.breed}
                         </span>
                       </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-neutral-600">Canlı Ağırlık:</span>
-                        <span className="font-semibold">
+                      <div className="flex items-center justify-between">
+                        <span className="text-stone-600">Canlı ağırlık</span>
+                        <span className="font-semibold text-stone-900">
                           {analysisResult?.estimatedWeight} kg
                         </span>
                       </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-neutral-600">Sağlık Skoru:</span>
+                      <div className="flex items-center justify-between">
+                        <span className="text-stone-600">Sağlık skoru</span>
                         <div className="flex items-center">
                           <span className="font-semibold mr-2">
                             {analysisResult?.healthScore}/100
@@ -1777,9 +1801,9 @@ export default function AnalyzePage() {
                           </span>
                         </div>
                       </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-neutral-600">Güven Oranı:</span>
-                        <span className="font-semibold text-green-600">
+                      <div className="flex items-center justify-between">
+                        <span className="text-stone-600">Güven</span>
+                        <span className="font-semibold text-emerald-700">
                           %{analysisResult?.confidence}
                         </span>
                       </div>
@@ -1787,11 +1811,11 @@ export default function AnalyzePage() {
                   </div>
 
                   {/* Et Verimi Analizi */}
-                  <div className="card">
-                    <div className="card-header p-4 sm:p-6">
-                      <h3 className="text-xl font-bold text-neutral-900 flex items-center">
+                  <div className="card-hover overflow-hidden">
+                    <div className="border-b border-stone-100 bg-stone-50/60 px-4 py-4 sm:px-6">
+                      <h3 className="flex items-center font-display text-lg font-semibold text-stone-900 sm:text-xl">
                         <svg
-                          className="w-5 h-5 mr-2 text-orange-600"
+                          className="mr-2 h-5 w-5 shrink-0 text-amber-700"
                           fill="none"
                           stroke="currentColor"
                           viewBox="0 0 24 24"
@@ -1803,34 +1827,32 @@ export default function AnalyzePage() {
                             d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
                           />
                         </svg>
-                        Et Verimi
+                        Et verimi
                       </h3>
                     </div>
-                    <div className="card-body space-y-4 p-4 sm:p-6 text-sm sm:text-base">
-                      <div className="bg-orange-50 p-3 rounded-lg">
-                        <div className="flex justify-between items-center mb-2">
-                          <span className="text-neutral-600">
-                            Karkas Ağırlığı:
-                          </span>
-                          <span className="font-bold text-orange-700">
+                    <div className="space-y-4 p-4 text-sm sm:p-6 sm:text-base">
+                      <div className="rounded-xl border border-amber-100 bg-amber-50/80 p-3">
+                        <div className="mb-2 flex items-center justify-between">
+                          <span className="text-stone-600">Karkas ağırlığı</span>
+                          <span className="font-bold text-amber-900">
                             {analysisResult?.meatYield?.karkasWeight} kg
                           </span>
                         </div>
-                        <div className="text-xs text-neutral-500">
-                          Karkas Verimi: %
+                        <div className="text-xs text-stone-500">
+                          Karkas verimi %
                           {analysisResult?.meatYield?.yieldRatios?.karkasYield}
                         </div>
                       </div>
 
-                      <div className="bg-green-50 p-3 rounded-lg">
-                        <div className="flex justify-between items-center mb-2">
-                          <span className="text-neutral-600">Kemiksiz Et:</span>
-                          <span className="font-bold text-green-700">
+                      <div className="rounded-xl border border-emerald-100 bg-emerald-50/70 p-3">
+                        <div className="mb-2 flex items-center justify-between">
+                          <span className="text-stone-600">Kemiksiz et</span>
+                          <span className="font-bold text-emerald-900">
                             {analysisResult?.meatYield?.bonelessMeat} kg
                           </span>
                         </div>
-                        <div className="text-xs text-neutral-500">
-                          Kemiksiz Verimi: %
+                        <div className="text-xs text-stone-500">
+                          Kemiksiz verimi %
                           {
                             analysisResult?.meatYield?.yieldRatios
                               ?.bonelessYield
@@ -1838,17 +1860,15 @@ export default function AnalyzePage() {
                         </div>
                       </div>
 
-                      <div className="bg-gray-50 p-3 rounded-lg">
-                        <div className="flex justify-between items-center mb-2">
-                          <span className="text-neutral-600">
-                            Kemik Ağırlığı:
-                          </span>
-                          <span className="font-bold text-gray-700">
+                      <div className="rounded-xl border border-stone-200 bg-stone-50/90 p-3">
+                        <div className="mb-2 flex items-center justify-between">
+                          <span className="text-stone-600">Kemik ağırlığı</span>
+                          <span className="font-bold text-stone-800">
                             {analysisResult?.meatYield?.boneWeight} kg
                           </span>
                         </div>
-                        <div className="text-xs text-neutral-500">
-                          Toplam Et Verimi: %
+                        <div className="text-xs text-stone-500">
+                          Toplam et verimi %
                           {analysisResult?.meatYield?.yieldRatios?.totalYield}
                         </div>
                       </div>
@@ -1856,11 +1876,11 @@ export default function AnalyzePage() {
                   </div>
 
                   {/* Fiyat Analizi */}
-                  <div className="card">
-                    <div className="card-header p-4 sm:p-6">
-                      <h3 className="text-xl font-bold text-neutral-900 flex items-center">
+                  <div className="card-hover overflow-hidden">
+                    <div className="border-b border-stone-100 bg-stone-50/60 px-4 py-4 sm:px-6">
+                      <h3 className="flex items-center font-display text-lg font-semibold text-stone-900 sm:text-xl">
                         <svg
-                          className="w-5 h-5 mr-2 text-success-600"
+                          className="mr-2 h-5 w-5 shrink-0 text-emerald-700"
                           fill="none"
                           stroke="currentColor"
                           viewBox="0 0 24 24"
@@ -1872,15 +1892,17 @@ export default function AnalyzePage() {
                             d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"
                           />
                         </svg>
-                        Fiyat Analizi
+                        Fiyat analizi
                       </h3>
                     </div>
-                    <div className="card-body space-y-4 p-4 sm:p-6 text-sm sm:text-base">
-                      <div className="flex justify-between items-center">
-                        <span className="text-neutral-600">Tahmini Değer:</span>
-                        <span className="font-bold text-lg text-success-700">
+                    <div className="space-y-4 p-4 text-sm sm:p-6 sm:text-base">
+                      <div className="flex items-center justify-between">
+                        <span className="text-stone-600">Tahmini değer</span>
+                        <span className="text-lg font-bold text-emerald-800">
                           ₺
-                          {analysisResult?.pricing?.estimatedMeatValue?.toLocaleString()}
+                          {analysisResult?.pricing?.estimatedMeatValue?.toLocaleString(
+                            "tr-TR",
+                          )}
                         </span>
                       </div>
 
@@ -1921,19 +1943,19 @@ export default function AnalyzePage() {
                           // 🐄 Büyükbaş gösterimi
                           return (
                             <>
-                              <div className="flex justify-between items-center">
-                                <span className="text-neutral-600">
-                                  Hisse Sayısı:
+                              <div className="flex items-center justify-between">
+                                <span className="text-stone-600">Hisse sayısı</span>
+                                <span className="font-semibold text-stone-900">
+                                  7 kişilik
                                 </span>
-                                <span className="font-semibold">7 kişilik</span>
                               </div>
-                              <div className="flex justify-between items-center">
-                                <span className="text-neutral-600">
-                                  Hisse Başı:
-                                </span>
-                                <span className="font-bold text-lg text-primary-700">
+                              <div className="flex items-center justify-between">
+                                <span className="text-stone-600">Hisse başı</span>
+                                <span className="text-lg font-bold text-emerald-800">
                                   ₺
-                                  {analysisResult?.costPerShare?.toLocaleString()}
+                                  {analysisResult?.costPerShare?.toLocaleString(
+                                    "tr-TR",
+                                  )}
                                 </span>
                               </div>
                             </>
@@ -1941,11 +1963,9 @@ export default function AnalyzePage() {
                         } else if (isKucukbas) {
                           // 🐑 Küçükbaş gösterimi
                           return (
-                            <div className="flex justify-between items-center">
-                              <span className="text-neutral-600">
-                                Hisse Durumu:
-                              </span>
-                              <span className="font-semibold text-amber-700">
+                            <div className="flex items-center justify-between">
+                              <span className="text-stone-600">Hisse durumu</span>
+                              <span className="font-semibold text-amber-800">
                                 Tek hisse (bölünemez)
                               </span>
                             </div>
@@ -1953,11 +1973,9 @@ export default function AnalyzePage() {
                         } else {
                           // 🐾 Diğer hayvanlar
                           return (
-                            <div className="flex justify-between items-center">
-                              <span className="text-neutral-600">
-                                Hisse Durumu:
-                              </span>
-                              <span className="font-semibold text-gray-700">
+                            <div className="flex items-center justify-between">
+                              <span className="text-stone-600">Hisse durumu</span>
+                              <span className="font-semibold text-stone-700">
                                 Değişken
                               </span>
                             </div>
@@ -1965,17 +1983,17 @@ export default function AnalyzePage() {
                         }
                       })()}
 
-                      <div className="bg-gray-50 p-3 rounded-lg">
-                        <div className="flex justify-between items-center mb-2">
-                          <span className="text-neutral-600">
-                            Canlı Ağırlık Fiyatı:
+                      <div className="rounded-xl border border-stone-200 bg-stone-50/90 p-3">
+                        <div className="mb-2 flex items-center justify-between">
+                          <span className="text-stone-600">
+                            Canlı ağırlık fiyatı
                           </span>
-                          <span className="font-bold text-gray-700">
+                          <span className="font-bold text-stone-800">
                             ₺{analysisResult?.pricing?.liveWeightPrice}/kg
                           </span>
                         </div>
-                        <div className="text-xs text-neutral-500">
-                          Et Fiyatı: ₺{analysisResult?.pricing?.meatPrice}/kg
+                        <div className="text-xs text-stone-500">
+                          Et fiyatı ₺{analysisResult?.pricing?.meatPrice}/kg
                         </div>
                       </div>
                     </div>
@@ -1983,13 +2001,13 @@ export default function AnalyzePage() {
                 </div>
 
                 {/* Öneriler ve Detaylar */}
-                <div className="grid md:grid-cols-2 gap-6">
+                <div className="grid gap-6 md:grid-cols-2 md:gap-8">
                   {/* Öneriler */}
-                  <div className="card">
-                    <div className="card-header p-4 sm:p-6">
-                      <h3 className="text-xl font-bold text-neutral-900 flex items-center">
+                  <div className="card-hover overflow-hidden">
+                    <div className="border-b border-stone-100 bg-stone-50/60 px-4 py-4 sm:px-6">
+                      <h3 className="flex items-center font-display text-lg font-semibold text-stone-900 sm:text-xl">
                         <svg
-                          className="w-5 h-5 mr-2 text-indigo-600"
+                          className="mr-2 h-5 w-5 shrink-0 text-teal-700"
                           fill="none"
                           stroke="currentColor"
                           viewBox="0 0 24 24"
@@ -2004,13 +2022,13 @@ export default function AnalyzePage() {
                         Öneriler
                       </h3>
                     </div>
-                    <div className="card-body p-4 sm:p-6 text-sm sm:text-base">
+                    <div className="p-4 text-sm sm:p-6 sm:text-base">
                       <ul className="space-y-3">
                         {analysisResult?.recommendations?.map(
                           (recommendation: string, index: number) => (
-                            <li key={index} className="flex items-start">
+                            <li key={index} className="flex items-start gap-2">
                               <svg
-                                className="w-5 h-5 text-green-500 mr-2 mt-0.5 flex-shrink-0"
+                                className="mt-0.5 h-5 w-5 shrink-0 text-emerald-600"
                                 fill="none"
                                 stroke="currentColor"
                                 viewBox="0 0 24 24"
@@ -2022,7 +2040,7 @@ export default function AnalyzePage() {
                                   d="M5 13l4 4L19 7"
                                 />
                               </svg>
-                              <span className="text-neutral-700">
+                              <span className="text-stone-700">
                                 {recommendation}
                               </span>
                             </li>
@@ -2033,11 +2051,11 @@ export default function AnalyzePage() {
                   </div>
 
                   {/* Analiz Detayları */}
-                  <div className="card">
-                    <div className="card-header p-4 sm:p-6">
-                      <h3 className="text-xl font-bold text-neutral-900 flex items-center">
+                  <div className="card-hover overflow-hidden">
+                    <div className="border-b border-stone-100 bg-stone-50/60 px-4 py-4 sm:px-6">
+                      <h3 className="flex items-center font-display text-lg font-semibold text-stone-900 sm:text-xl">
                         <svg
-                          className="w-5 h-5 mr-2 text-gray-600"
+                          className="mr-2 h-5 w-5 shrink-0 text-stone-500"
                           fill="none"
                           stroke="currentColor"
                           viewBox="0 0 24 24"
@@ -2049,12 +2067,12 @@ export default function AnalyzePage() {
                             d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                           />
                         </svg>
-                        Analiz Bilgileri
+                        Analiz bilgileri
                       </h3>
                     </div>
-                    <div className="card-body p-4 sm:p-6 text-sm sm:text-base space-y-3">
-                      <div className="flex justify-between">
-                        <span className="text-neutral-600">Analiz Türü:</span>
+                    <div className="space-y-3 p-4 text-sm sm:p-6 sm:text-base">
+                      <div className="flex justify-between gap-4">
+                        <span className="text-stone-600">Analiz türü</span>
                         <span className="font-semibold">
                           {analysisResult?.analysisType ===
                           "multiple_same_animal"
@@ -2063,18 +2081,16 @@ export default function AnalyzePage() {
                         </span>
                       </div>
                       {analysisResult?.totalImages > 1 && (
-                        <div className="flex justify-between">
-                          <span className="text-neutral-600">
-                            Fotoğraf Sayısı:
-                          </span>
-                          <span className="font-semibold">
+                        <div className="flex justify-between gap-4">
+                          <span className="text-stone-600">Fotoğraf sayısı</span>
+                          <span className="font-semibold text-stone-900">
                             {analysisResult.totalImages} adet
                           </span>
                         </div>
                       )}
-                      <div className="flex justify-between">
-                        <span className="text-neutral-600">Analiz Tarihi:</span>
-                        <span className="font-semibold text-sm">
+                      <div className="flex justify-between gap-4">
+                        <span className="text-stone-600">Analiz tarihi</span>
+                        <span className="text-sm font-semibold text-stone-900">
                           {new Date(
                             analysisResult?.analysisDate,
                           ).toLocaleDateString("tr-TR", {
@@ -2092,12 +2108,12 @@ export default function AnalyzePage() {
                         (key) => additionalInfo[key as keyof AdditionalInfo],
                       ) && (
                         <>
-                          <hr className="my-3" />
+                          <hr className="my-3 border-stone-200" />
                           <div className="text-sm">
-                            <h4 className="font-semibold text-green-700 mb-2">
-                              📋 Analiz İçin Kullanılan Ek Bilgiler:
+                            <h4 className="mb-2 font-semibold text-emerald-800">
+                              Ek bilgiler (analiz girdisi)
                             </h4>
-                            <div className="bg-green-50 p-3 rounded-lg space-y-1">
+                            <div className="space-y-1 rounded-xl border border-emerald-100 bg-emerald-50/60 p-3">
                               {additionalInfo.animalCategory && (
                                 <div className="flex justify-between text-xs">
                                   <span>Kategori:</span>
@@ -2172,23 +2188,23 @@ export default function AnalyzePage() {
                                   <span className="font-medium">
                                     Özel Notlar:
                                   </span>
-                                  <p className="mt-1 text-gray-600 italic">
+                                  <p className="mt-1 italic text-stone-600">
                                     &ldquo;{additionalInfo.specialNotes}&rdquo;
                                   </p>
                                 </div>
                               )}
                             </div>
-                            <p className="text-xs text-green-600 mt-2 text-center">
-                              ✅ Bu bilgiler AI analizinin doğruluğunu artırmak
-                              için kullanıldı
+                            <p className="mt-2 text-center text-xs text-emerald-800/90">
+                              Bu bilgiler tahmin doğruluğunu artırmak için
+                              kullanıldı.
                             </p>
                           </div>
                         </>
                       )}
 
                       {analysisResult?.analysisNote && (
-                        <div className="bg-blue-50 p-3 rounded-lg mt-4">
-                          <p className="text-sm text-blue-800">
+                        <div className="mt-4 rounded-xl border border-sky-100 bg-sky-50/80 p-3">
+                          <p className="text-sm text-sky-950/90">
                             {analysisResult.analysisNote}
                           </p>
                         </div>
@@ -2223,17 +2239,17 @@ export default function AnalyzePage() {
               </div>
 
               {/* Comprehensive Legal Disclaimer */}
-              <div className="mt-8 p-6 bg-gray-50 border border-gray-200 rounded-lg">
-                <div className="text-center mb-4">
-                  <h4 className="text-lg font-bold text-gray-800 mb-2">
-                    📋 Yasal Uyarılar ve Sorumluluk Reddi
+              <div className="mt-8 rounded-2xl border border-stone-200/90 bg-stone-50/80 p-6 shadow-sm sm:p-8">
+                <div className="mb-5 text-center">
+                  <h4 className="font-display text-lg font-semibold text-stone-900">
+                    Yasal uyarılar ve sorumluluk reddi
                   </h4>
                 </div>
 
-                <div className="grid md:grid-cols-2 gap-6 text-sm text-gray-700">
+                <div className="grid gap-6 text-sm text-stone-700 md:grid-cols-2">
                   <div>
-                    <h5 className="font-semibold text-gray-800 mb-2">
-                      🤖 AI Analizi Hakkında
+                    <h5 className="mb-2 font-semibold text-stone-900">
+                      Yapay zeka analizi
                     </h5>
                     <ul className="space-y-1 text-xs">
                       <li>
@@ -2247,8 +2263,8 @@ export default function AnalyzePage() {
                   </div>
 
                   <div>
-                    <h5 className="font-semibold text-gray-800 mb-2">
-                      💰 Fiyat Bilgileri
+                    <h5 className="mb-2 font-semibold text-stone-900">
+                      Fiyat bilgileri
                     </h5>
                     <ul className="space-y-1 text-xs">
                       <li>• Fiyatlar güncel piyasa verilerine dayalıdır</li>
@@ -2261,8 +2277,8 @@ export default function AnalyzePage() {
                   </div>
 
                   <div>
-                    <h5 className="font-semibold text-gray-800 mb-2">
-                      🩺 Sağlık ve Veterinerlik
+                    <h5 className="mb-2 font-semibold text-stone-900">
+                      Sağlık ve veterinerlik
                     </h5>
                     <ul className="space-y-1 text-xs">
                       <li>• Sağlık skorları tahmini değerlerdir</li>
@@ -2273,8 +2289,8 @@ export default function AnalyzePage() {
                   </div>
 
                   <div>
-                    <h5 className="font-semibold text-gray-800 mb-2">
-                      ⚖️ Hukuki Sorumluluk
+                    <h5 className="mb-2 font-semibold text-stone-900">
+                      Hukuki sorumluluk
                     </h5>
                     <ul className="space-y-1 text-xs">
                       <li>• Platform sadece bilgi amaçlıdır</li>
@@ -2285,14 +2301,14 @@ export default function AnalyzePage() {
                   </div>
                 </div>
 
-                <div className="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-                  <p className="text-center text-sm text-yellow-800">
-                    <strong>📞 Önemli:</strong> Bu analiz sonuçlarına dayanarak
+                <div className="mt-6 rounded-xl border border-amber-200/90 bg-amber-50/70 p-4">
+                  <p className="text-center text-sm text-amber-950/90">
+                    <strong>Önemli:</strong> Bu analiz sonuçlarına dayanarak
                     alım-satım kararı vermeden önce mutlaka{" "}
                     <strong>uzman veteriner hekim</strong> ve{" "}
-                    <strong>deneyimli besicilik uzmanlarından</strong>
-                    görüş alınız. Kurbanlık hayvan seçiminde profesyonel
-                    inceleme şarttır.
+                    <strong>deneyimli besicilik uzmanlarından</strong> görüş
+                    alınız. Kurbanlık hayvan seçiminde profesyonel inceleme
+                    şarttır.
                   </p>
                 </div>
               </div>
@@ -2300,6 +2316,10 @@ export default function AnalyzePage() {
           )}
         </div>
       </main>
+
+      <div className="relative z-10">
+        <SiteFooter />
+      </div>
 
       {/* Image Modal */}
       {showImageModal && (
@@ -2489,6 +2509,6 @@ export default function AnalyzePage() {
           </div>
         </div>
       )}
-    </div>
+    </AppPageShell>
   );
 }

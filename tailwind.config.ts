@@ -158,8 +158,18 @@ const config: Config = {
         "surface-dim": "#f8fafc",
       },
       fontFamily: {
-        sans: ["Inter", "system-ui", "sans-serif"],
-        display: ["Inter", "system-ui", "sans-serif"],
+        sans: [
+          "var(--font-dm-sans)",
+          "ui-sans-serif",
+          "system-ui",
+          "sans-serif",
+        ],
+        display: [
+          "var(--font-display)",
+          "Georgia",
+          "ui-serif",
+          "serif",
+        ],
       },
       fontSize: {
         xs: ["0.75rem", { lineHeight: "1rem" }],

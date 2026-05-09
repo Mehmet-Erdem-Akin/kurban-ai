@@ -1,5 +1,9 @@
-/** @type {import('tailwindcss').Config} */
+/**
+ * @type {import('tailwindcss').Config}
+ * PostCSS `tailwind.config.ts` kullanır; CLI yedekleri için `darkMode` burada da tanımlı.
+ */
 module.exports = {
+  darkMode: "class",
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",

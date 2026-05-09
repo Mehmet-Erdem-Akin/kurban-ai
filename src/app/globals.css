@@ -7,27 +7,32 @@
   --foreground: #1c1917;
 }
 
+.dark {
+  --background: #0c0a09;
+  --foreground: #fafaf9;
+}
+
 @layer base {
   html {
     scroll-behavior: smooth;
   }
 
   body {
-    @apply bg-stone-50 text-stone-900 antialiased;
+    @apply bg-stone-50 text-stone-900 antialiased dark:bg-stone-950 dark:text-stone-100;
   }
 
   ::selection {
-    @apply bg-emerald-200/90 text-emerald-950;
+    @apply bg-emerald-200/90 text-emerald-950 dark:bg-emerald-600/90 dark:text-emerald-50;
   }
 
   * {
-    @apply border-stone-200;
+    @apply border-stone-200 dark:border-stone-700;
   }
 }
 
 @layer components {
   .btn {
-    @apply inline-flex items-center justify-center rounded-xl font-semibold transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-800 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50;
+    @apply inline-flex items-center justify-center rounded-xl font-semibold transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-800 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 dark:focus-visible:ring-emerald-500 dark:focus-visible:ring-offset-stone-950;
   }
 
   .btn-primary {
@@ -35,7 +40,7 @@
   }
 
   .btn-secondary {
-    @apply btn border border-stone-200/90 bg-white/90 text-stone-800 shadow-sm backdrop-blur-sm hover:border-emerald-200/80 hover:bg-white hover:shadow-md active:scale-[0.98];
+    @apply btn border border-stone-200/90 bg-white/90 text-stone-800 shadow-sm backdrop-blur-sm hover:border-emerald-200/80 hover:bg-white hover:shadow-md active:scale-[0.98] dark:border-stone-600 dark:bg-stone-800/90 dark:text-stone-100 dark:hover:border-emerald-600/50 dark:hover:bg-stone-800;
   }
 
   .btn-accent {
@@ -43,7 +48,7 @@
   }
 
   .btn-warning {
-    @apply btn bg-amber-500 text-stone-900 shadow-sm hover:bg-amber-600 active:scale-[0.98];
+    @apply btn bg-amber-500 text-stone-900 shadow-sm hover:bg-amber-600 active:scale-[0.98] dark:text-stone-950;
   }
 
   .btn-sm {
@@ -63,19 +68,19 @@
   }
 
   .card {
-    @apply rounded-2xl border border-stone-200/70 bg-white/95 shadow-soft backdrop-blur-[2px];
+    @apply rounded-2xl border border-stone-200/70 bg-white/95 shadow-soft backdrop-blur-[2px] dark:border-stone-700/80 dark:bg-stone-900/95 dark:shadow-[0_2px_15px_-3px_rgba(0,0,0,0.35)];
   }
 
   .card-hover {
-    @apply card transition-all duration-300 hover:-translate-y-0.5 hover:border-emerald-200/50 hover:shadow-medium;
+    @apply card transition-all duration-300 hover:-translate-y-0.5 hover:border-emerald-200/50 hover:shadow-medium dark:hover:border-emerald-700/40;
   }
 
   .card-pastel {
-    @apply card border-stone-200 bg-stone-50/80;
+    @apply card border-stone-200 bg-stone-50/80 dark:border-stone-700 dark:bg-stone-900/60;
   }
 
   .card-header {
-    @apply border-b border-stone-100 p-6 sm:p-8;
+    @apply border-b border-stone-100 p-6 sm:p-8 dark:border-stone-800;
   }
 
   .card-body {
@@ -83,11 +88,11 @@
   }
 
   .card-footer {
-    @apply rounded-b-2xl border-t border-stone-100 bg-stone-50/80 p-6 sm:p-8;
+    @apply rounded-b-2xl border-t border-stone-100 bg-stone-50/80 p-6 sm:p-8 dark:border-stone-800 dark:bg-stone-900/70;
   }
 
   .input {
-    @apply w-full rounded-xl border border-stone-300 bg-white px-4 py-3 text-stone-900 placeholder-stone-400 transition focus:border-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-800/20;
+    @apply w-full rounded-xl border border-stone-300 bg-white px-4 py-3 text-stone-900 placeholder-stone-400 transition focus:border-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-800/20 dark:border-stone-600 dark:bg-stone-900 dark:text-stone-100 dark:placeholder-stone-500 dark:focus:border-emerald-500 dark:focus:ring-emerald-500/25;
   }
 
   .input-error {
@@ -99,39 +104,39 @@
   }
 
   .badge-success {
-    @apply badge border-emerald-200 bg-emerald-50 text-emerald-800;
+    @apply badge border-emerald-200 bg-emerald-50 text-emerald-800 dark:border-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-200;
   }
 
   .badge-warning {
-    @apply badge border-amber-200 bg-amber-50 text-amber-900;
+    @apply badge border-amber-200 bg-amber-50 text-amber-900 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-200;
   }
 
   .badge-error {
-    @apply badge border-red-200 bg-red-50 text-red-800;
+    @apply badge border-red-200 bg-red-50 text-red-800 dark:border-red-900 dark:bg-red-950/40 dark:text-red-200;
   }
 
   .badge-info {
-    @apply badge border-sky-200 bg-sky-50 text-sky-900;
+    @apply badge border-sky-200 bg-sky-50 text-sky-900 dark:border-sky-800 dark:bg-sky-950/40 dark:text-sky-200;
   }
 
   .icon-container {
-    @apply flex h-14 w-14 shrink-0 items-center justify-center rounded-xl border border-stone-200 bg-stone-50;
+    @apply flex h-14 w-14 shrink-0 items-center justify-center rounded-xl border border-stone-200 bg-stone-50 dark:border-stone-600 dark:bg-stone-800;
   }
 
   .icon-container-primary {
-    @apply icon-container border-emerald-200 bg-emerald-50 text-emerald-800;
+    @apply icon-container border-emerald-200 bg-emerald-50 text-emerald-800 dark:border-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-200;
   }
 
   .icon-container-secondary {
-    @apply icon-container border-amber-200 bg-amber-50 text-amber-900;
+    @apply icon-container border-amber-200 bg-amber-50 text-amber-900 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-200;
   }
 
   .icon-container-accent {
-    @apply icon-container border-teal-200 bg-teal-50 text-teal-900;
+    @apply icon-container border-teal-200 bg-teal-50 text-teal-900 dark:border-teal-800 dark:bg-teal-950/40 dark:text-teal-200;
   }
 
   .progress {
-    @apply h-2.5 w-full rounded-full bg-stone-200;
+    @apply h-2.5 w-full rounded-full bg-stone-200 dark:bg-stone-700;
   }
 
   .progress-bar {
@@ -151,7 +156,7 @@
   }
 
   .skeleton {
-    @apply animate-pulse rounded-xl bg-stone-200;
+    @apply animate-pulse rounded-xl bg-stone-200 dark:bg-stone-700;
   }
 
   .animate-fade-in {
@@ -167,7 +172,7 @@
   }
 
   .hero-gradient {
-    @apply relative min-h-screen bg-[linear-gradient(180deg,#fafaf9_0%,#f5f5f4_45%,#fafaf9_100%)];
+    @apply relative min-h-screen bg-[linear-gradient(180deg,#fafaf9_0%,#f5f5f4_45%,#fafaf9_100%)] dark:bg-[linear-gradient(180deg,#0c0a09_0%,#1c1917_48%,#0c0a09_100%)];
   }
 
   .hero-gradient::before {
@@ -199,16 +204,40 @@
       );
   }
 
+  .dark .hero-gradient::before {
+    background:
+      radial-gradient(
+        ellipse 85% 55% at 50% -25%,
+        rgba(52, 211, 153, 0.14),
+        transparent 58%
+      ),
+      radial-gradient(
+        ellipse 55% 42% at 100% 5%,
+        rgba(217, 119, 6, 0.08),
+        transparent 52%
+      ),
+      radial-gradient(
+        ellipse 50% 38% at 0% 100%,
+        rgba(20, 184, 166, 0.1),
+        transparent 55%
+      ),
+      radial-gradient(
+        circle at 50% 100%,
+        rgba(255, 255, 255, 0.04),
+        transparent 42%
+      );
+  }
+
   .glass {
-    @apply border border-white/40 bg-white/70 backdrop-blur-md;
+    @apply border border-white/40 bg-white/70 backdrop-blur-md dark:border-stone-700/60 dark:bg-stone-900/70;
   }
 
   .glass-strong {
-    @apply border border-white/60 bg-white/85 backdrop-blur-lg;
+    @apply border border-white/60 bg-white/85 backdrop-blur-lg dark:border-stone-600/70 dark:bg-stone-900/85;
   }
 
   .animal-card {
-    @apply card-hover bg-white;
+    @apply card-hover bg-white dark:bg-stone-900/95;
   }
 
   .animal-btn {
@@ -216,7 +245,7 @@
   }
 
   .animal-stat-item {
-    @apply flex items-center justify-between rounded-xl border border-stone-200 bg-stone-50/90 p-4;
+    @apply flex items-center justify-between rounded-xl border border-stone-200 bg-stone-50/90 p-4 dark:border-stone-700 dark:bg-stone-900/70;
   }
 
   .animal-cta {
@@ -246,15 +275,15 @@
   }
 
   .surface-band {
-    @apply border-y border-stone-200/70 bg-gradient-to-b from-white/75 via-white/55 to-stone-50/50 backdrop-blur-md;
+    @apply border-y border-stone-200/70 bg-gradient-to-b from-white/75 via-white/55 to-stone-50/50 backdrop-blur-md dark:border-stone-800 dark:from-stone-900/80 dark:via-stone-950/70 dark:to-stone-950/90;
   }
 
   .hero-pill {
-    @apply inline-flex items-center gap-2 rounded-full border border-emerald-200/90 bg-white/85 px-3.5 py-1.5 text-xs font-semibold text-emerald-950 shadow-sm backdrop-blur-md sm:text-sm;
+    @apply inline-flex items-center gap-2 rounded-full border border-emerald-200/90 bg-white/85 px-3.5 py-1.5 text-xs font-semibold text-emerald-950 shadow-sm backdrop-blur-md sm:text-sm dark:border-emerald-800/60 dark:bg-stone-900/80 dark:text-emerald-200;
   }
 
   .section-kicker {
-    @apply mb-3 inline-flex items-center justify-center gap-2 rounded-full border border-stone-200/80 bg-white/80 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.2em] text-emerald-900/90 shadow-sm backdrop-blur-sm;
+    @apply mb-3 inline-flex items-center justify-center gap-2 rounded-full border border-stone-200/80 bg-white/80 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.2em] text-emerald-900/90 shadow-sm backdrop-blur-sm dark:border-stone-700 dark:bg-stone-900/80 dark:text-emerald-300/90;
   }
 
   .step-item {
@@ -267,7 +296,7 @@
 }
 
 .gradient-text {
-  @apply bg-gradient-to-r from-emerald-800 via-teal-600 to-amber-700 bg-clip-text text-transparent;
+  @apply bg-gradient-to-r from-emerald-800 via-teal-600 to-amber-700 bg-clip-text text-transparent dark:from-emerald-300 dark:via-teal-400 dark:to-amber-400;
 }
 
 @keyframes fadeIn {

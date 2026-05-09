@@ -1,5 +1,5 @@
 // Animal Types
-export type AnimalType = "dana" | "koç" | "kuzu" | "keçi" | "deve";
+export type AnimalType = "dana" | "koç" | "kuzu" | "keçi";
 
 export interface AnimalAnalysis {
   id: string;

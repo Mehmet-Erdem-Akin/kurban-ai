@@ -11,10 +11,10 @@ export default function KVKKPage() {
       <main className="relative z-10 container mx-auto px-4 py-12">
         <div className="max-w-4xl mx-auto">
           <div className="card p-8">
-            <h1 className="font-display text-4xl font-semibold text-neutral-900 mb-2">
+            <h1 className="font-display text-4xl font-semibold text-neutral-900 dark:text-neutral-100 mb-2">
               KVKK Aydınlatma Metni
             </h1>
-            <p className="text-neutral-600 mb-8">
+            <p className="text-neutral-600 dark:text-neutral-400 mb-8">
               6698 Sayılı Kişisel Verilerin Korunması Kanunu Kapsamında
             </p>
 
@@ -30,16 +30,16 @@ export default function KVKKPage() {
                 </p>
               </div>
 
-              <h2 className="text-2xl font-bold text-neutral-900 mb-4">
+              <h2 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">
                 1. Veri Sorumlusu Kimliği
               </h2>
               <div className="bg-white border border-neutral-200 p-6 rounded-lg mb-6">
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
-                    <h3 className="font-bold text-neutral-900 mb-2">
+                    <h3 className="font-bold text-neutral-900 dark:text-neutral-100 mb-2">
                       Proje Bilgileri
                     </h3>
-                    <ul className="text-neutral-700 space-y-1">
+                    <ul className="text-neutral-700 dark:text-neutral-300 space-y-1">
                       <li>
                         <strong>Proje Sahibi:</strong> Mehmet Erdem Akın
                       </li>
@@ -53,10 +53,10 @@ export default function KVKKPage() {
                     </ul>
                   </div>
                   <div>
-                    <h3 className="font-bold text-neutral-900 mb-2">
+                    <h3 className="font-bold text-neutral-900 dark:text-neutral-100 mb-2">
                       İletişim
                     </h3>
-                    <ul className="text-neutral-700 space-y-1">
+                    <ul className="text-neutral-700 dark:text-neutral-300 space-y-1">
                       <li>
                         <strong>E-posta:</strong> mehmet.erdem.akin@outlook.com
                       </li>
@@ -71,7 +71,7 @@ export default function KVKKPage() {
                 </div>
               </div>
 
-              <h2 className="text-2xl font-bold text-neutral-900 mb-4">
+              <h2 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">
                 2. Kişisel Verilerin İşlenme Amaçları
               </h2>
 
@@ -80,10 +80,10 @@ export default function KVKKPage() {
                   <div className="text-4xl font-bold text-blue-600 mb-4">
                     🎯
                   </div>
-                  <h3 className="text-2xl font-bold text-neutral-900 mb-4">
+                  <h3 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">
                     Kişisel Veri İşleme Amacı Yok
                   </h3>
-                  <p className="text-lg text-neutral-700 max-w-3xl mx-auto leading-relaxed mb-6">
+                  <p className="text-lg text-neutral-700 dark:text-neutral-300 max-w-3xl mx-auto leading-relaxed mb-6">
                     Kurban-AI platformu kişisel veri toplamadığı için,
                     <strong>kişisel veri işleme amacı bulunmamaktadır</strong>.
                     Platform yalnızca teknik hizmet sunumu için gerekli
@@ -139,7 +139,7 @@ export default function KVKKPage() {
                 </div>
               </div>
 
-              <h2 className="text-2xl font-bold text-neutral-900 mb-4">
+              <h2 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">
                 3. Toplanan Kişisel Veri Kategorileri
               </h2>
 
@@ -148,10 +148,10 @@ export default function KVKKPage() {
                   <div className="text-5xl font-bold text-green-600 mb-4">
                     🚫
                   </div>
-                  <h3 className="text-2xl font-bold text-neutral-900 mb-4">
+                  <h3 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">
                     Kişisel Veri Toplanmaz
                   </h3>
-                  <p className="text-lg text-neutral-700 max-w-3xl mx-auto leading-relaxed mb-6">
+                  <p className="text-lg text-neutral-700 dark:text-neutral-300 max-w-3xl mx-auto leading-relaxed mb-6">
                     Kurban-AI platformu,{" "}
                     <strong>veri minimizasyonu prensibi</strong> gereğince
                     kişisel verilerinizi kalıcı olarak toplamaz ve saklamaz. Tüm
@@ -165,10 +165,10 @@ export default function KVKKPage() {
                     <div className="text-3xl font-bold text-blue-600 mb-3">
                       📸
                     </div>
-                    <h4 className="font-bold text-neutral-900 mb-2">
+                    <h4 className="font-bold text-neutral-900 dark:text-neutral-100 mb-2">
                       Fotoğraf Analizi
                     </h4>
-                    <p className="text-neutral-700 text-sm">
+                    <p className="text-neutral-700 dark:text-neutral-300 text-sm">
                       Yüklenen fotoğraflar yalnızca analiz süresince geçici
                       olarak işlenir, sonrasında otomatik olarak silinir.
                     </p>
@@ -178,10 +178,10 @@ export default function KVKKPage() {
                     <div className="text-3xl font-bold text-green-600 mb-3">
                       🔄
                     </div>
-                    <h4 className="font-bold text-neutral-900 mb-2">
+                    <h4 className="font-bold text-neutral-900 dark:text-neutral-100 mb-2">
                       Geçici İşlem
                     </h4>
-                    <p className="text-neutral-700 text-sm">
+                    <p className="text-neutral-700 dark:text-neutral-300 text-sm">
                       Tüm veriler yalnızca hizmet sunumu süresince RAM&apos;de
                       tutulur, kalıcı depolama yapılmaz.
                     </p>
@@ -191,10 +191,10 @@ export default function KVKKPage() {
                     <div className="text-3xl font-bold text-purple-600 mb-3">
                       🛡️
                     </div>
-                    <h4 className="font-bold text-neutral-900 mb-2">
+                    <h4 className="font-bold text-neutral-900 dark:text-neutral-100 mb-2">
                       Gizlilik Koruması
                     </h4>
-                    <p className="text-neutral-700 text-sm">
+                    <p className="text-neutral-700 dark:text-neutral-300 text-sm">
                       Hiçbir kişisel veri veritabanında saklanmaz, üçüncü
                       taraflarla paylaşılmaz.
                     </p>
@@ -221,7 +221,7 @@ export default function KVKKPage() {
                 </div>
               </div>
 
-              <h2 className="text-2xl font-bold text-neutral-900 mb-4">
+              <h2 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">
                 4. Kişisel Verilerin İşlenme Hukuki Sebepleri
               </h2>
               <div className="grid md:grid-cols-2 gap-6 mb-6">
@@ -257,7 +257,7 @@ export default function KVKKPage() {
                 </div>
               </div>
 
-              <h2 className="text-2xl font-bold text-neutral-900 mb-4">
+              <h2 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">
                 5. Kişisel Verilerin Aktarılması
               </h2>
               <div className="bg-warning-50 border border-warning-200 p-6 rounded-lg mb-6">
@@ -288,7 +288,7 @@ export default function KVKKPage() {
                 </div>
               </div>
 
-              <h2 className="text-2xl font-bold text-neutral-900 mb-4">
+              <h2 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">
                 6. Veri Saklama Süreleri
               </h2>
               <div className="bg-gradient-to-r from-primary-50 to-accent-50 p-6 rounded-lg mb-6">
@@ -296,10 +296,10 @@ export default function KVKKPage() {
                   <div className="text-4xl font-bold text-green-600 mb-4">
                     🚫
                   </div>
-                  <h3 className="text-2xl font-bold text-neutral-900 mb-4">
+                  <h3 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">
                     Veri Saklama Yapılmaz
                   </h3>
-                  <p className="text-lg text-neutral-700 max-w-2xl mx-auto leading-relaxed">
+                  <p className="text-lg text-neutral-700 dark:text-neutral-300 max-w-2xl mx-auto leading-relaxed">
                     Kurban-AI platformu veri minimizasyonu prensibini benimser.
                     Kişisel verileriniz mümkün olan en kısa süre işlenir ve
                     ardından silinir.
@@ -311,10 +311,10 @@ export default function KVKKPage() {
                     <div className="text-3xl font-bold text-green-600 mb-2">
                       📸
                     </div>
-                    <h3 className="font-bold text-neutral-900 mb-2">
+                    <h3 className="font-bold text-neutral-900 dark:text-neutral-100 mb-2">
                       Fotoğraflar
                     </h3>
-                    <p className="text-neutral-700">
+                    <p className="text-neutral-700 dark:text-neutral-300">
                       Analiz sonrası anında silinir
                     </p>
                   </div>
@@ -322,10 +322,10 @@ export default function KVKKPage() {
                     <div className="text-3xl font-bold text-blue-600 mb-2">
                       📊
                     </div>
-                    <h3 className="font-bold text-neutral-900 mb-2">
+                    <h3 className="font-bold text-neutral-900 dark:text-neutral-100 mb-2">
                       Analiz Sonuçları
                     </h3>
-                    <p className="text-neutral-700">
+                    <p className="text-neutral-700 dark:text-neutral-300">
                       Geçici olarak işlenir, saklanmaz
                     </p>
                   </div>
@@ -333,27 +333,27 @@ export default function KVKKPage() {
                     <div className="text-3xl font-bold text-purple-600 mb-2">
                       🗂️
                     </div>
-                    <h3 className="font-bold text-neutral-900 mb-2">
+                    <h3 className="font-bold text-neutral-900 dark:text-neutral-100 mb-2">
                       Kişisel Veriler
                     </h3>
-                    <p className="text-neutral-700">Kalıcı saklama yapılmaz</p>
+                    <p className="text-neutral-700 dark:text-neutral-300">Kalıcı saklama yapılmaz</p>
                   </div>
                 </div>
               </div>
 
-              <h2 className="text-2xl font-bold text-neutral-900 mb-4">
+              <h2 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">
                 7. KVKK Kapsamındaki Haklarınız
               </h2>
-              <p className="mb-4 text-neutral-700 leading-relaxed">
+              <p className="mb-4 text-neutral-700 dark:text-neutral-300 leading-relaxed">
                 KVKK Kanunu&apos;nun 11. maddesi gereğince sahip olduğunuz
                 haklar:
               </p>
               <div className="grid md:grid-cols-2 gap-6 mb-6">
                 <div className="bg-white border-l-4 border-primary-500 p-6">
-                  <h3 className="font-bold text-neutral-900 mb-3">
+                  <h3 className="font-bold text-neutral-900 dark:text-neutral-100 mb-3">
                     📋 Bilgi ve Erişim Hakları
                   </h3>
-                  <ul className="text-neutral-700 space-y-2">
+                  <ul className="text-neutral-700 dark:text-neutral-300 space-y-2">
                     <li>• Kişisel veri işlenip işlenmediğini öğrenme</li>
                     <li>• İşlenmişse buna ilişkin bilgi talep etme</li>
                     <li>
@@ -367,10 +367,10 @@ export default function KVKKPage() {
                   </ul>
                 </div>
                 <div className="bg-white border-l-4 border-accent-500 p-6">
-                  <h3 className="font-bold text-neutral-900 mb-3">
+                  <h3 className="font-bold text-neutral-900 dark:text-neutral-100 mb-3">
                     🔧 Düzeltme ve Silme Hakları
                   </h3>
-                  <ul className="text-neutral-700 space-y-2">
+                  <ul className="text-neutral-700 dark:text-neutral-300 space-y-2">
                     <li>
                       • Kişisel verilerin eksik veya yanlış işlenmiş olması
                       halinde bunların düzeltilmesini isteme
@@ -392,7 +392,7 @@ export default function KVKKPage() {
                 </div>
               </div>
 
-              <h2 className="text-2xl font-bold text-neutral-900 mb-4">
+              <h2 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">
                 8. Hak Kullanım Prosedürü
               </h2>
               <div className="bg-blue-50 border border-blue-200 p-6 rounded-lg mb-6">
@@ -427,7 +427,7 @@ export default function KVKKPage() {
                 </div>
               </div>
 
-              <h2 className="text-2xl font-bold text-neutral-900 mb-4">
+              <h2 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">
                 9. Başvuru Değerlendirme Süreci
               </h2>
               <div className="bg-success-50 border border-success-200 p-6 rounded-lg mb-6">
@@ -465,7 +465,7 @@ export default function KVKKPage() {
                 </div>
               </div>
 
-              <h2 className="text-2xl font-bold text-neutral-900 mb-4">
+              <h2 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">
                 10. Şikayet Hakkı
               </h2>
               <div className="bg-red-50 border border-red-200 p-6 rounded-lg mb-6">
@@ -501,10 +501,10 @@ export default function KVKKPage() {
                 </div>
               </div>
 
-              <h2 className="text-2xl font-bold text-neutral-900 mb-4">
+              <h2 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">
                 11. Çerez Politikası
               </h2>
-              <p className="mb-4 text-neutral-700 leading-relaxed">
+              <p className="mb-4 text-neutral-700 dark:text-neutral-300 leading-relaxed">
                 Web sitemizde kullanılan çerezler hakkında bilgi:
               </p>
               <div className="overflow-x-auto mb-6">
@@ -560,7 +560,7 @@ export default function KVKKPage() {
                 </table>
               </div>
 
-              <h2 className="text-2xl font-bold text-neutral-900 mb-4">
+              <h2 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">
                 12. Güvenlik Önlemleri
               </h2>
               <div className="grid md:grid-cols-3 gap-6 mb-6">
@@ -568,10 +568,10 @@ export default function KVKKPage() {
                   <div className="text-center mb-3">
                     <div className="text-3xl">🔐</div>
                   </div>
-                  <h3 className="font-bold text-neutral-900 mb-2 text-center">
+                  <h3 className="font-bold text-neutral-900 dark:text-neutral-100 mb-2 text-center">
                     Teknik Güvenlik
                   </h3>
-                  <ul className="text-neutral-700 text-sm space-y-1">
+                  <ul className="text-neutral-700 dark:text-neutral-300 text-sm space-y-1">
                     <li>• SSL/TLS şifreleme</li>
                     <li>• Güvenli veri merkezi</li>
                     <li>• Düzenli güvenlik testleri</li>
@@ -582,10 +582,10 @@ export default function KVKKPage() {
                   <div className="text-center mb-3">
                     <div className="text-3xl">👥</div>
                   </div>
-                  <h3 className="font-bold text-neutral-900 mb-2 text-center">
+                  <h3 className="font-bold text-neutral-900 dark:text-neutral-100 mb-2 text-center">
                     İdari Güvenlik
                   </h3>
-                  <ul className="text-neutral-700 text-sm space-y-1">
+                  <ul className="text-neutral-700 dark:text-neutral-300 text-sm space-y-1">
                     <li>• Personel eğitimleri</li>
                     <li>• Gizlilik sözleşmeleri</li>
                     <li>• Düzenli denetimler</li>
@@ -596,10 +596,10 @@ export default function KVKKPage() {
                   <div className="text-center mb-3">
                     <div className="text-3xl">🏢</div>
                   </div>
-                  <h3 className="font-bold text-neutral-900 mb-2 text-center">
+                  <h3 className="font-bold text-neutral-900 dark:text-neutral-100 mb-2 text-center">
                     Fiziksel Güvenlik
                   </h3>
-                  <ul className="text-neutral-700 text-sm space-y-1">
+                  <ul className="text-neutral-700 dark:text-neutral-300 text-sm space-y-1">
                     <li>• Güvenli ofis ortamı</li>
                     <li>• Kamera sistemleri</li>
                     <li>• Kartlı giriş sistemi</li>
@@ -641,7 +641,7 @@ export default function KVKKPage() {
               </div>
 
               <div className="bg-neutral-100 p-6 rounded-lg mt-8">
-                <p className="text-neutral-700 text-center">
+                <p className="text-neutral-700 dark:text-neutral-300 text-center">
                   <strong>Son güncelleme:</strong>{" "}
                   {new Date().toLocaleDateString("tr-TR")}
                   <br />

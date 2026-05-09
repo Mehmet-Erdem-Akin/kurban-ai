@@ -2,16 +2,17 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import ThemeToggle from "@/components/ThemeToggle";
 
 const navLinkClass =
-  "rounded-full px-3 py-2 text-sm font-medium text-stone-600 transition hover:bg-stone-100/90 hover:text-stone-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700 focus-visible:ring-offset-2";
+  "rounded-full px-3 py-2 text-sm font-medium text-stone-600 transition hover:bg-stone-100/90 hover:text-stone-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700 focus-visible:ring-offset-2 dark:text-stone-300 dark:hover:bg-stone-800/90 dark:hover:text-white dark:focus-visible:ring-emerald-500 dark:focus-visible:ring-offset-stone-950";
 
 const SiteHeader = () => {
   const pathname = usePathname();
   const isHome = pathname === "/";
 
   return (
-    <header className="sticky top-0 z-50 border-b border-white/50 bg-white/65 shadow-[0_1px_0_0_rgba(28,25,23,0.04)] backdrop-blur-xl supports-[backdrop-filter]:bg-white/55">
+    <header className="sticky top-0 z-50 border-b border-white/50 bg-white/65 shadow-[0_1px_0_0_rgba(28,25,23,0.04)] backdrop-blur-xl supports-[backdrop-filter]:bg-white/55 dark:border-stone-800/80 dark:bg-stone-950/70 dark:shadow-[0_1px_0_0_rgba(0,0,0,0.35)] dark:supports-[backdrop-filter]:bg-stone-950/60">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:py-3.5">
         <Link
           href="/"
@@ -25,15 +26,16 @@ const SiteHeader = () => {
             <span className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/10 to-white/0 opacity-0 transition group-hover:opacity-100" />
             {"KA"}
           </span>
-          <span className="truncate font-display text-base font-semibold tracking-tight text-stone-900 sm:text-lg">
+          <span className="truncate font-display text-base font-semibold tracking-tight text-stone-900 dark:text-stone-100 sm:text-lg">
             Kurbanlık Analiz
           </span>
         </Link>
 
         <nav
-          className="flex shrink-0 items-center gap-0.5 sm:gap-1"
+          className="flex shrink-0 items-center gap-1 sm:gap-1.5"
           aria-label="Ana menü"
         >
+          <ThemeToggle />
           {!isHome && (
             <Link href="/" className={`${navLinkClass} hidden sm:inline`}>
               Ana Sayfa
@@ -43,7 +45,7 @@ const SiteHeader = () => {
             href="/contact"
             className={`${navLinkClass} hidden md:inline ${
               pathname === "/contact"
-                ? "bg-emerald-50 text-emerald-950 ring-1 ring-emerald-200/80"
+                ? "bg-emerald-50 text-emerald-950 ring-1 ring-emerald-200/80 dark:bg-emerald-950/40 dark:text-emerald-100 dark:ring-emerald-700/60"
                 : ""
             }`}
             aria-current={pathname === "/contact" ? "page" : undefined}

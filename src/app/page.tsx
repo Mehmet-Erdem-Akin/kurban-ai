@@ -1,5 +1,10 @@
 "use client";
 
+import {
+  CurrencyDollarIcon,
+  PhotoIcon,
+  SunIcon,
+} from "@heroicons/react/24/outline";
 import Link from "next/link";
 import AppPageShell from "@/components/AppPageShell";
 import SiteFooter from "@/components/SiteFooter";
@@ -10,60 +15,21 @@ const features = [
     title: "Çoklu fotoğraf",
     desc: "Aynı hayvandan farklı açılar yükleyerek modelin bağlam kurmasına yardımcı olun.",
     icon: (
-      <svg
-        className="h-6 w-6"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-        aria-hidden
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={1.75}
-          d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-        />
-      </svg>
+      <PhotoIcon className="h-6 w-6" strokeWidth={1.75} aria-hidden />
     ),
   },
   {
     title: "Tür ve kondisyon",
     desc: "Büyükbaş ve küçükbaş ayrımı, görünür özelliklere göre ön değerlendirme.",
     icon: (
-      <svg
-        className="h-6 w-6"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-        aria-hidden
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={1.75}
-          d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9A5 5 0 1117.5 7.5 5 5 0 016.343 16.243z"
-        />
-      </svg>
+      <SunIcon className="h-6 w-6" strokeWidth={1.75} aria-hidden />
     ),
   },
   {
     title: "Et ve fiyat çerçevesi",
     desc: "Karkas verimi ve piyasa referanslarıyla yönlendirici tahmin (resmi ekspertiz değildir).",
     icon: (
-      <svg
-        className="h-6 w-6"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-        aria-hidden
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={1.75}
-          d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"
-        />
-      </svg>
+      <CurrencyDollarIcon className="h-6 w-6" strokeWidth={1.75} aria-hidden />
     ),
   },
 ];
@@ -86,7 +52,7 @@ const faqs = [
   },
   {
     q: "Hangi hayvanlar destekleniyor?",
-    a: "Dana, boğa, inek, koç, koyun, keçi, manda ve buzağı gibi kurbanlık türleri hedeflenir; diğer türler için uyarı verilir.",
+    a: "Yalnızca büyükbaş (dana, boğa, inek, manda, buzağı vb.) ve küçükbaş (koyun, koç, keçi vb.) kurbanlık türleri hedeflenir; diğer türler için uyarı verilir.",
   },
   {
     q: "Ücret var mı?",
@@ -103,14 +69,14 @@ const Home = () => {
         <section className="mx-auto max-w-6xl px-4 pb-16 pt-10 sm:pb-20 sm:pt-14">
           <div className="mx-auto max-w-3xl text-center animate-fade-in">
             <p className="hero-pill mb-4">
-              <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-600" aria-hidden />
+              <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-600 dark:bg-emerald-500" aria-hidden />
               {"Yapay zeka destekli ön analiz"}
             </p>
-            <h1 className="font-display text-balance text-3xl font-semibold tracking-tight text-stone-900 sm:text-5xl sm:leading-[1.08]">
+            <h1 className="font-display text-balance text-3xl font-semibold tracking-tight text-stone-900 dark:text-stone-50 sm:text-5xl sm:leading-[1.08]">
               Kurbanlık seçiminde{" "}
               <span className="gradient-text">daha net bir başlangıç</span>
             </h1>
-            <p className="mt-5 text-pretty text-base leading-relaxed text-stone-600 sm:text-lg">
+            <p className="mt-5 text-pretty text-base leading-relaxed text-stone-600 dark:text-stone-400 sm:text-lg">
               Fotoğraftan tür, kondisyon ve yönlendirici fiyat çerçevesi alın.
               Araç, satın alma veya dini vecibelerin yerine geçmez; kararınızı
               desteklemek için tasarlandı.
@@ -139,10 +105,10 @@ const Home = () => {
             ].map((label) => (
               <li
                 key={label}
-                className="flex items-center justify-center gap-2 rounded-xl border border-stone-200/80 bg-white/85 px-4 py-3 text-center text-sm font-medium text-stone-700 shadow-soft backdrop-blur-sm transition hover:border-emerald-200/60 hover:shadow-medium"
+                className="flex items-center justify-center gap-2 rounded-xl border border-stone-200/80 bg-white/85 px-4 py-3 text-center text-sm font-medium text-stone-700 shadow-soft backdrop-blur-sm transition hover:border-emerald-200/60 hover:shadow-medium dark:border-stone-700 dark:bg-stone-900/80 dark:text-stone-300 dark:hover:border-emerald-700/50"
               >
                 <span
-                  className="text-emerald-700"
+                  className="text-emerald-700 dark:text-emerald-400"
                   aria-hidden
                 >
                   ✓
@@ -160,10 +126,10 @@ const Home = () => {
           <div className="mx-auto max-w-6xl px-4">
             <div className="mx-auto max-w-2xl text-center">
               <p className="section-kicker mx-auto">Özellikler</p>
-              <h2 className="font-display text-2xl font-semibold tracking-tight text-stone-900 sm:text-3xl">
+              <h2 className="font-display text-2xl font-semibold tracking-tight text-stone-900 dark:text-stone-50 sm:text-3xl">
                 Öne çıkanlar
               </h2>
-              <p className="mt-3 text-stone-600">
+              <p className="mt-3 text-stone-600 dark:text-stone-400">
                 Karmaşık formlar yerine net akış: yükle, isteğe bağlı bilgi
                 ver, raporu oku.
               </p>
@@ -174,13 +140,13 @@ const Home = () => {
                   key={f.title}
                   className="card-hover group flex flex-col p-6 sm:p-7"
                 >
-                  <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl border border-emerald-100/90 bg-gradient-to-br from-emerald-50 to-teal-50 text-emerald-800 shadow-sm ring-1 ring-white/60 transition group-hover:border-emerald-200 group-hover:shadow-md">
+                  <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl border border-emerald-100/90 bg-gradient-to-br from-emerald-50 to-teal-50 text-emerald-800 shadow-sm ring-1 ring-white/60 transition group-hover:border-emerald-200 group-hover:shadow-md dark:border-emerald-800/50 dark:from-emerald-950/60 dark:to-teal-950/50 dark:text-emerald-300 dark:ring-stone-700/60 dark:group-hover:border-emerald-600/50">
                     {f.icon}
                   </div>
-                  <h3 className="text-lg font-semibold text-stone-900">
+                  <h3 className="text-lg font-semibold text-stone-900 dark:text-stone-50">
                     {f.title}
                   </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-stone-600">
+                  <p className="mt-2 text-sm leading-relaxed text-stone-600 dark:text-stone-400">
                     {f.desc}
                   </p>
                 </div>
@@ -194,10 +160,10 @@ const Home = () => {
           className="mx-auto max-w-6xl scroll-mt-24 px-4 py-16 text-center sm:py-20"
         >
           <p className="section-kicker mb-3">Adımlar</p>
-          <h2 className="text-center font-display text-2xl font-semibold tracking-tight text-stone-900 sm:text-3xl">
+          <h2 className="text-center font-display text-2xl font-semibold tracking-tight text-stone-900 dark:text-stone-50 sm:text-3xl">
             Nasıl çalışır?
           </h2>
-          <p className="mx-auto mt-3 max-w-2xl text-center text-stone-600">
+          <p className="mx-auto mt-3 max-w-2xl text-center text-stone-600 dark:text-stone-400">
             Dört kısa adım. İsterseniz yalnızca fotoğraf ile de devam
             edebilirsiniz.
           </p>
@@ -207,16 +173,16 @@ const Home = () => {
                 key={s.n}
                 className="card relative overflow-hidden p-6 transition hover:border-emerald-100"
               >
-                <span className="pointer-events-none absolute right-3 top-3 font-display text-5xl font-semibold text-stone-100/90">
+                <span className="pointer-events-none absolute right-3 top-3 font-display text-5xl font-semibold text-stone-100/90 dark:text-stone-800/80">
                   {s.n}
                 </span>
-                <p className="text-xs font-semibold uppercase tracking-wide text-emerald-800">
+                <p className="text-xs font-semibold uppercase tracking-wide text-emerald-800 dark:text-emerald-300">
                   Adım {s.n}
                 </p>
-                <h3 className="mt-2 text-lg font-semibold text-stone-900">
+                <h3 className="mt-2 text-lg font-semibold text-stone-900 dark:text-stone-50">
                   {s.title}
                 </h3>
-                <p className="mt-2 text-sm leading-relaxed text-stone-600">
+                <p className="mt-2 text-sm leading-relaxed text-stone-600 dark:text-stone-400">
                   {s.text}
                 </p>
               </li>
@@ -228,28 +194,34 @@ const Home = () => {
           <div className="mx-auto max-w-6xl px-4">
             <div className="flex flex-col items-center text-center">
               <p className="section-kicker mb-3">Kapsam</p>
-              <h2 className="font-display text-2xl font-semibold text-stone-900 sm:text-3xl">
+              <h2 className="font-display text-2xl font-semibold text-stone-900 dark:text-stone-50 sm:text-3xl">
                 Desteklenen türler
               </h2>
             </div>
-            <p className="mx-auto mt-3 max-w-2xl text-center text-sm text-stone-600">
+            <p className="mx-auto mt-3 max-w-2xl text-center text-sm text-stone-600 dark:text-stone-400">
               Model bu türler için eğitim ve prompt bağlamıyla uyumludur.
             </p>
-            <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="mx-auto mt-10 grid max-w-3xl gap-4 sm:grid-cols-2">
               {[
-                { emoji: "🐄", title: "Büyükbaş", tags: "Dana, boğa, inek, buzağı, manda" },
-                { emoji: "🐑", title: "Koyun / koç", tags: "Küçükbaş karkas mantığı" },
-                { emoji: "🐐", title: "Keçi", tags: "Küçükbaş karkas mantığı" },
-                { emoji: "🐪", title: "Deve", tags: "Yakında planlanıyor" },
+                {
+                  emoji: "🐄",
+                  title: "Büyükbaş",
+                  tags: "Dana, tosun, boğa, inek, buzağı, manda",
+                },
+                {
+                  emoji: "🐑",
+                  title: "Küçükbaş",
+                  tags: "Koyun, koç, keçi, kuzu, oğlak, teke",
+                },
               ].map((row) => (
                 <div key={row.title} className="card-hover p-5 text-center">
                   <div className="text-3xl" aria-hidden>
                     {row.emoji}
                   </div>
-                  <h3 className="mt-3 font-semibold text-stone-900">
+                  <h3 className="mt-3 font-semibold text-stone-900 dark:text-stone-50">
                     {row.title}
                   </h3>
-                  <p className="mt-1 text-xs text-stone-500">{row.tags}</p>
+                  <p className="mt-1 text-xs text-stone-500 dark:text-stone-400">{row.tags}</p>
                 </div>
               ))}
             </div>
@@ -262,15 +234,15 @@ const Home = () => {
         >
           <div className="flex flex-col items-center text-center">
             <p className="section-kicker mb-3">SSS</p>
-            <h2 className="font-display text-2xl font-semibold text-stone-900 sm:text-3xl">
+            <h2 className="font-display text-2xl font-semibold text-stone-900 dark:text-stone-50 sm:text-3xl">
               Sıkça sorulanlar
             </h2>
           </div>
           <div className="mt-10 grid gap-5 md:grid-cols-2">
             {faqs.map((item) => (
               <div key={item.q} className="card-hover p-6">
-                <h3 className="font-semibold text-stone-900">{item.q}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-stone-600">
+                <h3 className="font-semibold text-stone-900 dark:text-stone-50">{item.q}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-stone-600 dark:text-stone-400">
                   {item.a}
                 </p>
               </div>

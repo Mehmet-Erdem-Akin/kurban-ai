@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Script from "next/script";
 import { DM_Sans, Fraunces } from "next/font/google";
 import Analytics from "@/components/Analytics";
+import { ThemeProvider } from "@/components/ThemeProvider";
 import "./globals.css";
 
 const dmSans = DM_Sans({
@@ -102,7 +103,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="tr" className={`${dmSans.variable} ${fraunces.variable}`}>
+    <html
+      lang="tr"
+      className={`${dmSans.variable} ${fraunces.variable}`}
+      suppressHydrationWarning
+    >
       <head>
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="icon" href="/icon.svg" type="image/svg+xml" />
@@ -158,9 +163,11 @@ export default function RootLayout({
           crossOrigin="anonymous"
         />
 
-        <div id="icerik" tabIndex={-1} className="outline-none">
-          {children}
-        </div>
+        <ThemeProvider>
+          <div id="icerik" tabIndex={-1} className="outline-none">
+            {children}
+          </div>
+        </ThemeProvider>
         <Analytics />
       </body>
     </html>

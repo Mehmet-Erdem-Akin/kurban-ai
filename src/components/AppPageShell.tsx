@@ -9,7 +9,7 @@ type AppPageShellProps = {
 
 const AppPageShell = ({ children }: AppPageShellProps) => {
   return (
-    <div className="relative min-h-screen hero-gradient text-stone-900">
+    <div className="relative min-h-screen hero-gradient text-stone-900 dark:text-stone-100">
       <ParallaxBackground />
       {children}
     </div>

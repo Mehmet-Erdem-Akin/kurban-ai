@@ -1,5 +1,12 @@
 "use client";
 
+import {
+  ChevronRightIcon,
+  EnvelopeIcon,
+  GlobeAltIcon,
+  MapPinIcon,
+  UserIcon,
+} from "@heroicons/react/24/outline";
 import Link from "next/link";
 import AppPageShell from "@/components/AppPageShell";
 import Card3D from "@/components/Card3D";
@@ -17,11 +24,11 @@ export default function Contact() {
           <div className="hero-pill mb-6">
             Bizimle iletişime geçin
           </div>
-          <h1 className="mb-6 font-display text-4xl font-semibold leading-tight tracking-tight text-stone-900 sm:text-5xl">
+          <h1 className="mb-6 font-display text-4xl font-semibold leading-tight tracking-tight text-stone-900 dark:text-stone-50 sm:text-5xl">
             <span className="mr-2">İletişim</span>
             <span className="gradient-text">bilgileri</span>
           </h1>
-          <p className="text-xl text-neutral-600 mb-10 max-w-4xl mx-auto leading-relaxed">
+          <p className="text-xl text-neutral-600 dark:text-neutral-400 mb-10 max-w-4xl mx-auto leading-relaxed">
             Sorularınız, önerileriniz veya destek ihtiyaçlarınız için aşağıdaki
             iletişim bilgilerini kullanarak bize ulaşabilirsiniz.
           </p>
@@ -30,32 +37,20 @@ export default function Contact() {
         <div className="grid lg:grid-cols-2 gap-12 mb-20">
           {/* Contact Information - Main */}
           <Card3D className="card p-8">
-            <h2 className="text-3xl font-bold text-neutral-900 mb-6">
+            <h2 className="text-3xl font-bold text-neutral-900 dark:text-neutral-100 mb-6">
               İletişim Bilgileri
             </h2>
 
             <div className="space-y-6">
               <div className="flex items-start space-x-4">
                 <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center flex-shrink-0">
-                  <svg
-                    className="w-6 h-6 text-white"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                    />
-                  </svg>
+                  <UserIcon className="h-6 w-6 text-white" strokeWidth={2} aria-hidden />
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-neutral-900 mb-1">
+                  <h3 className="text-lg font-semibold text-neutral-900 dark:text-neutral-100 mb-1">
                     Proje Sahibi
                   </h3>
-                  <p className="font-medium text-neutral-600">
+                  <p className="font-medium text-neutral-600 dark:text-neutral-400">
                     <a
                       href="https://www.linkedin.com/in/mehmet-erdem-akin-77453b1a0/"
                       target="_blank"
@@ -65,7 +60,7 @@ export default function Contact() {
                       Mehmet Erdem Akın
                     </a>
                   </p>
-                  <p className="text-neutral-500 text-sm">
+                  <p className="text-neutral-500 dark:text-neutral-400 text-sm">
                     Yazılım Geliştirici & AI Uzmanı
                   </p>
                 </div>
@@ -73,22 +68,10 @@ export default function Contact() {
 
               <div className="flex items-start space-x-4">
                 <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-xl flex items-center justify-center flex-shrink-0">
-                  <svg
-                    className="w-6 h-6 text-white"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                    />
-                  </svg>
+                  <EnvelopeIcon className="h-6 w-6 text-white" strokeWidth={2} aria-hidden />
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-neutral-900 mb-1">
+                  <h3 className="text-lg font-semibold text-neutral-900 dark:text-neutral-100 mb-1">
                     E-posta
                   </h3>
                   <a
@@ -97,7 +80,7 @@ export default function Contact() {
                   >
                     mehmet.erdem.akin@outlook.com
                   </a>
-                  <p className="text-neutral-500 text-sm mt-1">
+                  <p className="text-neutral-500 dark:text-neutral-400 text-sm mt-1">
                     Genel sorular ve destek için
                   </p>
                 </div>
@@ -105,53 +88,23 @@ export default function Contact() {
 
               <div className="flex items-start space-x-4">
                 <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center flex-shrink-0">
-                  <svg
-                    className="w-6 h-6 text-white"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                    />
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                    />
-                  </svg>
+                  <MapPinIcon className="h-6 w-6 text-white" strokeWidth={2} aria-hidden />
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-neutral-900 mb-1">
+                  <h3 className="text-lg font-semibold text-neutral-900 dark:text-neutral-100 mb-1">
                     Lokasyon
                   </h3>
-                  <p className="text-neutral-600">Ataşehir, İstanbul</p>
-                  <p className="text-neutral-500 text-sm">Türkiye</p>
+                  <p className="text-neutral-600 dark:text-neutral-400">Ataşehir, İstanbul</p>
+                  <p className="text-neutral-500 dark:text-neutral-400 text-sm">Türkiye</p>
                 </div>
               </div>
 
               <div className="flex items-start space-x-4">
                 <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-red-600 rounded-xl flex items-center justify-center flex-shrink-0">
-                  <svg
-                    className="w-6 h-6 text-white"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9v-9m0-9v9"
-                    />
-                  </svg>
+                  <GlobeAltIcon className="h-6 w-6 text-white" strokeWidth={2} aria-hidden />
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-neutral-900 mb-1">
+                  <h3 className="text-lg font-semibold text-neutral-900 dark:text-neutral-100 mb-1">
                     Web siteleri
                   </h3>
                   <ul className="mt-1 space-y-2 text-sm">
@@ -164,7 +117,7 @@ export default function Contact() {
                       >
                         kurban-ai.vercel.app
                       </a>
-                      <span className="block text-xs text-neutral-500">
+                      <span className="block text-xs text-neutral-500 dark:text-neutral-400">
                         Güncel canlı sürüm
                       </span>
                     </li>
@@ -177,7 +130,7 @@ export default function Contact() {
                       >
                         kurbanlikanaliz.netlify.app
                       </a>
-                      <span className="block text-xs text-neutral-500">
+                      <span className="block text-xs text-neutral-500 dark:text-neutral-400">
                         Önceki dağıtım
                       </span>
                     </li>
@@ -189,13 +142,13 @@ export default function Contact() {
 
           {/* Project Information */}
           <Card3D className="card p-8">
-            <h2 className="text-3xl font-bold text-neutral-900 mb-6">
+            <h2 className="text-3xl font-bold text-neutral-900 dark:text-neutral-100 mb-6">
               Proje Hakkında
             </h2>
 
             <div className="space-y-6">
               <div>
-                <h3 className="text-lg font-semibold text-neutral-900 mb-2">
+                <h3 className="text-lg font-semibold text-neutral-900 dark:text-neutral-100 mb-2">
                   📋 Proje Detayları
                 </h3>
                 <div className="rounded-lg border border-emerald-200 bg-emerald-50/80 p-4">
@@ -229,10 +182,10 @@ export default function Contact() {
               </div>
 
               <div>
-                <h3 className="text-lg font-semibold text-neutral-900 mb-2">
+                <h3 className="text-lg font-semibold text-neutral-900 dark:text-neutral-100 mb-2">
                   🎯 Amaç & Vizyon
                 </h3>
-                <p className="text-neutral-600 leading-relaxed">
+                <p className="text-neutral-600 dark:text-neutral-400 leading-relaxed">
                   Kurban-AI, yapay zeka teknolojilerini kullanarak hayvan
                   analizi alanında kullanıcılara ücretsiz ve güvenilir hizmet
                   sunmayı amaçlar. Geleneksel hayvan değerlendirme süreçlerini
@@ -241,7 +194,7 @@ export default function Contact() {
               </div>
 
               <div>
-                <h3 className="text-lg font-semibold text-neutral-900 mb-2">
+                <h3 className="text-lg font-semibold text-neutral-900 dark:text-neutral-100 mb-2">
                   📞 İletişim Konuları
                 </h3>
                 <div className="grid grid-cols-2 gap-3">
@@ -279,10 +232,10 @@ export default function Contact() {
         <div className="grid md:grid-cols-2 gap-8 mb-20">
           {/* FAQ Quick Links */}
           <Card3D className="card p-8">
-            <h3 className="text-2xl font-bold text-neutral-900 mb-4">
+            <h3 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">
               Hızlı Yardım
             </h3>
-            <p className="text-neutral-600 mb-6">
+            <p className="text-neutral-600 dark:text-neutral-400 mb-6">
               Sık sorulan sorularımıza göz atarak hızlı çözüm bulabilirsiniz.
             </p>
             <div className="space-y-3">
@@ -290,135 +243,77 @@ export default function Contact() {
                 href="/#sss"
                 className="flex items-center rounded-lg text-emerald-700 transition hover:bg-emerald-50 hover:text-emerald-900"
               >
-                <svg
-                  className="w-4 h-4 mr-2"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 5l7 7-7 7"
-                  />
-                </svg>
+                <ChevronRightIcon
+                  className="mr-2 h-4 w-4 shrink-0"
+                  strokeWidth={2}
+                  aria-hidden
+                />
                 Sıkça Sorulan Sorular
               </Link>
               <Link
                 href="/#nasil"
                 className="flex items-center rounded-lg text-emerald-700 transition hover:bg-emerald-50 hover:text-emerald-900"
               >
-                <svg
-                  className="w-4 h-4 mr-2"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 5l7 7-7 7"
-                  />
-                </svg>
+                <ChevronRightIcon
+                  className="mr-2 h-4 w-4 shrink-0"
+                  strokeWidth={2}
+                  aria-hidden
+                />
                 Analiz nasıl çalışır?
               </Link>
               <Link
                 href="/#ozellikler"
                 className="flex items-center rounded-lg text-emerald-700 transition hover:bg-emerald-50 hover:text-emerald-900"
               >
-                <svg
-                  className="w-4 h-4 mr-2"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 5l7 7-7 7"
-                  />
-                </svg>
+                <ChevronRightIcon
+                  className="mr-2 h-4 w-4 shrink-0"
+                  strokeWidth={2}
+                  aria-hidden
+                />
                 Özellikler ve yetenekler
               </Link>
               <Link
                 href="/analyze"
                 className="flex items-center rounded-lg text-emerald-700 transition hover:bg-emerald-50 hover:text-emerald-900"
               >
-                <svg
-                  className="w-4 h-4 mr-2"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 5l7 7-7 7"
-                  />
-                </svg>
+                <ChevronRightIcon
+                  className="mr-2 h-4 w-4 shrink-0"
+                  strokeWidth={2}
+                  aria-hidden
+                />
                 Analiz aracını aç
               </Link>
               <Link
                 href="/privacy"
                 className="flex items-center rounded-lg text-emerald-700 transition hover:bg-emerald-50 hover:text-emerald-900"
               >
-                <svg
-                  className="w-4 h-4 mr-2"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 5l7 7-7 7"
-                  />
-                </svg>
+                <ChevronRightIcon
+                  className="mr-2 h-4 w-4 shrink-0"
+                  strokeWidth={2}
+                  aria-hidden
+                />
                 Gizlilik Politikası
               </Link>
               <Link
                 href="/terms"
                 className="flex items-center rounded-lg px-1 py-0.5 text-emerald-700 transition hover:bg-emerald-50 hover:text-emerald-900"
               >
-                <svg
+                <ChevronRightIcon
                   className="mr-2 h-4 w-4 shrink-0"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
+                  strokeWidth={2}
                   aria-hidden
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 5l7 7-7 7"
-                  />
-                </svg>
+                />
                 Kullanım şartları
               </Link>
               <Link
                 href="/kvkk"
                 className="flex items-center rounded-lg px-1 py-0.5 text-emerald-700 transition hover:bg-emerald-50 hover:text-emerald-900"
               >
-                <svg
+                <ChevronRightIcon
                   className="mr-2 h-4 w-4 shrink-0"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
+                  strokeWidth={2}
                   aria-hidden
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 5l7 7-7 7"
-                  />
-                </svg>
+                />
                 KVKK aydınlatma metni
               </Link>
             </div>
@@ -426,10 +321,10 @@ export default function Contact() {
 
           {/* Response Information */}
           <Card3D className="card p-8">
-            <h3 className="text-2xl font-bold text-neutral-900 mb-4">
+            <h3 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">
               Yanıt Süreleri
             </h3>
-            <p className="text-neutral-600 mb-6">
+            <p className="text-neutral-600 dark:text-neutral-400 mb-6">
               İletişim türüne göre ortalama yanıt sürelerimiz.
             </p>
             <div className="space-y-3">
@@ -467,10 +362,10 @@ export default function Contact() {
 
         {/* Social Media & Additional Info */}
         <Card3D className="card border-emerald-100 bg-emerald-50/60 p-12 text-center">
-          <h2 className="text-3xl font-bold text-neutral-900 mb-6">
+          <h2 className="text-3xl font-bold text-neutral-900 dark:text-neutral-100 mb-6">
             Sosyal Medyada Takip Edin
           </h2>
-          <p className="text-xl text-neutral-600 mb-8 max-w-3xl mx-auto">
+          <p className="text-xl text-neutral-600 dark:text-neutral-400 mb-8 max-w-3xl mx-auto">
             Güncel haberler, yeni özellikler ve ipuçları için sosyal medya
             hesaplarımızı takip edin.
           </p>
@@ -522,37 +417,37 @@ export default function Contact() {
               href="https://github.com/Mehmet-Erdem-Akin/kurban-ai"
               target="_blank"
               rel="noopener noreferrer"
-              className="group rounded-2xl border border-stone-200/80 bg-white/80 p-6 text-center shadow-sm transition hover:border-emerald-200 hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 focus-visible:ring-offset-2"
+              className="group rounded-2xl border border-stone-200/80 bg-white/80 p-6 text-center shadow-sm transition hover:border-emerald-200 hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 focus-visible:ring-offset-2 dark:border-stone-700 dark:bg-stone-900/80 dark:hover:border-emerald-700 dark:focus-visible:ring-emerald-500 dark:focus-visible:ring-offset-stone-950"
             >
               <div className="mb-2 text-3xl font-bold text-emerald-600">🚀</div>
-              <div className="mb-1 text-xl font-bold text-neutral-900 group-hover:text-emerald-900">
+              <div className="mb-1 text-xl font-bold text-neutral-900 dark:text-neutral-100 group-hover:text-emerald-900">
                 Kaynak kod
               </div>
-              <p className="text-sm text-neutral-600">
+              <p className="text-sm text-neutral-600 dark:text-neutral-400">
                 GitHub üzerinden inceleyin
               </p>
             </a>
             <a
               href="mailto:mehmet.erdem.akin@outlook.com?subject=Kurbanl%C4%B1k%20Analiz"
-              className="group rounded-2xl border border-stone-200/80 bg-white/80 p-6 text-center shadow-sm transition hover:border-emerald-200 hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 focus-visible:ring-offset-2"
+              className="group rounded-2xl border border-stone-200/80 bg-white/80 p-6 text-center shadow-sm transition hover:border-emerald-200 hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 focus-visible:ring-offset-2 dark:border-stone-700 dark:bg-stone-900/80 dark:hover:border-emerald-700 dark:focus-visible:ring-emerald-500 dark:focus-visible:ring-offset-stone-950"
             >
               <div className="mb-2 text-3xl font-bold text-sky-600">📧</div>
-              <div className="mb-1 text-xl font-bold text-neutral-900 group-hover:text-emerald-900">
+              <div className="mb-1 text-xl font-bold text-neutral-900 dark:text-neutral-100 group-hover:text-emerald-900">
                 E-posta
               </div>
-              <p className="text-sm text-neutral-600">
+              <p className="text-sm text-neutral-600 dark:text-neutral-400">
                 Doğrudan mesaj gönderin
               </p>
             </a>
             <Link
               href="/analyze"
-              className="group rounded-2xl border border-stone-200/80 bg-white/80 p-6 text-center shadow-sm transition hover:border-emerald-200 hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 focus-visible:ring-offset-2"
+              className="group rounded-2xl border border-stone-200/80 bg-white/80 p-6 text-center shadow-sm transition hover:border-emerald-200 hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 focus-visible:ring-offset-2 dark:border-stone-700 dark:bg-stone-900/80 dark:hover:border-emerald-700 dark:focus-visible:ring-emerald-500 dark:focus-visible:ring-offset-stone-950"
             >
               <div className="mb-2 text-3xl font-bold text-violet-600">🤝</div>
-              <div className="mb-1 text-xl font-bold text-neutral-900 group-hover:text-emerald-900">
+              <div className="mb-1 text-xl font-bold text-neutral-900 dark:text-neutral-100 group-hover:text-emerald-900">
                 Analize başla
               </div>
-              <p className="text-sm text-neutral-600">
+              <p className="text-sm text-neutral-600 dark:text-neutral-400">
                 Hayvan fotoğrafını yükleyin
               </p>
             </Link>

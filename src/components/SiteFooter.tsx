@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 const footerLinkClass =
-  "text-stone-600 transition hover:text-emerald-800 focus:outline-none focus-visible:rounded focus-visible:text-emerald-900 focus-visible:ring-2 focus-visible:ring-emerald-700 focus-visible:ring-offset-2";
+  "text-stone-600 transition hover:text-emerald-800 focus:outline-none focus-visible:rounded focus-visible:text-emerald-900 focus-visible:ring-2 focus-visible:ring-emerald-700 focus-visible:ring-offset-2 dark:text-stone-400 dark:hover:text-emerald-400 dark:focus-visible:text-emerald-300 dark:focus-visible:ring-emerald-500 dark:focus-visible:ring-offset-stone-950";
 
 const SiteFooter = () => {
   const year = new Date().getFullYear();
@@ -25,7 +25,7 @@ const SiteFooter = () => {
   ] as const;
 
   return (
-    <footer className="relative z-10 border-t border-stone-200/80 bg-gradient-to-b from-stone-50/95 to-white">
+    <footer className="relative z-10 border-t border-stone-200/80 bg-gradient-to-b from-stone-50/95 to-white dark:border-stone-800 dark:from-stone-950 dark:to-stone-900">
       <div
         className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-500/35 to-transparent"
         aria-hidden
@@ -43,11 +43,11 @@ const SiteFooter = () => {
               >
                 KA
               </span>
-              <span className="font-display text-lg font-semibold text-stone-900">
+              <span className="font-display text-lg font-semibold text-stone-900 dark:text-stone-100">
                 Kurbanlık Analiz
               </span>
             </Link>
-            <p className="mt-3 text-sm leading-relaxed text-stone-500">
+            <p className="mt-3 text-sm leading-relaxed text-stone-500 dark:text-stone-400">
               Fotoğraftan kurbanlık hayvanı için hızlı, yapay zeka destekli ön
               analiz. Kesin teşhis veya resmi değerleme yerine geçmez.
             </p>
@@ -58,7 +58,7 @@ const SiteFooter = () => {
               >
                 mehmet.erdem.akin@outlook.com
               </a>
-              <span className="text-stone-300" aria-hidden>
+              <span className="text-stone-300 dark:text-stone-600" aria-hidden>
                 |
               </span>
               <a
@@ -74,7 +74,7 @@ const SiteFooter = () => {
 
           <div className="grid gap-8 text-sm sm:grid-cols-3 lg:gap-12">
             <nav aria-label="Site sayfaları">
-              <p className="mb-3 text-xs font-bold uppercase tracking-wider text-stone-400">
+              <p className="mb-3 text-xs font-bold uppercase tracking-wider text-stone-400 dark:text-stone-500">
                 Site
               </p>
               <ul className="flex flex-col gap-2">
@@ -88,7 +88,7 @@ const SiteFooter = () => {
               </ul>
             </nav>
             <nav aria-label="Yardım bağlantıları">
-              <p className="mb-3 text-xs font-bold uppercase tracking-wider text-stone-400">
+              <p className="mb-3 text-xs font-bold uppercase tracking-wider text-stone-400 dark:text-stone-500">
                 Yardım
               </p>
               <ul className="flex flex-col gap-2">
@@ -102,7 +102,7 @@ const SiteFooter = () => {
               </ul>
             </nav>
             <nav aria-label="Yasal metinler">
-              <p className="mb-3 text-xs font-bold uppercase tracking-wider text-stone-400">
+              <p className="mb-3 text-xs font-bold uppercase tracking-wider text-stone-400 dark:text-stone-500">
                 Yasal
               </p>
               <ul className="flex flex-col gap-2">
@@ -117,7 +117,7 @@ const SiteFooter = () => {
             </nav>
           </div>
         </div>
-        <p className="mt-10 border-t border-stone-100 pt-8 text-center text-xs text-stone-400 sm:text-left">
+        <p className="mt-10 border-t border-stone-100 pt-8 text-center text-xs text-stone-400 dark:border-stone-800 dark:text-stone-500 sm:text-left">
           © {year} Kurbanlık Analiz
         </p>
       </div>

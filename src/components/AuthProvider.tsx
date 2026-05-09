@@ -11,8 +11,14 @@ import {
 
 type User = {
   id: string;
-  email: string;
   name: string;
+  surname: string;
+  email: string;
+  phone: string;
+  address: string;
+  usagePurpose: string;
+  remainingCredits: number;
+  createdAt: string;
 };
 
 type AuthContextType = {
@@ -22,7 +28,7 @@ type AuthContextType = {
     email: string,
     password: string,
   ) => Promise<{ success: boolean; error?: string }>;
-  logout: () => void;
+  logout: () => Promise<void>;
 };
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -40,16 +46,23 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const stored = localStorage.getItem("auth_user");
-    if (stored) {
+    const fetchUser = async () => {
       try {
-        setUser(JSON.parse(stored));
+        const res = await fetch("/api/auth/me");
+        if (res.ok) {
+          const data = await res.json();
+          if (data.success && data.user) {
+            setUser(data.user);
+          }
+        }
       } catch {
-        localStorage.removeItem("auth_user");
-        localStorage.removeItem("auth_token");
+        // Not authenticated
+      } finally {
+        setLoading(false);
       }
-    }
-    setLoading(false);
+    };
+
+    fetchUser();
   }, []);
 
   const login = useCallback(
@@ -71,9 +84,6 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
         }
 
         setUser(data.user);
-        localStorage.setItem("auth_user", JSON.stringify(data.user));
-        localStorage.setItem("auth_token", data.token);
-
         return { success: true };
       } catch {
         return { success: false, error: "Sunucuya bağlanılamadı" };
@@ -82,10 +92,13 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     [],
   );
 
-  const logout = useCallback(() => {
+  const logout = useCallback(async () => {
+    try {
+      await fetch("/api/auth/logout", { method: "POST" });
+    } catch {
+      // Best-effort
+    }
     setUser(null);
-    localStorage.removeItem("auth_user");
-    localStorage.removeItem("auth_token");
   }, []);
 
   return (

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { v4 as uuidv4 } from "uuid";
+import { randomUUID } from "node:crypto";
 import { getUserByEmail, createUser } from "@/lib/db";
 import { hashPassword, createToken, setAuthCookie, toSafeUser } from "@/lib/auth";
 
@@ -33,7 +33,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const existingUser = getUserByEmail(email);
+    const normalizedEmail = email.trim().toLowerCase();
+    const existingUser = getUserByEmail(normalizedEmail);
     if (existingUser) {
       return NextResponse.json(
         { error: "Bu email adresi zaten kayıtlı" },
@@ -44,13 +45,13 @@ export async function POST(request: NextRequest) {
     const hashedPassword = await hashPassword(password);
 
     const newUser = createUser({
-      id: uuidv4(),
-      name,
-      surname,
-      email,
+      id: randomUUID(),
+      name: name.trim(),
+      surname: surname.trim(),
+      email: normalizedEmail,
       password: hashedPassword,
-      phone: phone || "",
-      address: address || "",
+      phone: phone?.trim() || "",
+      address: address?.trim() || "",
       usagePurpose: usagePurpose || "",
       remainingCredits: 3,
       createdAt: new Date().toISOString(),

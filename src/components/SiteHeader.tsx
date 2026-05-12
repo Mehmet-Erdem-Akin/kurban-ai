@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { UserCircleIcon } from "@heroicons/react/24/outline";
@@ -19,19 +20,17 @@ const SiteHeader = () => {
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:py-3.5">
         <Link
           href="/"
-          className="group flex min-w-0 items-center gap-2.5 rounded-xl outline-none ring-emerald-800 ring-offset-2 focus-visible:ring-2"
+          className="group flex min-w-0 items-center rounded-xl outline-none ring-emerald-800 ring-offset-2 focus-visible:ring-2"
           aria-label="Kurbanlık Analiz ana sayfa"
         >
-          <span
-            className="relative flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-gradient-to-br from-emerald-700 to-emerald-950 text-sm font-bold text-white shadow-md shadow-emerald-900/25 ring-2 ring-white/30 transition group-hover:shadow-lg group-hover:ring-emerald-200/40"
-            aria-hidden
-          >
-            <span className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/10 to-white/0 opacity-0 transition group-hover:opacity-100" />
-            {"KA"}
-          </span>
-          <span className="truncate font-display text-base font-semibold tracking-tight text-stone-900 dark:text-stone-100 sm:text-lg">
-            Kurbanlık Analiz
-          </span>
+          <Image
+            src="/ka-logo.png"
+            alt="Kurbanlık Kilo Hesaplama"
+            width={190}
+            height={60}
+            priority
+            className="h-10 w-auto rounded-lg object-contain transition group-hover:opacity-90 sm:h-12"
+          />
         </Link>
 
         <nav

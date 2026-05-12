@@ -89,7 +89,8 @@ const RegisterPage = () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          name: `${name.trim()} ${surname.trim()}`,
+          name: name.trim(),
+          surname: surname.trim(),
           email: email.trim(),
           password,
           phone: phone.trim() || undefined,
@@ -360,7 +361,7 @@ const RegisterPage = () => {
               {isSubmitting ? (
                 <>
                   <span className="mr-2 inline-block h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
-                  Kayıt yapılıyor...
+                  {"Kayıt yapılıyor..."}
                 </>
               ) : (
                 "Hesap Oluştur"

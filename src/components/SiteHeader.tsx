@@ -26,10 +26,10 @@ const SiteHeader = () => {
           <Image
             src="/ka-logo.png"
             alt="Kurbanlık Kilo Hesaplama"
-            width={190}
+            width={220}
             height={60}
             priority
-            className="h-10 w-auto rounded-lg object-contain transition group-hover:opacity-90 sm:h-12"
+            className="h-[40px] w-auto rounded-lg object-contain transition group-hover:opacity-90 sm:h-[60px]"
           />
         </Link>
 
@@ -44,23 +44,27 @@ const SiteHeader = () => {
             </Link>
           )}
           <Link
+            href={isHome ? "#hesaplama" : "/#hesaplama"}
+            className={`${navLinkClass} hidden md:inline`}
+          >
+            Kilo Hesapla
+          </Link>
+          <Link
             href="/pricing"
-            className={`${navLinkClass} hidden md:inline ${
-              pathname === "/pricing"
-                ? "bg-emerald-50 text-emerald-950 ring-1 ring-emerald-200/80 dark:bg-emerald-950/40 dark:text-emerald-100 dark:ring-emerald-700/60"
-                : ""
-            }`}
+            className={`${navLinkClass} hidden md:inline ${pathname === "/pricing"
+              ? "bg-emerald-50 text-emerald-950 ring-1 ring-emerald-200/80 dark:bg-emerald-950/40 dark:text-emerald-100 dark:ring-emerald-700/60"
+              : ""
+              }`}
             aria-current={pathname === "/pricing" ? "page" : undefined}
           >
             Paketler
           </Link>
           <Link
             href="/contact"
-            className={`${navLinkClass} hidden md:inline ${
-              pathname === "/contact"
-                ? "bg-emerald-50 text-emerald-950 ring-1 ring-emerald-200/80 dark:bg-emerald-950/40 dark:text-emerald-100 dark:ring-emerald-700/60"
-                : ""
-            }`}
+            className={`${navLinkClass} hidden md:inline ${pathname === "/contact"
+              ? "bg-emerald-50 text-emerald-950 ring-1 ring-emerald-200/80 dark:bg-emerald-950/40 dark:text-emerald-100 dark:ring-emerald-700/60"
+              : ""
+              }`}
             aria-current={pathname === "/contact" ? "page" : undefined}
           >
             İletişim
@@ -92,7 +96,7 @@ const SiteHeader = () => {
             className="btn btn-primary btn-sm sm:btn-md"
             aria-current={pathname === "/analyze" ? "page" : undefined}
           >
-            Analiz
+            Fotoğrafla Hesapla
           </Link>
         </nav>
       </div>

@@ -43,13 +43,14 @@ const SiteFooter = () => {
                 src="/ka-logo.png"
                 alt="Kurbanlık Kilo Hesaplama"
                 width={260}
-                height={82}
-                className="h-16 w-auto rounded-xl object-contain"
+                height={60}
+                className="h-[40px] w-auto rounded-xl object-contain sm:h-[60px]"
               />
             </Link>
             <p className="mt-3 text-sm leading-relaxed text-stone-500 dark:text-stone-400">
-              Fotoğraftan kurbanlık hayvanı için hızlı, yapay zeka destekli ön
-              analiz. Kesin teşhis veya resmi değerleme yerine geçmez.
+              Fotoğrafla kurbanlık kilo tahmini, karkas hesabı ve hisse fiyatı
+              için hızlı yardımcı araç. Kesin tartı veya resmi değerleme yerine
+              geçmez.
             </p>
             <div className="mt-5 flex flex-wrap gap-x-4 gap-y-2 text-sm">
               <a

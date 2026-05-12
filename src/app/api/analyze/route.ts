@@ -271,10 +271,13 @@ const analyzeImageWithGemini = async (
         *Bunlar ÖRNEK referans değerlerdir; bölgelere göre dalgalanır. Fotoğraftaki spesifik hayvanı analiz et ve gerçek durumuna göre bireysel değerlendirme yap.*
         
         BÜYÜKBAŞ (SIĞIR/MANDA) FİYAT HESAPLAMA:
-        - Karkas verimi: %55 (0.55)
-        - Karkas et fiyatı (dana ortalaması): ~595 TL/kg (UKON yağsız dana karkas ~595,39 TL/kg)
-        - Fiyat hesaplama: (hayvan_ağırlığı × 0.55) × 595 TL/kg
-        - Örnek: 500kg Dana = (500kg × 0.55) × 595 TL = 275kg × 595 TL ≈ 163,600 TL
+        - Karkas verimi genel aralık: %50-%65
+        - Dana/tosun/iyi besi erkek büyükbaş: %58-%65
+        - Sığır/inek/dişi büyükbaş: %50-%55
+        - Ortalama büyükbaş referansı: %55-%60
+        - Güncel karkas et fiyatı (dana/büyükbaş): ~620 TL/kg
+        - Fiyat hesaplama: (hayvan_ağırlığı × uygun_randıman) × 620 TL/kg
+        - Örnek: 500kg Dana = (500kg × 0.60) × 620 TL = 300kg × 620 TL ≈ 186,000 TL
         - Premium ırklar: +%20-25 (Simental, Holstein, Angus)
         - Kurban sezonu: +%15-20 prim
         - Kalite ayarlaması: A-kalite +%15, B-kalite -%10
@@ -299,7 +302,7 @@ const analyzeImageWithGemini = async (
            d) Yaş faktörünü hesaba kat
            e) Kullanıcı verisi varsa karşılaştır
            f) Final kontrol ve validasyon yap
-        5. Karkas ağırlığını hesapla: büyükbaş için (ağırlık × 0.55), küçükbaş için (ağırlık × 0.50)
+        5. Karkas ağırlığını hesapla: büyükbaşta türe/cinsiyete göre %50-%65, küçükbaş için (ağırlık × 0.50)
         6. Temel fiyatı uygula: karkas_ağırlık × karkas_et_fiyatı
         7. Yüksek kaliteli ırk varsa cins primi ekle (+%20-25)
         8. Kurban dönemi için mevsimsel prim ekle (+%15-20)
@@ -322,7 +325,7 @@ const analyzeImageWithGemini = async (
         6. Final ağırlığı belirle (makul aralıkta olmalı)
         
         FORMÜL: 
-        - Büyükbaş: (hayvan_ağırlığı × 0.55) × 595 TL = gerçekçi pazar değeri (Nisan 2026 UKON dana karkas referansı)
+        - Büyükbaş: (hayvan_ağırlığı × uygun_randıman[%50-%65]) × 620 TL = güncel büyükbaş karkas et referansı
         - Küçükbaş: (hayvan_ağırlığı × 0.50) × 590 TL = gerçekçi pazar değeri (Nisan 2026 UKON kuzu karkas referansı)
         Sabit örnek değerler kullanma. Fotoğraftaki gerçek hayvana göre bireysel değerlendirme yap.
         
@@ -451,13 +454,24 @@ const calculateDetailedAnalysis = (basicAnalysis: {
     animalType === "Boğa" ||
     animalType === "İnek" ||
     animalType === "Manda" ||
-    animalType === "Buzağı"
+    animalType === "Buzağı" ||
+    animalType === "Sığır"
   ) {
-    // Büyükbaş (Cattle/Buffalo) yield ratios - Kullanıcı formülüne göre
-    karkasYieldPercentage = 55; // 55% karkas yield from live weight (0.55)
+    // Büyükbaş yield ratios: dana/tosun/etçi erkeklerde yüksek, inekte daha düşük.
+    if (animalType === "İnek" || animalType === "Sığır") {
+      karkasYieldPercentage = 53;
+    } else if (
+      animalType === "Dana" ||
+      animalType === "Tosun" ||
+      animalType === "Boğa"
+    ) {
+      karkasYieldPercentage = 60;
+    } else {
+      karkasYieldPercentage = 56;
+    }
     bonelessYieldPercentage = 72; // ~72% boneless from karkas
-    bonelessMeatPricePerKg = 608; // Dana kemiksiz referans TL/kg (Nisan 2026 UKON karkas trendiyle uyumlu)
-    karkasMeatPricePerKg = 595; // Yağsız dana karkas ~595,39 TL/kg (UKON 9 Nisan 2026 ort.)
+    bonelessMeatPricePerKg = 632; // Güncel büyükbaş kemiksiz referans TL/kg
+    karkasMeatPricePerKg = 620; // Güncel büyükbaş karkas et referansı TL/kg
   } else {
     // Küçükbaş (Small livestock: sheep/goat) yield ratios - Kullanıcı formülüne göre
     karkasYieldPercentage = 50; // 50% karkas yield from live weight (0.50)

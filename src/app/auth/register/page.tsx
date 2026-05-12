@@ -17,7 +17,6 @@ interface FormErrors {
   surname?: string;
   email?: string;
   password?: string;
-  confirmPassword?: string;
 }
 
 const RegisterPage = () => {
@@ -28,7 +27,6 @@ const RegisterPage = () => {
   const [surname, setSurname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
   const [usagePurpose, setUsagePurpose] = useState("");
@@ -64,12 +62,6 @@ const RegisterPage = () => {
       newErrors.password = "Şifre alanı zorunludur.";
     } else if (password.length < 6) {
       newErrors.password = "Şifre en az 6 karakter olmalıdır.";
-    }
-
-    if (!confirmPassword) {
-      newErrors.confirmPassword = "Şifre tekrarı zorunludur.";
-    } else if (password !== confirmPassword) {
-      newErrors.confirmPassword = "Şifreler eşleşmiyor.";
     }
 
     setErrors(newErrors);
@@ -143,7 +135,7 @@ const RegisterPage = () => {
     <AppPageShell>
       <SiteHeader />
 
-      <main className="relative z-10 mx-auto max-w-xl px-4 py-10 sm:py-14">
+      <main className="relative z-10 mx-auto max-w-4xl px-4 py-10 sm:py-14">
         {/* Form Card */}
         <div className="card p-6 sm:p-10 animate-fade-in">
           {/* Title */}
@@ -166,7 +158,11 @@ const RegisterPage = () => {
             </div>
           )}
 
-          <form onSubmit={handleSubmit} noValidate className="space-y-5">
+          <form
+            onSubmit={handleSubmit}
+            noValidate
+            className="grid gap-5 md:grid-cols-2"
+          >
             {/* İsim */}
             <div>
               <label
@@ -263,30 +259,6 @@ const RegisterPage = () => {
               )}
             </div>
 
-            {/* Şifre Tekrar */}
-            <div>
-              <label
-                htmlFor="register-confirm-password"
-                className="mb-1.5 block text-sm font-medium text-stone-700 dark:text-stone-300"
-              >
-                🔒 Şifre Tekrar <span className="text-red-500">*</span>
-              </label>
-              <input
-                id="register-confirm-password"
-                type="password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                placeholder="Şifrenizi tekrar girin"
-                className={`input ${errors.confirmPassword ? "input-error" : ""}`}
-                disabled={isSubmitting}
-              />
-              {errors.confirmPassword && (
-                <p className="mt-1 text-xs text-red-600 dark:text-red-400">
-                  {errors.confirmPassword}
-                </p>
-              )}
-            </div>
-
             {/* Telefon (opsiyonel) */}
             <div>
               <label
@@ -356,7 +328,7 @@ const RegisterPage = () => {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="btn btn-primary btn-lg w-full"
+              className="btn btn-primary btn-lg w-full md:col-span-2"
             >
               {isSubmitting ? (
                 <>

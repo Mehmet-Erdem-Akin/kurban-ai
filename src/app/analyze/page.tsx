@@ -3,6 +3,7 @@
 import AppPageShell from "@/components/AppPageShell";
 import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
+import YieldTable from "@/components/YieldTable";
 import { useState, useRef, useEffect, useCallback } from "react";
 import Image from "next/image";
 import {
@@ -30,6 +31,10 @@ import {
 } from "@heroicons/react/24/outline";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
+import {
+  calculateYieldRows,
+  getLargeCattleYieldProfile,
+} from "@/utils/yieldCalculator";
 
 interface AnalysisResult {
   success: boolean;
@@ -600,7 +605,15 @@ export default function AnalyzePage() {
     });
 
   const getShareSummary = (result: AnalysisResult) => {
-    const largeAnimals = ["Dana", "Tosun", "Boğa", "İnek", "Manda", "Buzağı", "Sığır"];
+    const largeAnimals = [
+      "Dana",
+      "Tosun",
+      "Boğa",
+      "İnek",
+      "Manda",
+      "Buzağı",
+      "Sığır",
+    ];
     const smallAnimals = ["Koyun", "Keçi", "Oğlak", "Kuzu", "Teke"];
     const normalizedAnimalType = result.animalType.toLowerCase();
 
@@ -767,6 +780,23 @@ export default function AnalyzePage() {
   const exportShareSummary = analysisResult
     ? getShareSummary(analysisResult)
     : null;
+  const analysisYieldProfile = analysisResult
+    ? getLargeCattleYieldProfile({
+        animalCategory: additionalInfo.animalCategory,
+        animalType: `${analysisResult.animalType} ${analysisResult.breed} ${additionalInfo.animalType ?? ""}`,
+        gender: additionalInfo.gender,
+      })
+    : null;
+  const analysisYieldRows =
+    analysisResult && analysisYieldProfile
+      ? calculateYieldRows({
+          liveWeight: analysisResult.estimatedWeight,
+          totalValue:
+            analysisResult.pricing?.estimatedMeatValue ??
+            analysisResult.marketValue,
+          profile: analysisYieldProfile,
+        })
+      : [];
 
   return (
     <AppPageShell>
@@ -1905,6 +1935,14 @@ export default function AnalyzePage() {
                   </div>
                 </div>
 
+                {analysisYieldProfile && (
+                  <YieldTable
+                    key={analysisYieldProfile}
+                    rows={analysisYieldRows}
+                    profile={analysisYieldProfile}
+                  />
+                )}
+
                 {/* Öneriler ve Detaylar */}
                 <div className="grid gap-6 md:grid-cols-2 md:gap-8">
                   {/* Öneriler */}
@@ -2355,6 +2393,14 @@ export default function AnalyzePage() {
                         </div>
                       </div>
                     </div>
+
+                    {analysisYieldProfile && (
+                      <YieldTable
+                        key={`export-${analysisYieldProfile}`}
+                        rows={analysisYieldRows}
+                        profile={analysisYieldProfile}
+                      />
+                    )}
 
                     <div className="grid grid-cols-2 gap-4">
                       <div className="rounded-2xl border border-stone-200 bg-white p-5">

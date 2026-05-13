@@ -49,6 +49,15 @@ const nextConfig: NextConfig = {
         ],
       },
       {
+        source: "/pricing",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "private, no-store, must-revalidate",
+          },
+        ],
+      },
+      {
         source: "/sitemap.xml",
         headers: [
           {

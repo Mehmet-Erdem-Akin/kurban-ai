@@ -6,6 +6,7 @@ import {
   useState,
   useEffect,
   useCallback,
+  useMemo,
   type ReactNode,
 } from "react";
 
@@ -24,6 +25,7 @@ type User = {
 type AuthContextType = {
   user: User | null;
   loading: boolean;
+  setUser: (user: User | null) => void;
   login: (
     email: string,
     password: string,
@@ -101,8 +103,13 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     setUser(null);
   }, []);
 
+  const contextValue = useMemo(
+    () => ({ user, loading, setUser, login, logout }),
+    [user, loading, login, logout],
+  );
+
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout }}>
+    <AuthContext.Provider value={contextValue}>
       {children}
     </AuthContext.Provider>
   );

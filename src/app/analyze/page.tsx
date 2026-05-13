@@ -4,6 +4,7 @@ import AppPageShell from "@/components/AppPageShell";
 import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
 import YieldTable from "@/components/YieldTable";
+import { useAuth } from "@/components/AuthProvider";
 import { useState, useRef, useEffect, useCallback } from "react";
 import Image from "next/image";
 import {
@@ -90,6 +91,7 @@ interface AnalysisError {
 }
 
 export default function AnalyzePage() {
+  const { user, loading: authLoading, setUser } = useAuth();
   const [selectedImages, setSelectedImages] = useState<string[]>([]);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -113,6 +115,52 @@ export default function AnalyzePage() {
   // Analysis results container reference for downloads
   const analysisContainerRef = useRef<HTMLDivElement>(null);
   const exportReportRef = useRef<HTMLDivElement>(null);
+
+  const getCreditErrorMessage = () => {
+    if (authLoading) {
+      return "Kullanıcı bilgileri yükleniyor. Lütfen birkaç saniye sonra tekrar deneyin.";
+    }
+
+    if (!user) {
+      return "Fotoğraf analizi için giriş yapmanız gerekiyor.";
+    }
+
+    if (user.remainingCredits <= 0) {
+      return "Kredi hakkınız kalmadı. Paket satın alarak devam edebilirsiniz.";
+    }
+
+    return null;
+  };
+
+  const attachCameraStream = (stream: MediaStream) => {
+    const videoElement = cameraRef.current;
+
+    if (!videoElement) {
+      console.error("❌ Video element ref bulunamadı");
+      return;
+    }
+
+    console.log("📹 Video element'e stream bağlanıyor...");
+    videoElement.srcObject = stream;
+
+    videoElement.onloadedmetadata = () => {
+      console.log("✅ Video metadata yüklendi:", {
+        width: videoElement.videoWidth,
+        height: videoElement.videoHeight,
+      });
+    };
+
+    videoElement.onloadeddata = () => {
+      console.log("✅ Video data yüklendi");
+      videoElement.play().catch((error) => {
+        console.log("Video autoplay engellendi, manuel başlatılıyor:", error);
+      });
+    };
+
+    videoElement.onerror = (error) => {
+      console.error("❌ Video element hatası:", error);
+    };
+  };
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
@@ -151,34 +199,7 @@ export default function AnalyzePage() {
       setShowCamera(true);
 
       // Video element'e stream'i bağla
-      setTimeout(() => {
-        if (cameraRef.current) {
-          console.log("📹 Video element'e stream bağlanıyor...");
-          cameraRef.current.srcObject = stream;
-
-          // Video yüklenme event'lerini dinle
-          cameraRef.current.onloadedmetadata = () => {
-            console.log("✅ Video metadata yüklendi:", {
-              width: cameraRef.current?.videoWidth,
-              height: cameraRef.current?.videoHeight,
-            });
-          };
-
-          cameraRef.current.onloadeddata = () => {
-            console.log("✅ Video data yüklendi");
-            // Video'yu oynatmaya zorla
-            cameraRef.current?.play().catch((e) => {
-              console.log("Video autoplay engellendi, manuel başlatılıyor:", e);
-            });
-          };
-
-          cameraRef.current.onerror = (error) => {
-            console.error("❌ Video element hatası:", error);
-          };
-        } else {
-          console.error("❌ Video element ref bulunamadı");
-        }
-      }, 100);
+      setTimeout(() => attachCameraStream(stream), 100);
     } catch (error) {
       console.error("❌ Kamera erişim hatası:", error);
 
@@ -268,6 +289,17 @@ export default function AnalyzePage() {
   const handleAnalyze = async () => {
     if (selectedImages.length === 0) return;
 
+    const creditErrorMessage = getCreditErrorMessage();
+    if (creditErrorMessage) {
+      setAnalysisError({
+        errorType: "NO_CREDITS",
+        message: creditErrorMessage,
+        analysisType: "single",
+        totalImages: selectedImages.length,
+      });
+      return;
+    }
+
     setIsAnalyzing(true);
     setAnalysisError(null); // Clear previous errors
 
@@ -329,6 +361,13 @@ export default function AnalyzePage() {
             errorMessage =
               "Yapay zeka servisinde geçici bir sorun oluştu. Lütfen bir dakika sonra tekrar deneyin.";
             break;
+          case "AUTH_REQUIRED":
+            errorMessage = "Fotoğraf analizi için giriş yapmanız gerekiyor.";
+            break;
+          case "NO_CREDITS":
+            errorMessage =
+              "Kredi hakkınız kalmadı. Paket satın alarak devam edebilirsiniz.";
+            break;
           default:
             errorMessage =
               result.message || "Analiz sırasında bir hata oluştu.";
@@ -350,6 +389,9 @@ export default function AnalyzePage() {
       }
 
       setAnalysisResult(result);
+      if (result.user) {
+        setUser(result.user);
+      }
     } catch (error) {
       console.error("❌ Tek fotoğraf analiz hatası:", error);
       setAnalysisError({
@@ -366,6 +408,17 @@ export default function AnalyzePage() {
 
   const handleAnalyzeAll = async () => {
     if (selectedImages.length === 0) return;
+
+    const creditErrorMessage = getCreditErrorMessage();
+    if (creditErrorMessage) {
+      setAnalysisError({
+        errorType: "NO_CREDITS",
+        message: creditErrorMessage,
+        analysisType: "multiple",
+        totalImages: selectedImages.length,
+      });
+      return;
+    }
 
     setIsAnalyzing(true);
     setAnalysisError(null); // Clear previous errors
@@ -421,6 +474,13 @@ export default function AnalyzePage() {
             errorMessage =
               "Yapay zeka servisinde geçici bir sorun oluştu. Lütfen bir dakika sonra tekrar deneyin.";
             break;
+          case "AUTH_REQUIRED":
+            errorMessage = "Fotoğraf analizi için giriş yapmanız gerekiyor.";
+            break;
+          case "NO_CREDITS":
+            errorMessage =
+              "Kredi hakkınız kalmadı. Paket satın alarak devam edebilirsiniz.";
+            break;
           default:
             errorMessage =
               result.message || "Çoklu analiz sırasında bir hata oluştu.";
@@ -442,6 +502,9 @@ export default function AnalyzePage() {
       }
 
       setAnalysisResult(result);
+      if (result.user) {
+        setUser(result.user);
+      }
     } catch (error) {
       console.error("❌ Çoklu analiz hatası:", error);
       setAnalysisError({

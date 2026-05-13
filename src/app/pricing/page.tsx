@@ -5,92 +5,166 @@ import {
   SparklesIcon,
   StarIcon,
   GiftIcon,
-  ChatBubbleLeftRightIcon,
   DocumentTextIcon,
-  ClockIcon,
   BoltIcon,
   ChartBarIcon,
-  ArrowPathIcon,
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import AppPageShell from "@/components/AppPageShell";
 import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
 import { useAuth } from "@/components/AuthProvider";
-
-type Package = {
-  name: string;
-  analysisCount: string;
-  features: string[];
-  featured: boolean;
-  cta: { label: string; href: string };
-  icon: React.ReactNode;
-  badge?: string;
-};
-
-const packages: Package[] = [
-  {
-    name: "Standart Paket",
-    analysisCount: "10 Adet",
-    features: ["PDF Çıktı", "Geçmişi Görüntüleme"],
-    featured: false,
-    cta: { label: "Satın Al", href: "/contact" },
-    icon: <DocumentTextIcon className="h-7 w-7" strokeWidth={1.75} aria-hidden />,
-  },
-  {
-    name: "Pro Paket",
-    analysisCount: "50 Adet",
-    features: ["Öncelikli İşlem", "Detaylı Raporlama", "PDF Çıktı", "Geçmişi Görüntüleme"],
-    featured: true,
-    cta: { label: "Satın Al", href: "/contact" },
-    icon: <BoltIcon className="h-7 w-7" strokeWidth={1.75} aria-hidden />,
-    badge: "En Popüler",
-  },
-  {
-    name: "Sınırsız Paket",
-    analysisCount: "Limitsiz (Aylık)",
-    features: [
-      "Besiciler ve kasaplar için sınırsız kullanım",
-      "Öncelikli İşlem",
-      "Detaylı Raporlama",
-      "PDF Çıktı",
-      "Geçmişi Görüntüleme",
-    ],
-    featured: false,
-    cta: { label: "İletişim", href: "/contact" },
-    icon: <ArrowPathIcon className="h-7 w-7" strokeWidth={1.75} aria-hidden />,
-  },
-];
+import {
+  creditPackages,
+  type CreditPackageId,
+} from "@/config/creditPackages";
 
 const faqs = [
   {
     q: "Hoş Geldin Paketi nedir?",
-    a: "Yeni kayıt olan her kullanıcıya 3 adet ücretsiz analiz hakkı tanınır. Bu hakları kullanarak platformumuzu deneyebilirsiniz.",
+    a: "Yeni kayıt olan her kullanıcıya 3 ücretsiz kredi tanınır. Bu kredilerle fotoğraf analizi veya manuel hesaplama yaparak platformu deneyebilirsiniz.",
   },
   {
-    q: "Analiz hakkım biterse ne olur?",
-    a: "Analiz hakkınız tükendiğinde yeni bir paket satın alarak devam edebilirsiniz. Mevcut analizleriniz ve raporlarınız her zaman erişilebilir kalır.",
+    q: "Kredi hakkım biterse ne olur?",
+    a: "Krediniz tükendiğinde yeni bir paket satın alarak devam edebilirsiniz. Mevcut analizleriniz ve raporlarınız erişilebilir kalır.",
   },
   {
-    q: "Sınırsız paket gerçekten limitsiz mi?",
-    a: "Evet, Sınırsız Paket aylık abonelik modeliyle çalışır ve abonelik süresi boyunca istediğiniz kadar analiz yapabilirsiniz. Besiciler ve kasaplar için ideal bir çözümdür.",
+    q: "Bir kredi ne için kullanılır?",
+    a: "Bir kredi; tek fotoğraf analizi, çoklu fotoğraf analizi veya manuel kilo hesabı için kullanılabilir. Tüm işlemler aynı kredi havuzundan düşer.",
   },
   {
     q: "Ödeme nasıl yapılır?",
-    a: "Ödeme sistemi yakında aktif olacaktır. Şu an için paket satın almak istiyorsanız iletişim sayfamızdan bize ulaşabilirsiniz.",
+    a: "Satın Al butonuna bastığınızda Shopier güvenli ödeme sayfasına yönlendirilirsiniz. Ödeme başarılı olursa krediniz otomatik olarak hesabınıza eklenir.",
   },
   {
     q: "Paketler arası geçiş yapabilir miyim?",
-    a: "Evet, istediğiniz zaman daha üst bir pakete geçiş yapabilirsiniz. Kalan analiz haklarınız yeni paketinize eklenir.",
+    a: "Evet, istediğiniz zaman daha büyük bir paket satın alabilirsiniz. Kalan kredileriniz yeni paketteki kredilerle birlikte kullanılmaya devam eder.",
   },
   {
-    q: "Kullanılmayan haklar sonraki aya devredilir mi?",
-    a: "Standart ve Pro paketlerdeki analiz hakları süresiz olarak geçerlidir. Sınırsız pakette ise aylık abonelik modeli uygulanır.",
+    q: "Kullanılmayan krediler silinir mi?",
+    a: "Kredi paketleri tek seferliktir; kullanılmayan krediler abonelik ayı sonunda silinmez.",
   },
 ];
 
+type ShopierPaymentResponse = {
+  success?: boolean;
+  error?: string;
+  paymentUrl?: string;
+  fields?: Record<string, string>;
+};
+
+const getPackageIcon = (packageId: CreditPackageId) => {
+  if (packageId === "starter") {
+    return (
+      <DocumentTextIcon className="h-7 w-7" strokeWidth={1.75} aria-hidden />
+    );
+  }
+
+  if (packageId === "standard") {
+    return <BoltIcon className="h-7 w-7" strokeWidth={1.75} aria-hidden />;
+  }
+
+  return <ChartBarIcon className="h-7 w-7" strokeWidth={1.75} aria-hidden />;
+};
+
+const submitShopierForm = (
+  paymentUrl: string,
+  fields: Record<string, string>,
+) => {
+  const form = document.createElement("form");
+  form.method = "POST";
+  form.action = paymentUrl;
+
+  Object.entries(fields).forEach(([name, value]) => {
+    const input = document.createElement("input");
+    input.type = "hidden";
+    input.name = name;
+    input.value = value;
+    form.appendChild(input);
+  });
+
+  document.body.appendChild(form);
+  form.submit();
+};
+
+const getPaymentStatusMessage = (paymentStatus: string) => {
+  if (paymentStatus === "success") {
+    return "Ödeme başarılı. Kredileriniz hesabınıza eklendi.";
+  }
+
+  if (paymentStatus === "failed") {
+    return "Ödeme tamamlanamadı. Kartınızdan tahsilat yapılmadıysa tekrar deneyebilirsiniz.";
+  }
+
+  if (paymentStatus === "invalid") {
+    return "Ödeme doğrulaması tamamlanamadı. Lütfen bizimle iletişime geçin.";
+  }
+
+  return "";
+};
+
+const getPurchaseButtonLabel = ({
+  isPurchasing,
+  isAuthenticated,
+}: {
+  isPurchasing: boolean;
+  isAuthenticated: boolean;
+}) => {
+  if (isPurchasing) {
+    return "Shopier'e yönlendiriliyor...";
+  }
+
+  if (isAuthenticated) {
+    return "Satın Al";
+  }
+
+  return "Giriş Yap ve Satın Al";
+};
+
 const PricingPage = () => {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
+  const [purchasingPackageId, setPurchasingPackageId] =
+    useState<CreditPackageId | null>(null);
+  const [purchaseError, setPurchaseError] = useState("");
+  const [paymentStatus, setPaymentStatus] = useState("");
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(globalThis.location.search);
+    setPaymentStatus(searchParams.get("payment") ?? "");
+  }, []);
+
+  const handlePurchasePackage = async (packageId: CreditPackageId) => {
+    if (!user) {
+      globalThis.location.href = "/auth/login";
+      return;
+    }
+
+    setPurchasingPackageId(packageId);
+    setPurchaseError("");
+
+    try {
+      const response = await fetch("/api/payments/shopier/create", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ packageId }),
+      });
+      const data = (await response.json()) as ShopierPaymentResponse;
+
+      if (!response.ok || !data.success || !data.paymentUrl || !data.fields) {
+        setPurchaseError(data.error ?? "Ödeme başlatılamadı.");
+        return;
+      }
+
+      submitShopierForm(data.paymentUrl, data.fields);
+    } catch {
+      setPurchaseError("Ödeme başlatılırken sunucuya bağlanılamadı.");
+    } finally {
+      setPurchasingPackageId(null);
+    }
+  };
+
+  const paymentStatusMessage = getPaymentStatusMessage(paymentStatus);
 
   return (
     <AppPageShell>
@@ -109,9 +183,15 @@ const PricingPage = () => {
           </h1>
           <p className="mx-auto max-w-2xl text-lg leading-relaxed text-stone-600 dark:text-stone-400">
             Bireysel kullanımdan profesyonel ihtiyaçlara kadar her seviyeye uygun
-            analiz paketleri sunuyoruz.
+            ortak kredi paketleri sunuyoruz.
           </p>
         </div>
+
+        {(paymentStatusMessage || purchaseError) && (
+          <div className="mb-8 rounded-2xl border border-emerald-200 bg-emerald-50 px-5 py-4 text-center text-sm font-medium text-emerald-900 shadow-soft dark:border-emerald-800/60 dark:bg-emerald-950/30 dark:text-emerald-100">
+            {purchaseError || paymentStatusMessage}
+          </div>
+        )}
 
         {/* Welcome Package Banner */}
         <div className="mb-14 animate-slide-up">
@@ -130,13 +210,14 @@ const PricingPage = () => {
                 </h2>
                 <p className="mt-1 text-sm leading-relaxed text-emerald-800/80 dark:text-emerald-300/80">
                   Yeni kayıt olan her kullanıcıya{" "}
-                  <strong className="font-semibold text-emerald-900 dark:text-emerald-200">3 adet ücretsiz analiz hakkı</strong>{" "}
-                  hediye ediyoruz. Platformumuzu denemek için harika bir başlangıç!
+                  <strong className="font-semibold text-emerald-900 dark:text-emerald-200">3 ücretsiz kredi</strong>{" "}
+                  hediye ediyoruz. Fotoğraf analizi veya manuel hesaplama için kullanabilirsiniz.
                 </p>
                 {user && (
                   <p className="mt-3 inline-flex items-center gap-2 rounded-full border border-emerald-300/80 bg-white/80 px-3 py-1 text-sm font-medium text-emerald-900 dark:border-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-200">
                     <span className="h-2 w-2 rounded-full bg-emerald-500" aria-hidden />
-                    Kalan hakkınız: <strong>{user.remainingCredits}</strong> analiz
+                    Kalan krediniz:{" "}
+                    <strong>{user.remainingCredits}</strong>
                   </p>
                 )}
               </div>
@@ -146,7 +227,7 @@ const PricingPage = () => {
 
         {/* Pricing Cards */}
         <div className="mb-20 grid gap-6 md:grid-cols-3 animate-slide-up" style={{ animationDelay: "0.1s" }}>
-          {packages.map((pkg) => (
+          {creditPackages.map((pkg) => (
             <div
               key={pkg.name}
               className={`relative flex flex-col rounded-2xl border p-6 transition-all duration-300 sm:p-8 ${
@@ -172,21 +253,29 @@ const PricingPage = () => {
                       : "border border-emerald-100/90 bg-gradient-to-br from-emerald-50 to-teal-50 text-emerald-800 dark:border-emerald-800/50 dark:from-emerald-950/60 dark:to-teal-950/50 dark:text-emerald-300"
                   }`}
                 >
-                  {pkg.icon}
+                  {getPackageIcon(pkg.id)}
                 </div>
                 <h3 className="text-xl font-semibold text-stone-900 dark:text-stone-50">
                   {pkg.name}
                 </h3>
-                <p className="mt-2 text-2xl font-bold text-emerald-800 dark:text-emerald-300">
-                  {pkg.analysisCount}
+                <p className="mt-4 font-display text-4xl font-bold text-stone-950 dark:text-stone-50">
+                  {pkg.price.toLocaleString("tr-TR")} TL
                 </p>
-                <p className="mt-1 text-xs text-stone-500 dark:text-stone-400">analiz hakkı</p>
+                <p className="mt-2 text-lg font-semibold text-emerald-800 dark:text-emerald-300">
+                  {pkg.creditCount} kredi
+                </p>
+                <p className="mt-1 text-xs text-stone-500 dark:text-stone-400">
+                  {pkg.unitPrice}
+                </p>
               </div>
 
-              <div className="mb-4 rounded-xl border border-amber-200/80 bg-amber-50/60 px-4 py-2.5 text-center dark:border-amber-800/40 dark:bg-amber-950/30">
-                <p className="text-sm font-medium text-amber-900 dark:text-amber-200">
-                  <ClockIcon className="mr-1.5 inline h-4 w-4" strokeWidth={2} aria-hidden />
-                  Fiyat: Yakında
+              <div className="mb-4 rounded-xl border border-emerald-200/80 bg-emerald-50/70 px-4 py-2.5 text-center dark:border-emerald-800/50 dark:bg-emerald-950/30">
+                <p className="text-sm font-semibold text-emerald-900 dark:text-emerald-200">
+                  Fiyat: {pkg.price.toLocaleString("tr-TR")} TL
+                </p>
+                <p className="mt-1 text-xs text-emerald-800/90 dark:text-emerald-300/90">
+                  Fotoğraf analizi ve manuel hesaplama ortak kredi kullanır. Ödeme Shopier ile
+                  alınır.
                 </p>
               </div>
 
@@ -207,17 +296,19 @@ const PricingPage = () => {
                 ))}
               </ul>
 
-              <Link
-                href={pkg.cta.href}
+              <button
+                type="button"
+                onClick={() => handlePurchasePackage(pkg.id)}
+                disabled={loading || purchasingPackageId !== null}
                 className={`btn btn-md w-full justify-center ${
                   pkg.featured ? "btn-primary" : "btn-secondary"
                 }`}
               >
-                {pkg.cta.label === "İletişim" && (
-                  <ChatBubbleLeftRightIcon className="mr-2 h-4 w-4" strokeWidth={2} aria-hidden />
-                )}
-                {pkg.cta.label}
-              </Link>
+                {getPurchaseButtonLabel({
+                  isPurchasing: purchasingPackageId === pkg.id,
+                  isAuthenticated: Boolean(user),
+                })}
+              </button>
             </div>
           ))}
         </div>
@@ -227,7 +318,7 @@ const PricingPage = () => {
           <div className="card mx-auto max-w-2xl p-6 sm:p-8">
             <div className="flex items-center justify-center gap-2 text-sm font-medium text-stone-600 dark:text-stone-400">
               <ChartBarIcon className="h-5 w-5 text-emerald-700 dark:text-emerald-400" strokeWidth={2} aria-hidden />
-              Tüm paketlerde yapay zeka destekli analiz, tür ve kondisyon tespiti bulunur.
+              Tüm paketlerde krediler fotoğraf analizi ve manuel kilo hesabı için ortak kullanılır.
             </div>
           </div>
         </div>
@@ -262,15 +353,15 @@ const PricingPage = () => {
                 Hemen başlayın
               </h2>
               <p className="mt-3 text-sm text-emerald-100 sm:text-base">
-                Ücretsiz 3 analiz hakkınızla platformumuzu deneyin. Paketler yakında
-                satışa sunulacaktır.
+                Ücretsiz 3 kredinizle platformumuzu deneyin. Daha fazla kullanım için
+                size uygun paketi seçin.
               </p>
               <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
                 <Link
                   href="/analyze"
                   className="animal-cta-btn btn-md inline-flex"
                 >
-                  Analize Başla
+                  Fotoğraf ile kilo hesapla
                 </Link>
                 <Link
                   href="/contact"

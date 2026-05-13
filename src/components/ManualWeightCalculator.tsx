@@ -1,11 +1,13 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Link from "next/link";
 import {
   CalculatorIcon,
   CurrencyDollarIcon,
 } from "@heroicons/react/24/outline";
 import YieldTable from "@/components/YieldTable";
+import { useAuth } from "@/components/AuthProvider";
 import {
   calculateYieldRows,
   getDefaultYieldRate,
@@ -21,8 +23,17 @@ const parseNumber = (value: string) => {
 };
 
 type BodyCondition = "normal" | "besili";
+type CalculatedValues = {
+  profile: LargeCattleYieldProfile;
+  totalSellPrice: number;
+  sharePrice: number;
+  yieldRows: ReturnType<typeof calculateYieldRows>;
+  defaultYieldRate: number;
+  estimatedKarkasWeight: number;
+};
 
 const ManualWeightCalculator = () => {
+  const { user, loading: authLoading, setUser } = useAuth();
   const [liveWeight, setLiveWeight] = useState("700");
   const [currentMeatKgPrice, setCurrentMeatKgPrice] = useState("620");
   const [yieldProfile, setYieldProfile] =
@@ -30,8 +41,12 @@ const ManualWeightCalculator = () => {
   const [chestCircumference, setChestCircumference] = useState("");
   const [bodyLength, setBodyLength] = useState("");
   const [bodyCondition, setBodyCondition] = useState<BodyCondition>("normal");
+  const [calculatedResult, setCalculatedResult] =
+    useState<CalculatedValues | null>(null);
+  const [creditError, setCreditError] = useState("");
+  const [isCalculating, setIsCalculating] = useState(false);
 
-  const calculatedValues = useMemo(() => {
+  const previewCalculatedValues = useMemo((): CalculatedValues => {
     const liveWeightValue = parseNumber(liveWeight);
     const currentMeatKgPriceValue = parseNumber(currentMeatKgPrice);
     const defaultYieldRate = getDefaultYieldRate(yieldProfile);
@@ -47,6 +62,7 @@ const ManualWeightCalculator = () => {
     });
 
     return {
+      profile: yieldProfile,
       totalSellPrice,
       sharePrice,
       yieldRows,
@@ -73,37 +89,87 @@ const ManualWeightCalculator = () => {
 
   const handleLiveWeightChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setLiveWeight(event.target.value);
+    setCalculatedResult(null);
+    setCreditError("");
   };
 
   const handleCurrentMeatKgPriceChange = (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     setCurrentMeatKgPrice(event.target.value);
+    setCalculatedResult(null);
+    setCreditError("");
   };
 
   const handleYieldProfileChange = (profile: LargeCattleYieldProfile) => {
     setYieldProfile(profile);
+    setCalculatedResult(null);
+    setCreditError("");
   };
 
   const handleChestCircumferenceChange = (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     setChestCircumference(event.target.value);
+    setCalculatedResult(null);
+    setCreditError("");
   };
 
   const handleBodyLengthChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setBodyLength(event.target.value);
+    setCalculatedResult(null);
+    setCreditError("");
   };
 
   const handleBodyConditionChange = (condition: BodyCondition) => {
     setBodyCondition(condition);
+    setCalculatedResult(null);
+    setCreditError("");
   };
 
   const handleUseMeasurementEstimate = () => {
     if (!measurementEstimate) return;
 
     setLiveWeight(String(measurementEstimate));
+    setCalculatedResult(null);
+    setCreditError("");
   };
+
+  const handleCalculateManual = async () => {
+    if (!user) {
+      setCreditError("Manuel hesaplama için giriş yapmanız gerekiyor.");
+      return;
+    }
+
+    if (user.remainingCredits <= 0) {
+      setCreditError("Kredi hakkınız kalmadı. Paket satın alarak devam edebilirsiniz.");
+      return;
+    }
+
+    setIsCalculating(true);
+    setCreditError("");
+
+    try {
+      const response = await fetch("/api/user/credits/consume", {
+        method: "POST",
+      });
+      const data = await response.json();
+
+      if (!response.ok || !data.success) {
+        setCreditError(data.error ?? "Kredi kullanılamadı.");
+        return;
+      }
+
+      setUser(data.user);
+      setCalculatedResult(previewCalculatedValues);
+    } catch {
+      setCreditError("Kredi işlemi sırasında sunucuya bağlanılamadı.");
+    } finally {
+      setIsCalculating(false);
+    }
+  };
+
+  const canCalculate = !authLoading && (user?.remainingCredits ?? 0) > 0;
 
   return (
     <section id="hesaplama" className="surface-band scroll-mt-24 py-14 sm:py-16">
@@ -111,7 +177,7 @@ const ManualWeightCalculator = () => {
         <div className="mx-auto max-w-2xl text-center">
           <p className="section-kicker mx-auto">Manuel hesaplama</p>
           <h2 className="font-display text-2xl font-semibold tracking-tight text-stone-900 dark:text-stone-50 sm:text-3xl">
-            Fotoğraf olmadan kilo, kar ve hisse hesabı
+            Fotoğraf olmadan kilo ve hisse hesabı
           </h2>
           <p className="mt-3 text-stone-600 dark:text-stone-400">
             Canlı kilo ve güncel kg et fiyatını girerek tahmini karkas değeri,
@@ -130,7 +196,7 @@ const ManualWeightCalculator = () => {
                   Kilo ve fiyat bilgileri
                 </h3>
                 <p className="text-sm text-stone-500 dark:text-stone-400">
-                  Değerleri değiştirdikçe sonuçlar anlık güncellenir.
+                  Manuel hesaplama ve fotoğraf analizi ortak kredi kullanır.
                 </p>
               </div>
             </div>
@@ -289,6 +355,53 @@ const ManualWeightCalculator = () => {
                   </button>
                 </div>
               </fieldset>
+
+              <div className="space-y-3 sm:col-span-2">
+                <button
+                  type="button"
+                  onClick={handleCalculateManual}
+                  disabled={!canCalculate || isCalculating}
+                  className="btn btn-primary btn-lg w-full"
+                >
+                  {isCalculating ? "Hesaplanıyor..." : "Manuel hesapla"}
+                </button>
+
+                {!authLoading && user && (
+                  <p className="text-center text-xs text-stone-500 dark:text-stone-400">
+                    Kalan hakkınız:{" "}
+                    <strong className="text-emerald-700 dark:text-emerald-300">
+                      {user.remainingCredits}
+                    </strong>{" "}
+                    kredi
+                  </p>
+                )}
+
+                {!authLoading && !user && (
+                  <p className="text-center text-sm text-stone-600 dark:text-stone-400">
+                    Manuel hesaplama için{" "}
+                    <Link
+                      href="/auth/login"
+                      className="font-semibold text-emerald-700 hover:text-emerald-900 dark:text-emerald-300"
+                    >
+                      giriş yapın
+                    </Link>{" "}
+                    veya{" "}
+                    <Link
+                      href="/auth/register"
+                      className="font-semibold text-emerald-700 hover:text-emerald-900 dark:text-emerald-300"
+                    >
+                      ücretsiz hesap oluşturun
+                    </Link>
+                    .
+                  </p>
+                )}
+
+                {creditError && (
+                  <p className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-center text-sm text-red-700 dark:border-red-900/60 dark:bg-red-950/30 dark:text-red-200">
+                    {creditError}
+                  </p>
+                )}
+              </div>
             </div>
           </div>
 
@@ -299,16 +412,29 @@ const ManualWeightCalculator = () => {
                   <p className="text-sm font-semibold text-stone-500 dark:text-stone-400">
                     Tahmini Karkas Satış Fiyatı
                   </p>
-                  <p className="mt-2 text-3xl font-bold text-stone-900 dark:text-stone-50">
-                    {formatCurrency(calculatedValues.totalSellPrice)}
-                  </p>
-                  <p className="mt-1 text-xs text-stone-500 dark:text-stone-400">
-                    %{calculatedValues.defaultYieldRate} randıman ·{" "}
-                    {calculatedValues.estimatedKarkasWeight.toLocaleString(
-                      "tr-TR",
-                    )}{" "}
-                    kg karkas
-                  </p>
+                  {calculatedResult ? (
+                    <>
+                      <p className="mt-2 text-3xl font-bold text-stone-900 dark:text-stone-50">
+                        {formatCurrency(calculatedResult.totalSellPrice)}
+                      </p>
+                      <p className="mt-1 text-xs text-stone-500 dark:text-stone-400">
+                        %{calculatedResult.defaultYieldRate} randıman ·{" "}
+                        {calculatedResult.estimatedKarkasWeight.toLocaleString(
+                          "tr-TR",
+                        )}{" "}
+                        kg karkas
+                      </p>
+                    </>
+                  ) : (
+                    <>
+                      <p className="mt-2 text-3xl font-bold text-stone-400 dark:text-stone-500">
+                        Hesaplama bekliyor
+                      </p>
+                      <p className="mt-1 text-xs text-stone-500 dark:text-stone-400">
+                        Sonucu görmek için 1 kredi kullanın.
+                      </p>
+                    </>
+                  )}
                 </div>
                 <div className="rounded-2xl border border-emerald-100 bg-emerald-50/70 px-4 py-3 text-sm text-emerald-900 dark:border-emerald-800/60 dark:bg-emerald-950/30 dark:text-emerald-100">
                   <p className="font-semibold">Güncel kg et fiyatı</p>
@@ -330,20 +456,24 @@ const ManualWeightCalculator = () => {
                   1 Kişilik Hisse Fiyatı (1/7)
                 </p>
                 <p className="mt-3 font-display text-4xl font-bold sm:text-6xl">
-                  {formatCurrency(calculatedValues.sharePrice)}
+                  {calculatedResult
+                    ? formatCurrency(calculatedResult.sharePrice)
+                    : "Hesapla"}
                 </p>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="mt-6">
-          <YieldTable
-            key={yieldProfile}
-            rows={calculatedValues.yieldRows}
-            profile={yieldProfile}
-          />
-        </div>
+        {calculatedResult && (
+          <div className="mt-6">
+            <YieldTable
+              key={calculatedResult.profile}
+              rows={calculatedResult.yieldRows}
+              profile={calculatedResult.profile}
+            />
+          </div>
+        )}
       </div>
     </section>
   );

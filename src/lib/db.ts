@@ -34,7 +34,16 @@ const ensureUsersDatabase = (): void => {
 const readUsersDatabase = (): UserDatabase => {
   ensureUsersDatabase();
 
-  return JSON.parse(readFileSync(usersDatabasePath, "utf-8")) as UserDatabase;
+  const database = JSON.parse(
+    readFileSync(usersDatabasePath, "utf-8"),
+  ) as UserDatabase;
+
+  return {
+    users: database.users.map((user) => ({
+      ...user,
+      remainingCredits: user.remainingCredits ?? 3,
+    })),
+  };
 };
 
 const writeUsersDatabase = (database: UserDatabase): void => {
@@ -67,4 +76,44 @@ export const createUser = (user: User): User => {
   writeUsersDatabase(database);
 
   return user;
+};
+
+export const updateUser = (updatedUser: User): User => {
+  const database = readUsersDatabase();
+  const userIndex = database.users.findIndex((user) => user.id === updatedUser.id);
+
+  if (userIndex === -1) {
+    throw new Error("User not found");
+  }
+
+  database.users[userIndex] = updatedUser;
+  writeUsersDatabase(database);
+
+  return updatedUser;
+};
+
+export const decrementUserCredit = (userId: string): User | null => {
+  const user = getUserById(userId);
+
+  if (!user || user.remainingCredits <= 0) {
+    return null;
+  }
+
+  return updateUser({
+    ...user,
+    remainingCredits: user.remainingCredits - 1,
+  });
+};
+
+export const addUserCredits = (userId: string, creditsToAdd: number): User | null => {
+  const user = getUserById(userId);
+
+  if (!user || creditsToAdd <= 0) {
+    return null;
+  }
+
+  return updateUser({
+    ...user,
+    remainingCredits: user.remainingCredits + creditsToAdd,
+  });
 };

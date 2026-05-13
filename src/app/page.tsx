@@ -7,6 +7,7 @@ import {
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import AppPageShell from "@/components/AppPageShell";
+import ManualWeightCalculator from "@/components/ManualWeightCalculator";
 import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
 
@@ -70,29 +71,28 @@ const Home = () => {
           <div className="mx-auto max-w-3xl text-center animate-fade-in">
             <p className="hero-pill mb-4">
               <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-600 dark:bg-emerald-500" aria-hidden />
-              {"Yapay zeka destekli ön analiz"}
+              {"Fotoğraf ile kilo hesaplama"}
             </p>
             <h1 className="font-display text-balance text-3xl font-semibold tracking-tight text-stone-900 dark:text-stone-50 sm:text-5xl sm:leading-[1.08]">
-              Kurbanlık seçiminde{" "}
-              <span className="gradient-text">daha net bir başlangıç</span>
+              Kurbanlık kilosunu{" "}
+              <span className="gradient-text">fotoğrafla tahmin edin</span>
             </h1>
             <p className="mt-5 text-pretty text-base leading-relaxed text-stone-600 dark:text-stone-400 sm:text-lg">
-              Fotoğraftan tür, kondisyon ve yönlendirici fiyat çerçevesi alın.
-              Araç, satın alma veya dini vecibelerin yerine geçmez; kararınızı
-              desteklemek için tasarlandı.
+              Fotoğraf yükleyin; yapay zeka canlı kilo, karkas verimi, hisse
+              fiyatı ve piyasa değerini hızlıca tahmin etsin.
             </p>
             <div className="mt-8 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center">
               <Link
                 href="/analyze"
                 className="btn btn-primary btn-lg justify-center"
               >
-                Analize başla
+                Fotoğraf ile kilo hesapla
               </Link>
               <a
-                href="#nasil"
+                href="#hesaplama"
                 className="btn btn-secondary btn-lg justify-center"
               >
-                Nasıl çalışır?
+                Manuel hesapla
               </a>
             </div>
           </div>
@@ -119,6 +119,8 @@ const Home = () => {
           </ul>
         </section>
 
+        <ManualWeightCalculator />
+
         <section
           id="ozellikler"
           className="surface-band scroll-mt-24 py-14 sm:py-16"
@@ -130,8 +132,8 @@ const Home = () => {
                 Öne çıkanlar
               </h2>
               <p className="mt-3 text-stone-600 dark:text-stone-400">
-                Karmaşık formlar yerine net akış: yükle, isteğe bağlı bilgi
-                ver, raporu oku.
+                Fotoğrafla kilo tahmini, manuel karkas hesabı ve randıman
+                tablosunu tek yerde kullanın.
               </p>
             </div>
             <div className="mt-10 grid gap-5 md:grid-cols-3">
@@ -257,14 +259,14 @@ const Home = () => {
                 Hazır mısınız?
               </h2>
               <p className="mt-3 text-sm text-emerald-100 sm:text-base">
-                Birkaç net fotoğraf yeterli. Sonuçları indirip danışmanız veya
-                satıcıyla paylaşabilirsiniz.
+                Birkaç net fotoğrafla kilo tahmini alın. Sonuçları indirip
+                danışmanız veya satıcıyla paylaşabilirsiniz.
               </p>
               <Link
                 href="/analyze"
                 className="animal-cta-btn btn-md mt-8 inline-flex"
               >
-                Analize geç
+                Fotoğrafla kilo hesapla
               </Link>
             </div>
           </div>

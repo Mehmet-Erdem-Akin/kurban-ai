@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import { getCurrentUser, toSafeUser } from "@/lib/auth";
+import { decrementUserCredit } from "@/lib/db";
 
 // Define proper types for additionalInfo
 interface AdditionalInfo {
@@ -14,6 +16,65 @@ interface AdditionalInfo {
   specialNotes?: string;
   weight?: string;
 }
+
+const createCreditErrorResponse = (
+  error: "AUTH_REQUIRED" | "NO_CREDITS",
+  message: string,
+  status: 401 | 402,
+) =>
+  NextResponse.json(
+    {
+      success: false,
+      error,
+      message,
+    },
+    { status },
+  );
+
+const getUserReadyForAnalysis = async () => {
+  const user = await getCurrentUser();
+
+  if (!user) {
+    return {
+      user: null,
+      response: createCreditErrorResponse(
+        "AUTH_REQUIRED",
+        "Fotoğraf analizi için giriş yapmanız gerekiyor",
+        401,
+      ),
+    };
+  }
+
+  if (user.remainingCredits <= 0) {
+    return {
+      user: null,
+      response: createCreditErrorResponse(
+        "NO_CREDITS",
+        "Kredi hakkınız kalmadı",
+        402,
+      ),
+    };
+  }
+
+  return { user, response: null };
+};
+
+const consumeAnalysisCredit = (userId: string) => {
+  const updatedUser = decrementUserCredit(userId);
+
+  if (!updatedUser) {
+    return {
+      user: null,
+      response: createCreditErrorResponse(
+        "NO_CREDITS",
+        "Kredi hakkınız kalmadı",
+        402,
+      ),
+    };
+  }
+
+  return { user: toSafeUser(updatedUser), response: null };
+};
 
 // Initialize Gemini API
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_AI_API_KEY!);
@@ -271,10 +332,13 @@ const analyzeImageWithGemini = async (
         *Bunlar ÖRNEK referans değerlerdir; bölgelere göre dalgalanır. Fotoğraftaki spesifik hayvanı analiz et ve gerçek durumuna göre bireysel değerlendirme yap.*
         
         BÜYÜKBAŞ (SIĞIR/MANDA) FİYAT HESAPLAMA:
-        - Karkas verimi: %55 (0.55)
-        - Karkas et fiyatı (dana ortalaması): ~595 TL/kg (UKON yağsız dana karkas ~595,39 TL/kg)
-        - Fiyat hesaplama: (hayvan_ağırlığı × 0.55) × 595 TL/kg
-        - Örnek: 500kg Dana = (500kg × 0.55) × 595 TL = 275kg × 595 TL ≈ 163,600 TL
+        - Karkas verimi genel aralık: %50-%65
+        - Dana/tosun/iyi besi erkek büyükbaş: %58-%65
+        - Sığır/inek/dişi büyükbaş: %50-%55
+        - Ortalama büyükbaş referansı: %55-%60
+        - Güncel karkas et fiyatı (dana/büyükbaş): ~620 TL/kg
+        - Fiyat hesaplama: (hayvan_ağırlığı × uygun_randıman) × 620 TL/kg
+        - Örnek: 500kg Dana = (500kg × 0.60) × 620 TL = 300kg × 620 TL ≈ 186,000 TL
         - Premium ırklar: +%20-25 (Simental, Holstein, Angus)
         - Kurban sezonu: +%15-20 prim
         - Kalite ayarlaması: A-kalite +%15, B-kalite -%10
@@ -299,7 +363,7 @@ const analyzeImageWithGemini = async (
            d) Yaş faktörünü hesaba kat
            e) Kullanıcı verisi varsa karşılaştır
            f) Final kontrol ve validasyon yap
-        5. Karkas ağırlığını hesapla: büyükbaş için (ağırlık × 0.55), küçükbaş için (ağırlık × 0.50)
+        5. Karkas ağırlığını hesapla: büyükbaşta türe/cinsiyete göre %50-%65, küçükbaş için (ağırlık × 0.50)
         6. Temel fiyatı uygula: karkas_ağırlık × karkas_et_fiyatı
         7. Yüksek kaliteli ırk varsa cins primi ekle (+%20-25)
         8. Kurban dönemi için mevsimsel prim ekle (+%15-20)
@@ -322,7 +386,7 @@ const analyzeImageWithGemini = async (
         6. Final ağırlığı belirle (makul aralıkta olmalı)
         
         FORMÜL: 
-        - Büyükbaş: (hayvan_ağırlığı × 0.55) × 595 TL = gerçekçi pazar değeri (Nisan 2026 UKON dana karkas referansı)
+        - Büyükbaş: (hayvan_ağırlığı × uygun_randıman[%50-%65]) × 620 TL = güncel büyükbaş karkas et referansı
         - Küçükbaş: (hayvan_ağırlığı × 0.50) × 590 TL = gerçekçi pazar değeri (Nisan 2026 UKON kuzu karkas referansı)
         Sabit örnek değerler kullanma. Fotoğraftaki gerçek hayvana göre bireysel değerlendirme yap.
         
@@ -451,13 +515,24 @@ const calculateDetailedAnalysis = (basicAnalysis: {
     animalType === "Boğa" ||
     animalType === "İnek" ||
     animalType === "Manda" ||
-    animalType === "Buzağı"
+    animalType === "Buzağı" ||
+    animalType === "Sığır"
   ) {
-    // Büyükbaş (Cattle/Buffalo) yield ratios - Kullanıcı formülüne göre
-    karkasYieldPercentage = 55; // 55% karkas yield from live weight (0.55)
+    // Büyükbaş yield ratios: dana/tosun/etçi erkeklerde yüksek, inekte daha düşük.
+    if (animalType === "İnek" || animalType === "Sığır") {
+      karkasYieldPercentage = 53;
+    } else if (
+      animalType === "Dana" ||
+      animalType === "Tosun" ||
+      animalType === "Boğa"
+    ) {
+      karkasYieldPercentage = 60;
+    } else {
+      karkasYieldPercentage = 56;
+    }
     bonelessYieldPercentage = 72; // ~72% boneless from karkas
-    bonelessMeatPricePerKg = 608; // Dana kemiksiz referans TL/kg (Nisan 2026 UKON karkas trendiyle uyumlu)
-    karkasMeatPricePerKg = 595; // Yağsız dana karkas ~595,39 TL/kg (UKON 9 Nisan 2026 ort.)
+    bonelessMeatPricePerKg = 632; // Güncel büyükbaş kemiksiz referans TL/kg
+    karkasMeatPricePerKg = 620; // Güncel büyükbaş karkas et referansı TL/kg
   } else {
     // Küçükbaş (Small livestock: sheep/goat) yield ratios - Kullanıcı formülüne göre
     karkasYieldPercentage = 50; // 50% karkas yield from live weight (0.50)
@@ -535,8 +610,120 @@ const calculateDetailedAnalysis = (basicAnalysis: {
   };
 };
 
+const analyzeMultipleImages = async ({
+  images,
+  additionalInfo,
+  userId,
+}: {
+  images: string[];
+  additionalInfo?: AdditionalInfo;
+  userId: string;
+}) => {
+  console.log(`🔬 Aynı hayvana ait ${images.length} fotoğraf analiz ediliyor...`);
+
+  try {
+    // Basitleştirilmiş yaklaşım: Sadece ilk fotoğrafı analiz et, ama çoklu fotoğraf olduğunu belirt
+    const firstImage = images[0];
+    const base64Image = firstImage.replace(/^data:image\/[a-z]+;base64,/, "");
+
+    console.log("📸 İlk fotoğraf seçildi, boyut:", base64Image.length);
+    console.log("📝 Çoklu fotoğraf prompt hazırlandı");
+
+    // Simulate processing time
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+
+    // Tek fotoğraf ile Gemini API çağrısı (daha basit)
+    const basicAnalysis = await analyzeImageWithGemini(
+      base64Image,
+      additionalInfo,
+    );
+
+    console.log("✅ Çoklu fotoğraf analizi tamamlandı:", basicAnalysis);
+
+    // Check if analysis returned an error
+    if (basicAnalysis.error === true) {
+      console.log("🚫 Çoklu fotoğraf analizinde hata:", basicAnalysis);
+      return NextResponse.json(
+        {
+          success: false,
+          error: basicAnalysis.errorType,
+          message: basicAnalysis.message,
+          detectedType: basicAnalysis.detectedType || null,
+          analysisType: "multiple_same_animal",
+          totalImages: images.length,
+          confidence: 0,
+        },
+        { status: 400 },
+      );
+    }
+
+    // Güven skorunu artır (çoklu fotoğraf için)
+    if (basicAnalysis.confidence && basicAnalysis.confidence < 90) {
+      basicAnalysis.confidence = Math.min(95, basicAnalysis.confidence + 10);
+    }
+
+    const detailedAnalysis = calculateDetailedAnalysis(basicAnalysis);
+    const creditConsumption = consumeAnalysisCredit(userId);
+    if (creditConsumption.response) return creditConsumption.response;
+
+    const multipleImageResult = {
+      success: true,
+      analysisType: "multiple_same_animal",
+      totalImages: images.length,
+      animalType: basicAnalysis.animalType,
+      breed: basicAnalysis.breed,
+      estimatedWeight: basicAnalysis.estimatedWeight,
+      healthScore: basicAnalysis.healthScore,
+      marketValue: basicAnalysis.marketPrice,
+      meatYield: {
+        totalMeat: detailedAnalysis.totalMeatKg,
+        karkasWeight: detailedAnalysis.karkasWeight,
+        bonelessMeat: detailedAnalysis.totalMeatKg,
+        boneWeight: detailedAnalysis.boneWeight,
+        yieldRatios: detailedAnalysis.yieldRatios,
+      },
+      pricing: {
+        liveWeightPrice: detailedAnalysis.pricePerKg,
+        meatPrice: detailedAnalysis.karkasMeatPricePerKg,
+        estimatedMeatValue: detailedAnalysis.estimatedMeatValue,
+      },
+      costPerShare: detailedAnalysis.sharePrice,
+      confidence: basicAnalysis.confidence,
+      recommendations: detailedAnalysis.recommendations,
+      analysisDate: new Date().toISOString(),
+      analysisNote: `Aynı hayvana ait ${images.length} farklı açıdan çekilmiş fotoğraf analiz edildi - yüksek güvenilirlik`,
+      user: creditConsumption.user,
+    };
+
+    console.log(
+      `✅ Aynı hayvana ait ${images.length} fotoğraf başarıyla analiz edildi`,
+    );
+    return NextResponse.json(multipleImageResult);
+  } catch (error) {
+    console.error("❌ Çoklu resim analiz hatası:", error);
+
+    // Return error instead of fallback analysis
+    return NextResponse.json(
+      {
+        success: false,
+        error: "ANALYSIS_ERROR",
+        message: "Çoklu fotoğraf analizi başarısız oldu - lütfen tekrar deneyin",
+        analysisType: "multiple_same_animal",
+        totalImages: images.length,
+        confidence: 0,
+      },
+      { status: 500 },
+    );
+  }
+};
+
 export async function POST(request: NextRequest) {
   try {
+    const authorization = await getUserReadyForAnalysis();
+    if (authorization.response) return authorization.response;
+
+    const { user } = authorization;
+
     // Parse JSON data instead of FormData
     const body = await request.json();
     const {
@@ -550,109 +737,11 @@ export async function POST(request: NextRequest) {
 
     // Çoklu fotoğraf analizi - Aynı hayvana ait farklı açılardan fotoğraflar
     if (analysisType === "multiple" && images && Array.isArray(images)) {
-      console.log(
-        `🔬 Aynı hayvana ait ${images.length} fotoğraf analiz ediliyor...`,
-      );
-
-      try {
-        // Basitleştirilmiş yaklaşım: Sadece ilk fotoğrafı analiz et, ama çoklu fotoğraf olduğunu belirt
-        const firstImage = images[0];
-        const base64Image = firstImage.replace(
-          /^data:image\/[a-z]+;base64,/,
-          "",
-        );
-
-        console.log("📸 İlk fotoğraf seçildi, boyut:", base64Image.length);
-
-        console.log("📝 Çoklu fotoğraf prompt hazırlandı");
-
-        // Simulate processing time
-        await new Promise((resolve) => setTimeout(resolve, 2000));
-
-        // Tek fotoğraf ile Gemini API çağrısı (daha basit)
-        const basicAnalysis = await analyzeImageWithGemini(
-          base64Image,
-          additionalInfo,
-        );
-
-        console.log("✅ Çoklu fotoğraf analizi tamamlandı:", basicAnalysis);
-
-        // Check if analysis returned an error
-        if (basicAnalysis.error === true) {
-          console.log("🚫 Çoklu fotoğraf analizinde hata:", basicAnalysis);
-          return NextResponse.json(
-            {
-              success: false,
-              error: basicAnalysis.errorType,
-              message: basicAnalysis.message,
-              detectedType: basicAnalysis.detectedType || null,
-              analysisType: "multiple_same_animal",
-              totalImages: images.length,
-              confidence: 0,
-            },
-            { status: 400 },
-          );
-        }
-
-        // Güven skorunu artır (çoklu fotoğraf için)
-        if (basicAnalysis.confidence && basicAnalysis.confidence < 90) {
-          basicAnalysis.confidence = Math.min(
-            95,
-            basicAnalysis.confidence + 10,
-          );
-        }
-
-        const detailedAnalysis = calculateDetailedAnalysis(basicAnalysis);
-
-        const multipleImageResult = {
-          success: true,
-          analysisType: "multiple_same_animal",
-          totalImages: images.length,
-          animalType: basicAnalysis.animalType,
-          breed: basicAnalysis.breed,
-          estimatedWeight: basicAnalysis.estimatedWeight,
-          healthScore: basicAnalysis.healthScore,
-          marketValue: basicAnalysis.marketPrice,
-          meatYield: {
-            totalMeat: detailedAnalysis.totalMeatKg,
-            karkasWeight: detailedAnalysis.karkasWeight,
-            bonelessMeat: detailedAnalysis.totalMeatKg,
-            boneWeight: detailedAnalysis.boneWeight,
-            yieldRatios: detailedAnalysis.yieldRatios,
-          },
-          pricing: {
-            liveWeightPrice: detailedAnalysis.pricePerKg,
-            meatPrice: detailedAnalysis.karkasMeatPricePerKg,
-            estimatedMeatValue: detailedAnalysis.estimatedMeatValue,
-          },
-          costPerShare: detailedAnalysis.sharePrice,
-          confidence: basicAnalysis.confidence,
-          recommendations: detailedAnalysis.recommendations,
-          analysisDate: new Date().toISOString(),
-          analysisNote: `Aynı hayvana ait ${images.length} farklı açıdan çekilmiş fotoğraf analiz edildi - yüksek güvenilirlik`,
-        };
-
-        console.log(
-          `✅ Aynı hayvana ait ${images.length} fotoğraf başarıyla analiz edildi`,
-        );
-        return NextResponse.json(multipleImageResult);
-      } catch (error) {
-        console.error("❌ Çoklu resim analiz hatası:", error);
-
-        // Return error instead of fallback analysis
-        return NextResponse.json(
-          {
-            success: false,
-            error: "ANALYSIS_ERROR",
-            message:
-              "Çoklu fotoğraf analizi başarısız oldu - lütfen tekrar deneyin",
-            analysisType: "multiple_same_animal",
-            totalImages: images.length,
-            confidence: 0,
-          },
-          { status: 500 },
-        );
-      }
+      return analyzeMultipleImages({
+        images,
+        additionalInfo,
+        userId: user.id,
+      });
     }
 
     // Tek fotoğraf analizi (mevcut kod)
@@ -695,6 +784,9 @@ export async function POST(request: NextRequest) {
 
     const detailedAnalysis = calculateDetailedAnalysis(basicAnalysis);
 
+    const creditConsumption = consumeAnalysisCredit(user.id);
+    if (creditConsumption.response) return creditConsumption.response;
+
     const result = {
       success: true,
       analysisType: "single",
@@ -721,6 +813,7 @@ export async function POST(request: NextRequest) {
       analysisDate: new Date().toISOString(),
       imageIndex: imageIndex || 1,
       totalImages: totalImages || 1,
+      user: creditConsumption.user,
     };
 
     return NextResponse.json(result);

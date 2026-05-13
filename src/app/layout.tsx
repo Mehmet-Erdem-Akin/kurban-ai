@@ -3,6 +3,7 @@ import Script from "next/script";
 import { DM_Sans, Fraunces } from "next/font/google";
 import Analytics from "@/components/Analytics";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import AuthProvider from "@/components/AuthProvider";
 import "./globals.css";
 
 const dmSans = DM_Sans({
@@ -110,7 +111,8 @@ export default function RootLayout({
     >
       <head>
         <link rel="icon" href="/favicon.ico" sizes="any" />
-        <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+        <link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32" />
+        <link rel="icon" href="/favicon-16x16.png" type="image/png" sizes="16x16" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#047857" />
@@ -164,9 +166,11 @@ export default function RootLayout({
         />
 
         <ThemeProvider>
-          <div id="icerik" tabIndex={-1} className="outline-none">
-            {children}
-          </div>
+          <AuthProvider>
+            <div id="icerik" tabIndex={-1} className="outline-none">
+              {children}
+            </div>
+          </AuthProvider>
         </ThemeProvider>
         <Analytics />
       </body>

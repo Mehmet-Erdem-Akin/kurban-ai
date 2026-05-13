@@ -1,65 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
-import { writeFileSync, readFileSync, existsSync, mkdirSync } from "fs";
-import { join } from "path";
+import { randomUUID } from "node:crypto";
+import { getUserByEmail, createUser } from "@/lib/db";
+import { hashPassword, createToken, setAuthCookie, toSafeUser } from "@/lib/auth";
 
-// Simple email validation
 const isValidEmail = (email: string) => {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 };
 
-interface User {
-  id: string;
-  email: string;
-  password: string;
-  name: string;
-  createdAt: string;
-}
-
-interface UserDatabase {
-  users: User[];
-}
-
-const getUsersDB = (): UserDatabase => {
-  const dbPath = join(process.cwd(), "data", "users.json");
-
-  if (!existsSync(dbPath)) {
-    const dataDir = join(process.cwd(), "data");
-    if (!existsSync(dataDir)) {
-      mkdirSync(dataDir, { recursive: true });
-    }
-
-    const initialData: UserDatabase = {
-      users: [
-        {
-          id: "1",
-          email: "demo@kurbanaliz.com",
-          password: "demo123",
-          name: "Demo Kullanıcı",
-          createdAt: new Date().toISOString(),
-        },
-      ],
-    };
-
-    writeFileSync(dbPath, JSON.stringify(initialData, null, 2));
-    return initialData;
-  }
-
-  return JSON.parse(readFileSync(dbPath, "utf-8"));
-};
-
-const saveUsersDB = (data: UserDatabase) => {
-  const dbPath = join(process.cwd(), "data", "users.json");
-  writeFileSync(dbPath, JSON.stringify(data, null, 2));
-};
-
 export async function POST(request: NextRequest) {
   try {
-    const { email, password, name } = await request.json();
+    const { name, surname, email, password, phone, address, usagePurpose } =
+      await request.json();
 
-    // Validation
-    if (!email || !password || !name) {
+    if (!name || !surname || !email || !password) {
       return NextResponse.json(
-        { error: "Tüm alanlar gerekli" },
+        { error: "Ad, soyad, email ve şifre alanları zorunludur" },
         { status: 400 },
       );
     }
@@ -73,15 +28,13 @@ export async function POST(request: NextRequest) {
 
     if (password.length < 6) {
       return NextResponse.json(
-        { error: "Şifre en az 6 karakter olmalı" },
+        { error: "Şifre en az 6 karakter olmalıdır" },
         { status: 400 },
       );
     }
 
-    const db = getUsersDB();
-
-    // Check if user already exists
-    const existingUser = db.users.find((u: User) => u.email === email);
+    const normalizedEmail = email.trim().toLowerCase();
+    const existingUser = getUserByEmail(normalizedEmail);
     if (existingUser) {
       return NextResponse.json(
         { error: "Bu email adresi zaten kayıtlı" },
@@ -89,33 +42,34 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Create new user
-    const newUser: User = {
-      id: Date.now().toString(),
-      email,
-      password, // In production, hash this!
-      name,
+    const hashedPassword = await hashPassword(password);
+
+    const newUser = createUser({
+      id: randomUUID(),
+      name: name.trim(),
+      surname: surname.trim(),
+      email: normalizedEmail,
+      password: hashedPassword,
+      phone: phone?.trim() || "",
+      address: address?.trim() || "",
+      usagePurpose: usagePurpose || "",
+      remainingCredits: 3,
       createdAt: new Date().toISOString(),
-    };
+    });
 
-    db.users.push(newUser);
-    saveUsersDB(db);
-
-    // Create token
-    const token = Buffer.from(`${newUser.id}:${Date.now()}`).toString("base64");
+    const token = await createToken(newUser.id);
+    await setAuthCookie(token);
 
     return NextResponse.json({
       success: true,
-      message: "Kayıt başarılı!",
-      user: {
-        id: newUser.id,
-        email: newUser.email,
-        name: newUser.name,
-      },
-      token,
+      message: "Kayıt başarılı! Hoş geldiniz.",
+      user: toSafeUser(newUser),
     });
   } catch (error) {
-    console.error("Registration error:", error);
-    return NextResponse.json({ error: "Sunucu hatası" }, { status: 500 });
+    console.error("Kayıt hatası:", error);
+    return NextResponse.json(
+      { error: "Sunucu hatası oluştu" },
+      { status: 500 },
+    );
   }
 }

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 const footerLinkClass =
@@ -35,21 +36,21 @@ const SiteFooter = () => {
           <div className="max-w-md">
             <Link
               href="/"
-              className="inline-flex items-center gap-2.5 rounded-lg outline-none ring-emerald-800 ring-offset-2 focus-visible:ring-2"
+              className="inline-flex rounded-lg outline-none ring-emerald-800 ring-offset-2 focus-visible:ring-2"
+              aria-label="Kurbanlık Kilo Hesaplama ana sayfa"
             >
-              <span
-                className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-700 to-emerald-950 text-xs font-bold text-white shadow-md shadow-emerald-900/20 ring-2 ring-white/40"
-                aria-hidden
-              >
-                KA
-              </span>
-              <span className="font-display text-lg font-semibold text-stone-900 dark:text-stone-100">
-                Kurbanlık Analiz
-              </span>
+              <Image
+                src="/ka-logo.png"
+                alt="Kurbanlık Kilo Hesaplama"
+                width={260}
+                height={60}
+                className="h-[40px] w-auto rounded-xl object-contain sm:h-[60px]"
+              />
             </Link>
             <p className="mt-3 text-sm leading-relaxed text-stone-500 dark:text-stone-400">
-              Fotoğraftan kurbanlık hayvanı için hızlı, yapay zeka destekli ön
-              analiz. Kesin teşhis veya resmi değerleme yerine geçmez.
+              Fotoğrafla kurbanlık kilo tahmini, karkas hesabı ve hisse fiyatı
+              için hızlı yardımcı araç. Kesin tartı veya resmi değerleme yerine
+              geçmez.
             </p>
             <div className="mt-5 flex flex-wrap gap-x-4 gap-y-2 text-sm">
               <a

@@ -1,0 +1,24 @@
+version: "3.9"
+
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: kurban-ai-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: kurban_ai
+      MYSQL_USER: kurban_ai
+      MYSQL_PASSWORD: kurban_ai
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -uroot -proot --silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  mysql_data:

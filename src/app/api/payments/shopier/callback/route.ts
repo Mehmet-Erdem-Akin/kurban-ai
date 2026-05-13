@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.redirect(getPricingRedirectUrl(request, "invalid"), 303);
     }
 
-    const order = getPaymentOrderById(payload.platform_order_id);
+    const order = await getPaymentOrderById(payload.platform_order_id);
 
     if (!order) {
       console.error("Shopier siparişi bulunamadı:", payload.platform_order_id);
@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
     }
 
     if (payload.status !== "success") {
-      updatePaymentOrder(order.id, {
+      await updatePaymentOrder(order.id, {
         status: "failed",
         failedAt: new Date().toISOString(),
         paymentId: payload.payment_id,
@@ -50,14 +50,14 @@ export async function POST(request: NextRequest) {
       return NextResponse.redirect(getPricingRedirectUrl(request, "success"), 303);
     }
 
-    const updatedUser = addUserCredits(order.userId, order.credits);
+    const updatedUser = await addUserCredits(order.userId, order.credits);
 
     if (!updatedUser) {
       console.error("Shopier kredi yükleme kullanıcı hatası:", order.userId);
       return NextResponse.redirect(getPricingRedirectUrl(request, "invalid"), 303);
     }
 
-    updatePaymentOrder(order.id, {
+    await updatePaymentOrder(order.id, {
       status: "paid",
       paidAt: new Date().toISOString(),
       paymentId: payload.payment_id,

@@ -13,7 +13,7 @@ export async function POST() {
       );
     }
 
-    const updatedUser = decrementUserCredit(user.id);
+    const updatedUser = await decrementUserCredit(user.id);
 
     if (!updatedUser) {
       return NextResponse.json(

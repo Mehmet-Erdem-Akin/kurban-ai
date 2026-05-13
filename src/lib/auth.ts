@@ -94,7 +94,7 @@ export const getCurrentUser = async (): Promise<User | null> => {
     return null;
   }
 
-  return getUserById(userId);
+  return await getUserById(userId);
 };
 
 export const toSafeUser = (user: User): SafeUser => ({

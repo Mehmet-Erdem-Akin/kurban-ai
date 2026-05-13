@@ -59,8 +59,8 @@ const getUserReadyForAnalysis = async () => {
   return { user, response: null };
 };
 
-const consumeAnalysisCredit = (userId: string) => {
-  const updatedUser = decrementUserCredit(userId);
+const consumeAnalysisCredit = async (userId: string) => {
+  const updatedUser = await decrementUserCredit(userId);
 
   if (!updatedUser) {
     return {
@@ -663,7 +663,7 @@ const analyzeMultipleImages = async ({
     }
 
     const detailedAnalysis = calculateDetailedAnalysis(basicAnalysis);
-    const creditConsumption = consumeAnalysisCredit(userId);
+    const creditConsumption = await consumeAnalysisCredit(userId);
     if (creditConsumption.response) return creditConsumption.response;
 
     const multipleImageResult = {
@@ -784,7 +784,7 @@ export async function POST(request: NextRequest) {
 
     const detailedAnalysis = calculateDetailedAnalysis(basicAnalysis);
 
-    const creditConsumption = consumeAnalysisCredit(user.id);
+    const creditConsumption = await consumeAnalysisCredit(user.id);
     if (creditConsumption.response) return creditConsumption.response;
 
     const result = {

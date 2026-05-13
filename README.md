@@ -21,6 +21,7 @@ Kurbanlık hayvan satın alırken daha bilinçli kararlar verin! Çoklu fotoğra
 ## 🛠 Teknolojiler
 
 - **Frontend:** Next.js 15, React, TypeScript, Tailwind CSS
+- **Database:** MySQL 8 + Prisma ORM
 - **Styling:** Tailwind CSS + Custom Components + Parallax Effects
 - **Deployment:** Netlify
 - **Analytics:** Simulated AI Analysis (Demo)
@@ -36,11 +37,33 @@ cd kurban-ai
 # Bağımlılıkları yükleyin
 npm install
 
+# Ortam değişkenlerini hazırlayın
+cp .env.example .env.local
+
+# İsteğe bağlı: MySQL'i Docker ile başlatın
+docker compose -f docker-compose.mysql.yml up -d
+
+# Prisma client üretin ve migrationları çalıştırın
+npm run prisma:generate
+npm run prisma:migrate:deploy
+
 # Geliştirme sunucusunu başlatın
 npm run dev
 ```
 
 Uygulama [http://localhost:3000](http://localhost:3000) adresinde çalışmaya başlayacak.
+
+## 🗄️ MySQL ve Migration Altyapısı
+
+- Prisma şeması: `prisma/schema.prisma`
+- Migration dosyaları: `prisma/migrations/`
+- Prisma client singleton: `src/lib/prisma.ts`
+
+Yeni migration üretmek için:
+
+```bash
+npm run prisma:migrate:dev -- --name <migration_adi>
+```
 
 ## 🎯 Kullanım
 

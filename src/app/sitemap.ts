@@ -1,7 +1,7 @@
 import { MetadataRoute } from "next";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://kurban-ai.vercel.app";
+  const baseUrl = "https://kurbanlikkilohesaplama.com";
   const currentDate = new Date();
 
   return [

@@ -110,6 +110,19 @@ export default function Contact() {
                   <ul className="mt-1 space-y-2 text-sm">
                     <li>
                       <a
+                        href="https://kurbanlikkilohesaplama.com"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="font-medium text-emerald-700 transition hover:text-emerald-900"
+                      >
+                        kurbanlikkilohesaplama.com
+                      </a>
+                      <span className="block text-xs text-neutral-500 dark:text-neutral-400">
+                        Güncel canlı site
+                      </span>
+                    </li>
+                    <li>
+                      <a
                         href="https://kurban-ai.vercel.app"
                         target="_blank"
                         rel="noopener noreferrer"
@@ -118,7 +131,7 @@ export default function Contact() {
                         kurban-ai.vercel.app
                       </a>
                       <span className="block text-xs text-neutral-500 dark:text-neutral-400">
-                        Güncel canlı sürüm
+                        Önceki dağıtım
                       </span>
                     </li>
                     <li>
@@ -131,7 +144,7 @@ export default function Contact() {
                         kurbanlikanaliz.netlify.app
                       </a>
                       <span className="block text-xs text-neutral-500 dark:text-neutral-400">
-                        Önceki dağıtım
+                        Daha önceki dağıtım
                       </span>
                     </li>
                   </ul>

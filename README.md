@@ -11,12 +11,12 @@ Kurbanlık hayvan satın alırken daha bilinçli kararlar verin! Çoklu fotoğra
 - 💰 **Akıllı Değer Hesaplama** - Güncel piyasa fiyatlarına göre değer analizi
 - 📊 **Detaylı Raporlama** - Tür, ağırlık, et miktarı, sağlık durumu
 - 📱 **Responsive Tasarım** - Mobil ve masaüstü uyumlu
-- 🔒 **Gizlilik Odaklı** - Veriler analiz sonrası silinir
+- 🔒 **Gizlilik odaklı** - Veri minimizasyonu; ham fotoğraf kalıcı tutulmaz, hesap ve geçmiş için sınırlı saklama
 - 🆓 **Tamamen Ücretsiz** - Hiçbir ücret veya kayıt gerektirmez
 
 ## 🚀 Canlı Demo
 
-**🌐 [https://kurbanlikanaliz.netlify.app](https://kurbanlikanaliz.netlify.app)**
+**🌐 [https://kurbanlikkilohesaplama.com](https://kurbanlikkilohesaplama.com)**
 
 ## 🛠 Teknolojiler
 
@@ -97,8 +97,8 @@ kurban-ai/
 
 ## 🔒 Gizlilik ve Güvenlik
 
-- **Veri Minimizasyonu:** Veriler yalnızca analiz sırasında işlenir
-- **Otomatik Silme:** Fotoğraflar analiz sonrası anında silinir
+- **Veri minimizasyonu:** Görüntüler analiz için işlenir; kalıcı fotoğraf arşivi tutulmaz
+- **Hesap ve geçmiş:** Tercih ettiğinizde özet sonuçlar sınırlı süre saklanabilir
 - **KVKK Uyumu:** Türk veri koruma mevzuatına uygun
 - **Şeffaflık:** Açık kaynak ve denetlenebilir kod
 
@@ -133,4 +133,4 @@ Bu proje bireysel geliştirme projesi olarak MIT lisansı altında lisanslanmı�
 
 **🌟 Beğendiyseniz ⭐ vermeyi unutmayın!**
 
-**🔗 Demo:** [kurbanlikanaliz.netlify.app](https://kurbanlikanaliz.netlify.app)
+**🔗 Demo:** [kurbanlikkilohesaplama.com](https://kurbanlikkilohesaplama.com)

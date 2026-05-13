@@ -29,8 +29,8 @@ export default function TermsPage() {
                 kullanarak bu şartları kabul etmiş sayılırsınız.
               </p>
 
-              <div className="bg-warning-50 border border-warning-200 p-6 rounded-lg mb-6">
-                <p className="text-warning-800 leading-relaxed">
+              <div className="bg-warning-50 dark:bg-amber-950/35 dark:border-amber-800/55 border border-warning-200 p-6 rounded-lg mb-6">
+                <p className="text-warning-800 dark:text-amber-200 leading-relaxed">
                   <strong>⚠️ Önemli:</strong> Bu şartları dikkatlice okuyunuz.
                   Hizmetimizi kullanmaya devam ederek bu şartları kabul
                   ettiğinizi beyan edersiniz.
@@ -45,7 +45,7 @@ export default function TermsPage() {
                 hizmetleri sunar:
               </p>
               <div className="grid md:grid-cols-2 gap-6 mb-6">
-                <div className="bg-white border border-neutral-200 p-4 rounded-lg">
+                <div className="bg-white dark:bg-neutral-900/95 dark:border-neutral-600 border border-neutral-200 p-4 rounded-lg">
                   <h3 className="font-bold text-neutral-900 dark:text-neutral-100 mb-2">
                     🤖 AI Analiz Hizmetleri
                   </h3>
@@ -56,7 +56,7 @@ export default function TermsPage() {
                     <li>Değer hesaplama</li>
                   </ul>
                 </div>
-                <div className="bg-white border border-neutral-200 p-4 rounded-lg">
+                <div className="bg-white dark:bg-neutral-900/95 dark:border-neutral-600 border border-neutral-200 p-4 rounded-lg">
                   <h3 className="font-bold text-neutral-900 dark:text-neutral-100 mb-2">
                     📊 Ek Özellikler
                   </h3>
@@ -77,11 +77,11 @@ export default function TermsPage() {
                 gerekmektedir:
               </p>
 
-              <div className="bg-red-50 border border-red-200 p-6 rounded-lg mb-6">
-                <h3 className="font-bold text-red-800 mb-3">
+              <div className="bg-red-50 dark:bg-red-950/30 dark:border-red-900/50 border border-red-200 p-6 rounded-lg mb-6">
+                <h3 className="font-bold text-red-800 dark:text-red-200 mb-3">
                   🚫 Yasak Davranışlar
                 </h3>
-                <ul className="list-disc list-inside text-red-700 space-y-2">
+                <ul className="list-disc list-inside text-red-700 dark:text-red-300/95 space-y-2">
                   <li>Sahte, yanıltıcı veya yasadışı bilgi paylaşmak</li>
                   <li>Sistem güvenliğini tehlikeye atmak</li>
                   <li>Diğer kullanıcıları rahatsız etmek</li>
@@ -90,11 +90,11 @@ export default function TermsPage() {
                 </ul>
               </div>
 
-              <div className="bg-green-50 border border-green-200 p-6 rounded-lg mb-6">
-                <h3 className="font-bold text-green-800 mb-3">
+              <div className="bg-green-50 dark:bg-emerald-950/35 dark:border-emerald-800/50 border border-green-200 p-6 rounded-lg mb-6">
+                <h3 className="font-bold text-green-800 dark:text-green-200 mb-3">
                   ✅ Doğru Kullanım
                 </h3>
-                <ul className="list-disc list-inside text-green-700 space-y-2">
+                <ul className="list-disc list-inside text-green-700 dark:text-green-300/95 space-y-2">
                   <li>Net ve gerçek hayvan fotoğrafları yüklemek</li>
                   <li>Doğru kişisel bilgiler vermek</li>
                   <li>Sistem kurallarına uymak</li>
@@ -111,47 +111,47 @@ export default function TermsPage() {
                 geçerlidir:
               </p>
               <div className="overflow-x-auto mb-6">
-                <table className="w-full border-collapse border border-neutral-300">
+                <table className="w-full border-collapse border border-neutral-300 dark:border-neutral-600 text-neutral-800 dark:text-neutral-200">
                   <thead>
-                    <tr className="bg-neutral-100">
-                      <th className="border border-neutral-300 p-3 text-left">
+                    <tr className="bg-neutral-100 dark:bg-neutral-800">
+                      <th className="border border-neutral-300 dark:border-neutral-600 p-3 text-left">
                         İzin Verilen
                       </th>
-                      <th className="border border-neutral-300 p-3 text-left">
+                      <th className="border border-neutral-300 dark:border-neutral-600 p-3 text-left">
                         Yasak
                       </th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td className="border border-neutral-300 p-3">
+                    <tr className="dark:bg-neutral-950/50">
+                      <td className="border border-neutral-300 dark:border-neutral-600 p-3">
                         Gerçek hayvan fotoğrafları
                       </td>
-                      <td className="border border-neutral-300 p-3">
+                      <td className="border border-neutral-300 dark:border-neutral-600 p-3">
                         Sahte/manipüle edilmiş görüntüler
                       </td>
                     </tr>
-                    <tr>
-                      <td className="border border-neutral-300 p-3">
+                    <tr className="dark:bg-neutral-900/40">
+                      <td className="border border-neutral-300 dark:border-neutral-600 p-3">
                         Net ve kaliteli görüntüler
                       </td>
-                      <td className="border border-neutral-300 p-3">
+                      <td className="border border-neutral-300 dark:border-neutral-600 p-3">
                         Müstehcen içerik
                       </td>
                     </tr>
-                    <tr>
-                      <td className="border border-neutral-300 p-3">
+                    <tr className="dark:bg-neutral-950/50">
+                      <td className="border border-neutral-300 dark:border-neutral-600 p-3">
                         Tek hayvan odaklı
                       </td>
-                      <td className="border border-neutral-300 p-3">
+                      <td className="border border-neutral-300 dark:border-neutral-600 p-3">
                         Şiddet içeren görüntüler
                       </td>
                     </tr>
-                    <tr>
-                      <td className="border border-neutral-300 p-3">
+                    <tr className="dark:bg-neutral-900/40">
+                      <td className="border border-neutral-300 dark:border-neutral-600 p-3">
                         Güncel çekimler
                       </td>
-                      <td className="border border-neutral-300 p-3">
+                      <td className="border border-neutral-300 dark:border-neutral-600 p-3">
                         Telif hakkı ihlali
                       </td>
                     </tr>
@@ -162,11 +162,11 @@ export default function TermsPage() {
               <h2 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">
                 5. AI Analiz Sonuçları ve Sorumluluk
               </h2>
-              <div className="bg-blue-50 border border-blue-200 p-6 rounded-lg mb-6">
-                <h3 className="font-bold text-blue-800 mb-3">
+              <div className="bg-blue-50 dark:bg-blue-950/35 dark:border-blue-800/50 border border-blue-200 p-6 rounded-lg mb-6">
+                <h3 className="font-bold text-blue-800 dark:text-blue-200 mb-3">
                   📋 Analiz Sonuçları Hakkında
                 </h3>
-                <ul className="list-disc list-inside text-blue-700 space-y-2">
+                <ul className="list-disc list-inside text-blue-700 dark:text-blue-300/95 space-y-2">
                   <li>
                     Sonuçlar <strong>tahmini</strong> niteliktedir
                   </li>
@@ -184,7 +184,7 @@ export default function TermsPage() {
                 Hesap oluştururken ve kullanırken dikkat edilmesi gerekenler:
               </p>
               <div className="grid md:grid-cols-2 gap-6 mb-6">
-                <div className="bg-white border border-neutral-200 p-4 rounded-lg">
+                <div className="bg-white dark:bg-neutral-900/95 dark:border-neutral-600 border border-neutral-200 p-4 rounded-lg">
                   <h3 className="font-bold text-neutral-900 dark:text-neutral-100 mb-2">
                     🔐 Hesap Güvenliği
                   </h3>
@@ -195,7 +195,7 @@ export default function TermsPage() {
                     <li>Şüpheli aktiviteyi bildirin</li>
                   </ul>
                 </div>
-                <div className="bg-white border border-neutral-200 p-4 rounded-lg">
+                <div className="bg-white dark:bg-neutral-900/95 dark:border-neutral-600 border border-neutral-200 p-4 rounded-lg">
                   <h3 className="font-bold text-neutral-900 dark:text-neutral-100 mb-2">
                     📝 Hesap Bilgileri
                   </h3>
@@ -208,11 +208,11 @@ export default function TermsPage() {
                 </div>
               </div>
 
-              <div className="bg-success-50 border border-success-200 p-6 rounded-lg mb-6">
-                <h3 className="font-bold text-success-800 mb-3">
+              <div className="bg-success-50 dark:bg-emerald-950/35 dark:border-emerald-800/50 border border-success-200 p-6 rounded-lg mb-6">
+                <h3 className="font-bold text-success-800 dark:text-emerald-200 mb-3">
                   🆓 Ücretsiz Hizmet
                 </h3>
-                <p className="text-success-700">
+                <p className="text-success-700 dark:text-emerald-300/95">
                   Kurbanlık Analiz platformu tamamen ücretsizdir. Tüm analiz
                   özellikleri ve hizmetler hiçbir ücret talep edilmeden
                   sunulmaktadır.
@@ -238,8 +238,8 @@ export default function TermsPage() {
               <h2 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">
                 8. Hizmet Kesintileri ve Güncellemeler
               </h2>
-              <div className="bg-yellow-50 border border-yellow-200 p-6 rounded-lg mb-6">
-                <p className="text-yellow-800 leading-relaxed">
+              <div className="bg-yellow-50 dark:bg-yellow-950/30 dark:border-yellow-800/50 border border-yellow-200 p-6 rounded-lg mb-6">
+                <p className="text-yellow-800 dark:text-yellow-200 leading-relaxed">
                   <strong>🔧 Bakım ve Güncellemeler:</strong> Hizmet kalitesini
                   artırmak için periyodik bakım ve güncellemeler yapabiliriz. Bu
                   durumda kullanıcılar önceden bilgilendirilir. Plansız
@@ -250,11 +250,11 @@ export default function TermsPage() {
               <h2 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">
                 9. Sorumluluk Sınırlamaları
               </h2>
-              <div className="bg-red-50 border border-red-200 p-6 rounded-lg mb-6">
-                <h3 className="font-bold text-red-800 mb-3">
+              <div className="bg-red-50 dark:bg-red-950/30 dark:border-red-900/50 border border-red-200 p-6 rounded-lg mb-6">
+                <h3 className="font-bold text-red-800 dark:text-red-200 mb-3">
                   ⚠️ Sorumluluk Reddi
                 </h3>
-                <ul className="list-disc list-inside text-red-700 space-y-2">
+                <ul className="list-disc list-inside text-red-700 dark:text-red-300/95 space-y-2">
                   <li>AI analiz sonuçlarının doğruluğu garanti edilmez</li>
                   <li>Ekonomik kayıplardan sorumlu değiliz</li>
                   <li>Üçüncü taraf hizmetler için sorumluluk kabul etmeyiz</li>
@@ -270,7 +270,7 @@ export default function TermsPage() {
                 Hesap iptali ve fesih koşulları:
               </p>
               <div className="grid md:grid-cols-2 gap-6 mb-6">
-                <div className="bg-white border border-neutral-200 p-4 rounded-lg">
+                <div className="bg-white dark:bg-neutral-900/95 dark:border-neutral-600 border border-neutral-200 p-4 rounded-lg">
                   <h3 className="font-bold text-neutral-900 dark:text-neutral-100 mb-2">
                     Kullanıcı Tarafından
                   </h3>
@@ -281,7 +281,7 @@ export default function TermsPage() {
                     <li>30 gün süre tanınır</li>
                   </ul>
                 </div>
-                <div className="bg-white border border-neutral-200 p-4 rounded-lg">
+                <div className="bg-white dark:bg-neutral-900/95 dark:border-neutral-600 border border-neutral-200 p-4 rounded-lg">
                   <h3 className="font-bold text-neutral-900 dark:text-neutral-100 mb-2">
                     Şirket Tarafından
                   </h3>
@@ -297,7 +297,7 @@ export default function TermsPage() {
               <h2 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">
                 11. Uygulanacak Hukuk ve Uyuşmazlıklar
               </h2>
-              <div className="bg-neutral-100 p-6 rounded-lg mb-6">
+              <div className="bg-neutral-100 dark:bg-neutral-800/90 dark:border-neutral-600 border border-transparent p-6 rounded-lg mb-6">
                 <p className="text-neutral-700 dark:text-neutral-300 leading-relaxed">
                   <strong>📍 Yetki ve Hukuk:</strong> Bu sözleşmeden doğacak
                   uyuşmazlıklarda Türkiye Cumhuriyeti yasaları uygulanır.
@@ -308,7 +308,7 @@ export default function TermsPage() {
               <h2 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">
                 12. İletişim Bilgileri
               </h2>
-              <div className="bg-gradient-to-r from-primary-50 to-accent-50 p-6 rounded-lg mb-6">
+              <div className="bg-gradient-to-r from-primary-50 to-accent-50 dark:from-primary-950/40 dark:to-accent-950/40 p-6 rounded-lg mb-6 ring-1 ring-primary-200/50 dark:ring-neutral-700/50">
                 <p className="text-neutral-700 dark:text-neutral-300 mb-4 leading-relaxed">
                   Bu şartlarla ilgili sorularınız için:
                 </p>
@@ -331,7 +331,7 @@ export default function TermsPage() {
                     </p>
                     <Link
                       href="/contact"
-                      className="text-primary-600 hover:text-primary-700"
+                      className="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300"
                     >
                       İletişim formu
                     </Link>
@@ -374,7 +374,7 @@ export default function TermsPage() {
                 </div>
               </div>
 
-              <div className="bg-neutral-100 p-6 rounded-lg mt-6">
+              <div className="bg-neutral-100 dark:bg-neutral-800/90 dark:border-neutral-600 border border-transparent p-6 rounded-lg mt-6">
                 <p className="text-neutral-700 dark:text-neutral-300 text-center">
                   <strong>Son güncelleme:</strong>{" "}
                   {new Date().toLocaleDateString("tr-TR")}

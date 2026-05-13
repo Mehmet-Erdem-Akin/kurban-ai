@@ -49,7 +49,7 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL("https://kurban-ai.vercel.app"),
+  metadataBase: new URL("https://kurbanlikkilohesaplama.com"),
   alternates: {
     canonical: "/",
     languages: {
@@ -59,7 +59,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "tr_TR",
-    url: "https://kurban-ai.vercel.app",
+    url: "https://kurbanlikkilohesaplama.com",
     title: "Kurbanlık Analiz - Yapay Zeka ile Hayvan Analizi",
     description:
       "Kurbanlık hayvan seçiminde daha bilinçli kararlar verin. Yapay zeka teknolojisi ile hayvan fotoğraflarını analiz edin, et fiyatı tahmini alın.",
@@ -130,7 +130,7 @@ export default function RootLayout({
               name: "Kurbanlık Analiz",
               description:
                 "Yapay zeka teknolojisi ile kurbanlık hayvan analizi ve fiyat tahmini",
-              url: "https://kurban-ai.vercel.app",
+              url: "https://kurbanlikkilohesaplama.com",
               applicationCategory: "AI Analysis Tool",
               operatingSystem: "Web Browser",
               offers: {

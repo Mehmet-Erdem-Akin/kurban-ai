@@ -34,7 +34,7 @@ export default function PrivacyPage() {
               <h2 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">
                 2. Veri Sorumlusu
               </h2>
-              <div className="bg-primary-50 p-6 rounded-lg mb-6">
+              <div className="bg-primary-50 dark:bg-primary-950/40 p-6 rounded-lg mb-6 ring-1 ring-primary-200/60 dark:ring-primary-800/50">
                 <p className="text-neutral-700 dark:text-neutral-300 leading-relaxed">
                   <strong>Proje Sahibi:</strong> Mehmet Erdem Akın
                   <br />
@@ -42,7 +42,7 @@ export default function PrivacyPage() {
                   <br />
                   <strong>E-posta:</strong> mehmet.erdem.akin@outlook.com
                   <br />
-                  <strong>Web:</strong> kurbanlikanaliz.netlify.app
+                  <strong>Web:</strong> kurbanlikkilohesaplama.com
                 </p>
               </div>
 
@@ -54,7 +54,7 @@ export default function PrivacyPage() {
                 toplayabiliriz:
               </p>
               <div className="grid md:grid-cols-2 gap-6 mb-6">
-                <div className="bg-white border border-neutral-200 p-4 rounded-lg">
+                <div className="bg-white dark:bg-neutral-900/95 dark:border-neutral-600 border border-neutral-200 p-4 rounded-lg">
                   <h3 className="font-bold text-neutral-900 dark:text-neutral-100 mb-2">
                     Kimlik Verileri
                   </h3>
@@ -64,7 +64,7 @@ export default function PrivacyPage() {
                     <li>Telefon numarası (isteğe bağlı)</li>
                   </ul>
                 </div>
-                <div className="bg-white border border-neutral-200 p-4 rounded-lg">
+                <div className="bg-white dark:bg-neutral-900/95 dark:border-neutral-600 border border-neutral-200 p-4 rounded-lg">
                   <h3 className="font-bold text-neutral-900 dark:text-neutral-100 mb-2">
                     Teknik Veriler
                   </h3>
@@ -75,7 +75,7 @@ export default function PrivacyPage() {
                     <li>Konum bilgisi (izin verildiğinde)</li>
                   </ul>
                 </div>
-                <div className="bg-white border border-neutral-200 p-4 rounded-lg">
+                <div className="bg-white dark:bg-neutral-900/95 dark:border-neutral-600 border border-neutral-200 p-4 rounded-lg">
                   <h3 className="font-bold text-neutral-900 dark:text-neutral-100 mb-2">
                     Uygulama Verileri
                   </h3>
@@ -85,7 +85,7 @@ export default function PrivacyPage() {
                     <li>Kullanım geçmişi</li>
                   </ul>
                 </div>
-                <div className="bg-white border border-neutral-200 p-4 rounded-lg">
+                <div className="bg-white dark:bg-neutral-900/95 dark:border-neutral-600 border border-neutral-200 p-4 rounded-lg">
                   <h3 className="font-bold text-neutral-900 dark:text-neutral-100 mb-2">
                     İletişim Verileri
                   </h3>
@@ -117,7 +117,7 @@ export default function PrivacyPage() {
               <h2 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">
                 5. Kişisel Verilerin İşlenme Hukuki Sebepleri
               </h2>
-              <div className="bg-accent-50 p-6 rounded-lg mb-6">
+              <div className="bg-accent-50 dark:bg-accent-950/40 p-6 rounded-lg mb-6 ring-1 ring-accent-200/60 dark:ring-accent-800/50">
                 <ul className="list-disc list-inside text-neutral-700 dark:text-neutral-300 space-y-2">
                   <li>
                     <strong>Açık rıza:</strong> Hizmetlerimizi kullanmak için
@@ -159,44 +159,46 @@ export default function PrivacyPage() {
               <h2 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">
                 7. Kişisel Verilerin Saklanma Süresi
               </h2>
-              <div className="bg-green-50 border border-green-200 p-6 rounded-lg mb-6">
+              <div className="bg-green-50 dark:bg-emerald-950/35 dark:border-emerald-800/50 border border-green-200 p-6 rounded-lg mb-6">
                 <div className="text-center mb-6">
-                  <div className="text-4xl mb-4">🚫</div>
-                  <h3 className="text-xl font-bold text-green-800 mb-3">
-                    Veri Saklama Politikası: Minimizasyon
+                  <div className="text-4xl mb-4">📅</div>
+                  <h3 className="text-xl font-bold text-green-800 dark:text-green-200 mb-3">
+                    Saklama: Minimizasyon ve süreler
                   </h3>
-                  <p className="text-green-700 leading-relaxed max-w-2xl mx-auto">
-                    Kurban-AI platformunda veri minimizasyonu prensibi
-                    uygulanır. Verileriniz yalnızca analiz sırasında geçici
-                    olarak işlenir ve ardından kalıcı olarak silinir.
+                  <p className="text-green-700 dark:text-green-300/95 leading-relaxed max-w-2xl mx-auto">
+                    Veri minimizasyonu ilkesiyle kişisel veriler yalnızca hizmetin
+                    sunulması için gerekli süre boyunca işlenir ve saklanır.
+                    Ham fotoğraf dosyaları kalıcı arşiv olarak tutulmaz; hesap
+                    veya geçmiş özellikleri kullanıldığında analiz özetleri ve
+                    hesap bilgileri sunucu tarafında sınırlı şekilde kaydedilebilir.
                   </p>
                 </div>
 
                 <div className="grid md:grid-cols-3 gap-6">
-                  <div className="bg-white p-4 rounded-lg text-center">
+                  <div className="bg-white dark:bg-neutral-900/90 dark:ring-1 dark:ring-neutral-700/70 p-4 rounded-lg text-center">
                     <div className="text-2xl mb-2">📸</div>
                     <h4 className="font-bold text-neutral-900 dark:text-neutral-100 mb-2">
                       Fotoğraflar
                     </h4>
-                    <p className="text-green-700 text-sm">
-                      Analiz sonrası anında silinir
+                    <p className="text-green-700 dark:text-green-300/95 text-sm">
+                      Analiz için işlenir; sunucuda kalıcı fotoğraf arşivi tutulmaz
                     </p>
                   </div>
-                  <div className="bg-white p-4 rounded-lg text-center">
+                  <div className="bg-white dark:bg-neutral-900/90 dark:ring-1 dark:ring-neutral-700/70 p-4 rounded-lg text-center">
                     <div className="text-2xl mb-2">📊</div>
                     <h4 className="font-bold text-neutral-900 dark:text-neutral-100 mb-2">
                       Analiz Sonuçları
                     </h4>
-                    <p className="text-green-700 text-sm">
-                      Geçici işlem, saklanmaz
+                    <p className="text-green-700 dark:text-green-300/95 text-sm">
+                      İsteğe bağlı geçmişte özet olarak saklanabilir; amaç dışı kullanılmaz
                     </p>
                   </div>
-                  <div className="bg-white p-4 rounded-lg text-center">
+                  <div className="bg-white dark:bg-neutral-900/90 dark:ring-1 dark:ring-neutral-700/70 p-4 rounded-lg text-center">
                     <div className="text-2xl mb-2">💾</div>
                     <h4 className="font-bold text-neutral-900 dark:text-neutral-100 mb-2">
                       Log Kayıtları
                     </h4>
-                    <p className="text-green-700 text-sm">
+                    <p className="text-green-700 dark:text-green-300/95 text-sm">
                       Güvenlik amaçlı minimum süre
                     </p>
                   </div>
@@ -210,22 +212,22 @@ export default function PrivacyPage() {
                 Verilerinizin güvenliği için aldığımız teknik ve idari önlemler:
               </p>
               <div className="grid md:grid-cols-2 gap-6 mb-6">
-                <div className="bg-success-50 p-4 rounded-lg">
-                  <h3 className="font-bold text-success-800 mb-2">
+                <div className="bg-success-50 dark:bg-emerald-950/35 dark:ring-1 dark:ring-emerald-800/40 p-4 rounded-lg">
+                  <h3 className="font-bold text-success-800 dark:text-emerald-200 mb-2">
                     🔒 Teknik Önlemler
                   </h3>
-                  <ul className="text-success-700 space-y-1">
+                  <ul className="text-success-700 dark:text-emerald-300/95 space-y-1">
                     <li>SSL/TLS şifreleme</li>
                     <li>Güvenli veri merkezi</li>
                     <li>Düzenli güvenlik testleri</li>
                     <li>Erişim kontrolü</li>
                   </ul>
                 </div>
-                <div className="bg-primary-50 p-4 rounded-lg">
-                  <h3 className="font-bold text-primary-800 mb-2">
+                <div className="bg-primary-50 dark:bg-primary-950/40 dark:ring-1 dark:ring-primary-800/45 p-4 rounded-lg">
+                  <h3 className="font-bold text-primary-800 dark:text-primary-200 mb-2">
                     👥 İdari Önlemler
                   </h3>
-                  <ul className="text-primary-700 space-y-1">
+                  <ul className="text-primary-700 dark:text-primary-300/95 space-y-1">
                     <li>Personel eğitimleri</li>
                     <li>Gizlilik sözleşmeleri</li>
                     <li>Düzenli denetimler</li>
@@ -241,7 +243,7 @@ export default function PrivacyPage() {
                 KVKK Kanunu kapsamındaki haklarınız:
               </p>
               <div className="grid md:grid-cols-2 gap-4 mb-6">
-                <div className="bg-white border-l-4 border-primary-500 p-4">
+                <div className="bg-white dark:bg-neutral-900/95 dark:ring-1 dark:ring-neutral-700/70 border-l-4 border-primary-500 dark:border-l-primary-400 p-4">
                   <h3 className="font-bold text-neutral-900 dark:text-neutral-100 mb-2">
                     ✅ Temel Haklar
                   </h3>
@@ -252,7 +254,7 @@ export default function PrivacyPage() {
                     <li>• Silme talep etme</li>
                   </ul>
                 </div>
-                <div className="bg-white border-l-4 border-accent-500 p-4">
+                <div className="bg-white dark:bg-neutral-900/95 dark:ring-1 dark:ring-neutral-700/70 border-l-4 border-accent-500 dark:border-l-accent-400 p-4">
                   <h3 className="font-bold text-neutral-900 dark:text-neutral-100 mb-2">
                     🔄 İleri Haklar
                   </h3>
@@ -293,8 +295,8 @@ export default function PrivacyPage() {
               <h2 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">
                 11. Yapay Zeka ve Fotoğraf İşleme
               </h2>
-              <div className="bg-warning-50 border border-warning-200 p-6 rounded-lg mb-6">
-                <p className="text-warning-800 leading-relaxed">
+              <div className="bg-warning-50 dark:bg-amber-950/35 dark:border-amber-800/55 border border-warning-200 p-6 rounded-lg mb-6">
+                <p className="text-warning-800 dark:text-amber-200 leading-relaxed">
                   <strong>Önemli Bilgi:</strong> Yüklediğiniz hayvan
                   fotoğrafları, yapay zeka modelimiz tarafından analiz edilir.
                   Bu fotoğraflar sadece analiz amacıyla kullanılır ve hiçbir
@@ -306,7 +308,7 @@ export default function PrivacyPage() {
               <h2 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">
                 12. İletişim ve Başvuru
               </h2>
-              <div className="bg-gradient-to-r from-primary-50 to-accent-50 p-6 rounded-lg mb-6">
+              <div className="bg-gradient-to-r from-primary-50 to-accent-50 dark:from-primary-950/40 dark:to-accent-950/40 p-6 rounded-lg mb-6 ring-1 ring-primary-200/50 dark:ring-neutral-700/50">
                 <p className="text-neutral-700 dark:text-neutral-300 mb-4 leading-relaxed">
                   KVKK haklarınızı kullanmak için aşağıdaki yollarla bize
                   ulaşabilirsiniz:
@@ -330,7 +332,7 @@ export default function PrivacyPage() {
                     </p>
                     <Link
                       href="/contact"
-                      className="text-primary-600 hover:text-primary-700"
+                      className="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300"
                     >
                       İletişim formu
                     </Link>
@@ -356,7 +358,7 @@ export default function PrivacyPage() {
                 Güncel versiyonu her zaman web sitemizde bulabilirsiniz.
               </p>
 
-              <div className="bg-neutral-100 p-6 rounded-lg">
+              <div className="bg-neutral-100 dark:bg-neutral-800/90 dark:border-neutral-600 border border-transparent p-6 rounded-lg">
                 <p className="text-neutral-700 dark:text-neutral-300 text-center">
                   <strong>Son güncelleme:</strong>{" "}
                   {new Date().toLocaleDateString("tr-TR")}

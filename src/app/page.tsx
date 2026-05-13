@@ -49,7 +49,7 @@ const faqs = [
   },
   {
     q: "Fotoğraflarım saklanıyor mu?",
-    a: "Gizlilik politikamıza göre analiz sürecinde veriler güvenli işlenir; detaylar için Gizlilik ve KVKK sayfalarına bakın.",
+    a: "Görüntüler öncelikle analiz anında işlenir ve sunucuda kalıcı fotoğraf arşivi tutulmaz. Hesap veya analiz geçmişi kullanırsanız özet sonuçlar sınırlı süre saklanabilir; ayrıntılar Gizlilik ve KVKK sayfalarındadır.",
   },
   {
     q: "Hangi hayvanlar destekleniyor?",

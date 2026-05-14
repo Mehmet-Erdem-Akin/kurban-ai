@@ -4,6 +4,7 @@ import { DM_Sans, Fraunces } from "next/font/google";
 import Analytics from "@/components/Analytics";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import AuthProvider from "@/components/AuthProvider";
+import { getCanonicalUrl, siteConfig } from "@/lib/seo";
 import "./globals.css";
 
 const dmSans = DM_Sans({
@@ -18,68 +19,54 @@ const fraunces = Fraunces({
   display: "swap",
 });
 
+const googleVerification = process.env.NEXT_PUBLIC_GOOGLE_VERIFICATION;
+const googleAdsense = process.env.NEXT_PUBLIC_GOOGLE_ADSENSE;
+
 export const metadata: Metadata = {
   title: {
-    default: "Kurbanlık Analiz - Yapay Zeka ile Hayvan Analizi",
-    template: "%s | Kurbanlık Analiz",
+    default: siteConfig.title,
+    template: `%s | ${siteConfig.name}`,
   },
-  description:
-    "Kurbanlık hayvan seçiminde daha bilinçli kararlar verin. Yapay zeka teknolojisi ile hayvan fotoğraflarını analiz edin, et fiyatı tahmini alın ve doğru seçim yapın.",
-  keywords: [
-    "kurban",
-    "kurbanlık",
-    "hayvan analizi",
-    "yapay zeka",
-    "et fiyatı",
-    "dana analizi",
-    "koç analizi",
-    "kuzu analizi",
-    "kurban hesaplama",
-    "hayvan değerlendirme",
-    "AI hayvan analizi",
-    "kurban fiyat",
-    "et kalitesi",
-    "hayvan seçimi",
-  ],
-  authors: [{ name: "Kurbanlık Analiz" }],
-  creator: "Kurbanlık Analiz",
-  publisher: "Kurbanlık Analiz",
+  description: siteConfig.description,
+  keywords: [...siteConfig.keywords],
+  metadataBase: new URL(siteConfig.domain),
+  applicationName: siteConfig.name,
+  authors: [{ name: siteConfig.name }],
+  creator: siteConfig.name,
+  publisher: siteConfig.name,
+  referrer: "origin-when-cross-origin",
   formatDetection: {
     email: false,
     address: false,
     telephone: false,
   },
-  metadataBase: new URL("https://kurbanlikkilohesaplama.com"),
   alternates: {
-    canonical: "/",
+    canonical: getCanonicalUrl("/"),
     languages: {
-      "tr-TR": "/",
+      "tr-TR": getCanonicalUrl("/"),
     },
   },
   openGraph: {
     type: "website",
-    locale: "tr_TR",
-    url: "https://kurbanlikkilohesaplama.com",
-    title: "Kurbanlık Analiz - Yapay Zeka ile Hayvan Analizi",
-    description:
-      "Kurbanlık hayvan seçiminde daha bilinçli kararlar verin. Yapay zeka teknolojisi ile hayvan fotoğraflarını analiz edin, et fiyatı tahmini alın.",
-    siteName: "Kurbanlık Analiz",
+    locale: siteConfig.locale,
+    url: siteConfig.domain,
+    title: siteConfig.title,
+    description: siteConfig.description,
+    siteName: siteConfig.name,
     images: [
       {
-        url: "/og-image.jpg",
+        url: siteConfig.ogImage,
         width: 1200,
         height: 630,
-        alt: "Kurbanlık Analiz - Yapay Zeka ile Hayvan Analizi",
+        alt: `${siteConfig.name} Open Graph görseli`,
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Kurbanlık Analiz - Yapay Zeka ile Hayvan Analizi",
-    description:
-      "Yapay zeka ile kurbanlık hayvan analizi. Et fiyatı tahmini ve doğru seçim rehberi.",
-    images: ["/og-image.jpg"],
-    creator: "@kurbananaliz",
+    title: siteConfig.title,
+    description: siteConfig.description,
+    images: [siteConfig.ogImage],
   },
   robots: {
     index: true,
@@ -93,7 +80,20 @@ export const metadata: Metadata = {
     },
   },
   verification: {
-    google: process.env.NEXT_PUBLIC_GOOGLE_VERIFICATION,
+    google: googleVerification,
+  },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: siteConfig.name,
+  },
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/favicon-32x32.png", type: "image/png", sizes: "32x32" },
+      { url: "/favicon-16x16.png", type: "image/png", sizes: "16x16" },
+    ],
+    apple: [{ url: "/apple-touch-icon.png" }],
   },
   category: "technology",
 };
@@ -110,27 +110,56 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <head>
-        <link rel="icon" href="/favicon.ico" sizes="any" />
-        <link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32" />
-        <link rel="icon" href="/favicon-16x16.png" type="image/png" sizes="16x16" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#047857" />
         <meta name="msapplication-TileColor" content="#047857" />
         <meta name="msapplication-config" content="/browserconfig.xml" />
-        <meta name="google-adsense-account" content={process.env.NEXT_PUBLIC_GOOGLE_ADSENSE} />
+        {googleAdsense ? (
+          <meta name="google-adsense-account" content={googleAdsense} />
+        ) : null}
 
         {/* Structured Data - JSON-LD */}
         <script
+          id="website-structured-data"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              name: siteConfig.name,
+              url: siteConfig.domain,
+              inLanguage: "tr-TR",
+              description: siteConfig.description,
+            }),
+          }}
+        />
+        <script
+          id="organization-structured-data"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              name: siteConfig.name,
+              url: siteConfig.domain,
+              logo: getCanonicalUrl("/android-chrome-512x512.png"),
+              sameAs: [
+                "https://github.com/Mehmet-Erdem-Akin/kurban-ai",
+                "https://www.linkedin.com/in/mehmet-erdem-akin-77453b1a0/",
+              ],
+            }),
+          }}
+        />
+        <script
+          id="webapp-structured-data"
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "WebApplication",
-              name: "Kurbanlık Analiz",
-              description:
-                "Yapay zeka teknolojisi ile kurbanlık hayvan analizi ve fiyat tahmini",
-              url: "https://kurbanlikkilohesaplama.com",
+              name: siteConfig.name,
+              description: siteConfig.description,
+              url: siteConfig.domain,
               applicationCategory: "AI Analysis Tool",
               operatingSystem: "Web Browser",
               offers: {
@@ -140,7 +169,7 @@ export default function RootLayout({
               },
               creator: {
                 "@type": "Organization",
-                name: "Kurbanlık Analiz",
+                name: siteConfig.name,
               },
               featureList: [
                 "Yapay zeka ile hayvan analizi",
@@ -160,10 +189,12 @@ export default function RootLayout({
           İçeriğe atla
         </a>
         {/* Google AdSense */}
-        <Script
-          src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_GOOGLE_ADSENSE}`}
-          crossOrigin="anonymous"
-        />
+        {googleAdsense ? (
+          <Script
+            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${googleAdsense}`}
+            crossOrigin="anonymous"
+          />
+        ) : null}
 
         <ThemeProvider>
           <AuthProvider>

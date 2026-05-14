@@ -10,6 +10,7 @@ import AppPageShell from "@/components/AppPageShell";
 import ManualWeightCalculator from "@/components/ManualWeightCalculator";
 import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
+import { getCanonicalUrl } from "@/lib/seo";
 
 const features = [
   {
@@ -61,10 +62,53 @@ const faqs = [
   },
 ];
 
+const faqStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqs.map((faq) => ({
+    "@type": "Question",
+    name: faq.q,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: faq.a,
+    },
+  })),
+};
+
+const howToStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  name: "Kurbanlık fotoğrafı ile analiz yapma",
+  description:
+    "Kurbanlık Analiz platformunda fotoğraf yükleyerek tahmini kilo ve piyasa değeri analizi alma adımları.",
+  totalTime: "PT3M",
+  step: steps.map((step, index) => ({
+    "@type": "HowToStep",
+    position: index + 1,
+    name: step.title,
+    text: step.text,
+    url: `${getCanonicalUrl("/")}#nasil`,
+  })),
+};
+
 const Home = () => {
   return (
     <AppPageShell>
       <SiteHeader />
+      <script
+        id="home-faq-structured-data"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(faqStructuredData),
+        }}
+      />
+      <script
+        id="home-howto-structured-data"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(howToStructuredData),
+        }}
+      />
 
       <main className="relative z-10">
         <section className="mx-auto max-w-6xl px-4 pb-16 pt-10 sm:pb-20 sm:pt-14">

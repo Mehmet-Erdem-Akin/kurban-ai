@@ -1,7 +1,17 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import AppPageShell from "@/components/AppPageShell";
 import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
+import { buildMetadata } from "@/lib/seo";
+
+export const metadata: Metadata = buildMetadata({
+  title: "KVKK Aydınlatma Metni",
+  description:
+    "6698 sayılı KVKK kapsamında Kurbanlık Analiz tarafından sunulan aydınlatma metni ve veri işleme esasları.",
+  path: "/kvkk",
+  keywords: ["kvkk aydınlatma metni", "kişisel veriler", "veri sorumlusu"],
+});
 
 export default function KVKKPage() {
   return (

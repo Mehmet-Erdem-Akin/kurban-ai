@@ -1,7 +1,17 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import AppPageShell from "@/components/AppPageShell";
 import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
+import { buildMetadata } from "@/lib/seo";
+
+export const metadata: Metadata = buildMetadata({
+  title: "Gizlilik Politikası",
+  description:
+    "Kurbanlık Analiz gizlilik politikası: kişisel verilerin işlenmesi, saklanması ve KVKK kapsamındaki haklar.",
+  path: "/privacy",
+  keywords: ["gizlilik politikası", "kvkk", "kişisel veri koruma"],
+});
 
 export default function PrivacyPage() {
   return (

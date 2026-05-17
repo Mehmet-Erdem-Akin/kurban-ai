@@ -1,7 +1,17 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import AppPageShell from "@/components/AppPageShell";
 import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
+import { buildMetadata } from "@/lib/seo";
+
+export const metadata: Metadata = buildMetadata({
+  title: "Kullanım Şartları",
+  description:
+    "Kurbanlık Analiz kullanım şartları: hizmet kapsamı, kullanıcı yükümlülükleri ve sorumluluk sınırları.",
+  path: "/terms",
+  keywords: ["kullanım şartları", "hizmet sözleşmesi"],
+});
 
 export default function TermsPage() {
   return (

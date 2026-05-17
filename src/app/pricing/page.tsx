@@ -19,6 +19,7 @@ import {
   creditPackages,
   type CreditPackageId,
 } from "@/config/creditPackages";
+import { getCanonicalUrl } from "@/lib/seo";
 
 const faqs = [
   {
@@ -46,6 +47,19 @@ const faqs = [
     a: "Kredi paketleri tek seferliktir; kullanılmayan krediler abonelik ayı sonunda silinmez.",
   },
 ];
+
+const pricingFaqStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqs.map((faq) => ({
+    "@type": "Question",
+    name: faq.q,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: faq.a,
+    },
+  })),
+};
 
 type ShopierPaymentResponse = {
   success?: boolean;
@@ -169,6 +183,16 @@ const PricingPage = () => {
   return (
     <AppPageShell>
       <SiteHeader />
+      <script
+        id="pricing-faq-structured-data"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            ...pricingFaqStructuredData,
+            url: getCanonicalUrl("/pricing"),
+          }),
+        }}
+      />
 
       <main className="relative z-10 mx-auto max-w-6xl px-4 py-12 sm:py-16">
         {/* Hero */}

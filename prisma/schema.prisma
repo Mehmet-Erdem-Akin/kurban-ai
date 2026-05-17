@@ -1,0 +1,57 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id               String         @id @db.VarChar(191)
+  name             String         @db.VarChar(120)
+  surname          String         @db.VarChar(120)
+  email            String         @unique @db.VarChar(191)
+  password         String         @db.VarChar(255)
+  phone            String         @default("") @db.VarChar(40)
+  address          String         @default("") @db.VarChar(500)
+  usagePurpose     String         @default("") @db.VarChar(255)
+  remainingCredits Int            @default(3)
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+  analyses         Analysis[]
+  paymentOrders    PaymentOrder[]
+
+  @@index([createdAt])
+  @@map("users")
+}
+
+model PaymentOrder {
+  id          String   @id @db.VarChar(191)
+  userId      String   @db.VarChar(191)
+  packageId   String   @db.VarChar(64)
+  packageName String   @db.VarChar(255)
+  credits     Int
+  amount      Decimal  @db.Decimal(10, 2)
+  status      String   @default("pending") @db.VarChar(24)
+  paymentId   String?  @db.VarChar(191)
+  createdAt   DateTime @default(now())
+  paidAt      DateTime?
+  failedAt    DateTime?
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@index([userId, createdAt])
+  @@index([status])
+  @@map("payment_orders")
+}
+
+model Analysis {
+  id        String   @id @default(cuid()) @db.VarChar(191)
+  userId    String   @db.VarChar(191)
+  payload   Json
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@index([userId, createdAt])
+  @@map("analyses")
+}

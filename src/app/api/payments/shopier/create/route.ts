@@ -32,7 +32,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const order = createPaymentOrder({
+    const order = await createPaymentOrder({
       userId: user.id,
       packageId: creditPackage.id,
       packageName: `${creditPackage.name} - ${creditPackage.creditCount} kredi`,

@@ -1,5 +1,5 @@
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
-import { join } from "node:path";
+import type { User as PrismaUser } from "@prisma/client";
+import prisma from "@/lib/prisma";
 
 export type User = {
   id: string;
@@ -14,106 +14,132 @@ export type User = {
   createdAt: string;
 };
 
-type UserDatabase = {
-  users: User[];
-};
-
-const dataDirectoryPath = join(process.cwd(), "data");
-const usersDatabasePath = join(dataDirectoryPath, "users.json");
-
-const ensureUsersDatabase = (): void => {
-  if (!existsSync(dataDirectoryPath)) {
-    mkdirSync(dataDirectoryPath, { recursive: true });
-  }
-
-  if (!existsSync(usersDatabasePath)) {
-    writeFileSync(usersDatabasePath, JSON.stringify({ users: [] }, null, 2));
-  }
-};
-
-const readUsersDatabase = (): UserDatabase => {
-  ensureUsersDatabase();
-
-  const database = JSON.parse(
-    readFileSync(usersDatabasePath, "utf-8"),
-  ) as UserDatabase;
-
-  return {
-    users: database.users.map((user) => ({
-      ...user,
-      remainingCredits: user.remainingCredits ?? 3,
-    })),
-  };
-};
-
-const writeUsersDatabase = (database: UserDatabase): void => {
-  ensureUsersDatabase();
-  writeFileSync(usersDatabasePath, JSON.stringify(database, null, 2));
-};
-
 const normalizeEmail = (email: string): string => email.trim().toLowerCase();
 
-export const getUserByEmail = (email: string): User | null => {
-  const database = readUsersDatabase();
-  const normalizedEmail = normalizeEmail(email);
+const toDate = (dateValue: string): Date => {
+  const parsedDate = new Date(dateValue);
 
-  return (
-    database.users.find((user) => normalizeEmail(user.email) === normalizedEmail) ??
-    null
-  );
+  return Number.isNaN(parsedDate.getTime()) ? new Date() : parsedDate;
 };
 
-export const getUserById = (id: string): User | null => {
-  const database = readUsersDatabase();
+const mapUserRecord = (user: PrismaUser): User => ({
+  id: user.id,
+  name: user.name,
+  surname: user.surname,
+  email: user.email,
+  password: user.password,
+  phone: user.phone,
+  address: user.address,
+  usagePurpose: user.usagePurpose,
+  remainingCredits: user.remainingCredits,
+  createdAt: user.createdAt.toISOString(),
+});
 
-  return database.users.find((user) => user.id === id) ?? null;
+export const getUserByEmail = async (email: string): Promise<User | null> => {
+  const user = await prisma.user.findUnique({
+    where: { email: normalizeEmail(email) },
+  });
+
+  return user ? mapUserRecord(user) : null;
 };
 
-export const createUser = (user: User): User => {
-  const database = readUsersDatabase();
+export const getUserById = async (id: string): Promise<User | null> => {
+  const user = await prisma.user.findUnique({
+    where: { id },
+  });
 
-  database.users.push(user);
-  writeUsersDatabase(database);
-
-  return user;
+  return user ? mapUserRecord(user) : null;
 };
 
-export const updateUser = (updatedUser: User): User => {
-  const database = readUsersDatabase();
-  const userIndex = database.users.findIndex((user) => user.id === updatedUser.id);
+export const createUser = async (user: User): Promise<User> => {
+  const createdUser = await prisma.user.create({
+    data: {
+      id: user.id,
+      name: user.name,
+      surname: user.surname,
+      email: normalizeEmail(user.email),
+      password: user.password,
+      phone: user.phone,
+      address: user.address,
+      usagePurpose: user.usagePurpose,
+      remainingCredits: user.remainingCredits,
+      createdAt: toDate(user.createdAt),
+    },
+  });
 
-  if (userIndex === -1) {
-    throw new Error("User not found");
-  }
-
-  database.users[userIndex] = updatedUser;
-  writeUsersDatabase(database);
-
-  return updatedUser;
+  return mapUserRecord(createdUser);
 };
 
-export const decrementUserCredit = (userId: string): User | null => {
-  const user = getUserById(userId);
+export const updateUser = async (updatedUser: User): Promise<User> => {
+  const user = await prisma.user.update({
+    where: { id: updatedUser.id },
+    data: {
+      name: updatedUser.name,
+      surname: updatedUser.surname,
+      email: normalizeEmail(updatedUser.email),
+      password: updatedUser.password,
+      phone: updatedUser.phone,
+      address: updatedUser.address,
+      usagePurpose: updatedUser.usagePurpose,
+      remainingCredits: updatedUser.remainingCredits,
+      createdAt: toDate(updatedUser.createdAt),
+    },
+  });
 
-  if (!user || user.remainingCredits <= 0) {
+  return mapUserRecord(user);
+};
+
+export const decrementUserCredit = async (
+  userId: string,
+): Promise<User | null> => {
+  const updatedUser = await prisma.$transaction(async (transaction) => {
+    const currentUser = await transaction.user.findUnique({
+      where: { id: userId },
+    });
+
+    if (!currentUser || currentUser.remainingCredits <= 0) {
+      return null;
+    }
+
+    return transaction.user.update({
+      where: { id: userId },
+      data: {
+        remainingCredits: {
+          decrement: 1,
+        },
+      },
+    });
+  });
+
+  return updatedUser ? mapUserRecord(updatedUser) : null;
+};
+
+export const addUserCredits = async (
+  userId: string,
+  creditsToAdd: number,
+): Promise<User | null> => {
+  if (creditsToAdd <= 0) {
     return null;
   }
 
-  return updateUser({
-    ...user,
-    remainingCredits: user.remainingCredits - 1,
+  const updatedUser = await prisma.$transaction(async (transaction) => {
+    const currentUser = await transaction.user.findUnique({
+      where: { id: userId },
+    });
+
+    if (!currentUser) {
+      return null;
+    }
+
+    return transaction.user.update({
+      where: { id: userId },
+      data: {
+        remainingCredits: {
+          increment: creditsToAdd,
+        },
+      },
+    });
   });
-};
 
-export const addUserCredits = (userId: string, creditsToAdd: number): User | null => {
-  const user = getUserById(userId);
-
-  if (!user || creditsToAdd <= 0) {
-    return null;
-  }
-
-  return updateUser({
-    ...user,
-    remainingCredits: user.remainingCredits + creditsToAdd,
-  });
+  return updatedUser ? mapUserRecord(updatedUser) : null;
 };

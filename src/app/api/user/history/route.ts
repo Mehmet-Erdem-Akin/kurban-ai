@@ -1,34 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { writeFileSync, readFileSync, existsSync, mkdirSync } from "fs";
-import { join } from "path";
+import type { Prisma } from "@prisma/client";
+import prisma from "@/lib/prisma";
 
-interface Analysis {
-  id: string;
-  userId: string;
-  createdAt: string;
-  [key: string]: unknown;
-}
-
-interface AnalysisDatabase {
-  analyses: Analysis[];
-}
-
-const getAnalysisDB = (): AnalysisDatabase => {
-  const dbPath = join(process.cwd(), "data", "analyses.json");
-
-  if (!existsSync(dbPath)) {
-    const dataDir = join(process.cwd(), "data");
-    if (!existsSync(dataDir)) {
-      mkdirSync(dataDir, { recursive: true });
-    }
-
-    const initialData: AnalysisDatabase = { analyses: [] };
-    writeFileSync(dbPath, JSON.stringify(initialData, null, 2));
-    return initialData;
-  }
-
-  return JSON.parse(readFileSync(dbPath, "utf-8"));
-};
+type AnalysisPayload = Record<string, unknown>;
 
 const getUserFromToken = (token: string) => {
   try {
@@ -38,6 +12,30 @@ const getUserFromToken = (token: string) => {
   } catch {
     return null;
   }
+};
+
+const toAnalysisResponse = ({
+  id,
+  userId,
+  payload,
+  createdAt,
+}: {
+  id: string;
+  userId: string;
+  payload: unknown;
+  createdAt: Date;
+}) => {
+  const normalizedPayload =
+    payload && typeof payload === "object" && !Array.isArray(payload)
+      ? (payload as AnalysisPayload)
+      : {};
+
+  return {
+    ...normalizedPayload,
+    id,
+    userId,
+    createdAt: createdAt.toISOString(),
+  };
 };
 
 export async function GET(request: NextRequest) {
@@ -54,17 +52,14 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: "Geçersiz token" }, { status: 401 });
     }
 
-    const db = getAnalysisDB();
-    const userAnalyses = db.analyses.filter(
-      (analysis: Analysis) => analysis.userId === userId,
-    );
+    const userAnalyses = await prisma.analysis.findMany({
+      where: { userId },
+      orderBy: { createdAt: "desc" },
+    });
 
     return NextResponse.json({
       success: true,
-      analyses: userAnalyses.sort(
-        (a: Analysis, b: Analysis) =>
-          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
-      ),
+      analyses: userAnalyses.map(toAnalysisResponse),
     });
   } catch (error) {
     console.error("History error:", error);
@@ -87,25 +82,22 @@ export async function POST(request: NextRequest) {
     }
 
     const { analysis } = await request.json();
+    const analysisPayload: AnalysisPayload =
+      analysis && typeof analysis === "object" && !Array.isArray(analysis)
+        ? (analysis as AnalysisPayload)
+        : {};
 
-    const db = getAnalysisDB();
-    const newAnalysis: Analysis = {
-      id: Date.now().toString(),
-      userId,
-      ...analysis,
-      createdAt: new Date().toISOString(),
-    };
-
-    db.analyses.push(newAnalysis);
-    writeFileSync(
-      join(process.cwd(), "data", "analyses.json"),
-      JSON.stringify(db, null, 2),
-    );
+    const newAnalysis = await prisma.analysis.create({
+      data: {
+        userId,
+        payload: analysisPayload as Prisma.InputJsonObject,
+      },
+    });
 
     return NextResponse.json({
       success: true,
       message: "Analiz kaydedildi",
-      analysis: newAnalysis,
+      analysis: toAnalysisResponse(newAnalysis),
     });
   } catch (error) {
     console.error("Save analysis error:", error);

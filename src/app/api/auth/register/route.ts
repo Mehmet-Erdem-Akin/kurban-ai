@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
     }
 
     const normalizedEmail = email.trim().toLowerCase();
-    const existingUser = getUserByEmail(normalizedEmail);
+    const existingUser = await getUserByEmail(normalizedEmail);
     if (existingUser) {
       return NextResponse.json(
         { error: "Bu email adresi zaten kayıtlı" },
@@ -44,7 +44,7 @@ export async function POST(request: NextRequest) {
 
     const hashedPassword = await hashPassword(password);
 
-    const newUser = createUser({
+    const newUser = await createUser({
       id: randomUUID(),
       name: name.trim(),
       surname: surname.trim(),

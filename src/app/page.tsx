@@ -81,7 +81,7 @@ const analysisQualityRows = [
 ];
 
 const heroBackgroundStyle = {
-  backgroundImage: "url('/hero-kurbanlik-bg.svg')",
+  backgroundImage: "url('/hero-bg-2.png')",
 };
 
 const supportedAnimals = [
@@ -195,7 +195,7 @@ const Home = () => {
             aria-hidden
           />
           <div
-            className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(250,250,249,0.98)_0%,rgba(250,250,249,0.9)_34%,rgba(250,250,249,0.58)_64%,rgba(250,250,249,0.18)_100%),linear-gradient(180deg,rgba(250,250,249,0.55)_0%,rgba(250,250,249,0.96)_100%)] dark:bg-[linear-gradient(90deg,rgba(12,10,9,0.97)_0%,rgba(12,10,9,0.88)_40%,rgba(12,10,9,0.62)_72%,rgba(12,10,9,0.35)_100%),linear-gradient(180deg,rgba(12,10,9,0.36)_0%,rgba(12,10,9,0.96)_100%)]"
+            className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(250,250,249,0.18)_0%,rgba(250,250,249,0.1)_34%,rgba(250,250,249,0.28)_64%,rgba(250,250,249,0.18)_100%),linear-gradient(180deg,rgba(250,250,249,0.15)_0%,rgba(250,250,249,0.16)_100%)] dark:bg-[linear-gradient(90deg,rgba(12,10,9,0.17)_0%,rgba(12,10,9,0.28)_40%,rgba(12,10,9,0.32)_72%,rgba(12,10,9,0.15)_100%),linear-gradient(180deg,rgba(12,10,9,0.26)_0%,rgba(12,10,9,0.36)_100%)]"
             aria-hidden
           />
           <div className="mx-auto grid max-w-6xl items-center gap-10 px-4 lg:grid-cols-[1.02fr_0.98fr] lg:gap-12">
@@ -353,16 +353,6 @@ const Home = () => {
                     ))}
                   </div>
                 </div>
-              </div>
-
-              <div className="absolute -bottom-6 left-5 hidden rounded-2xl border border-white/80 bg-white/90 px-4 py-3 shadow-medium backdrop-blur-xl dark:border-stone-700 dark:bg-stone-900/90 sm:block">
-                <p className="flex items-center gap-2 text-sm font-semibold text-stone-800 dark:text-stone-100">
-                  <ShieldCheckIcon
-                    className="h-5 w-5 text-emerald-700 dark:text-emerald-300"
-                    aria-hidden
-                  />
-                  KVKK metinleri site içinde
-                </p>
               </div>
             </div>
           </div>

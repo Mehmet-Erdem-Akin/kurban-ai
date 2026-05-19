@@ -4,7 +4,11 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import {
   CalculatorIcon,
+  ChartBarIcon,
+  CheckCircleIcon,
   CurrencyDollarIcon,
+  DocumentTextIcon,
+  ScaleIcon,
 } from "@heroicons/react/24/outline";
 import YieldTable from "@/components/YieldTable";
 import { useAuth } from "@/components/AuthProvider";
@@ -31,6 +35,26 @@ type CalculatedValues = {
   defaultYieldRate: number;
   estimatedKarkasWeight: number;
 };
+
+const pendingReportItems = [
+  {
+    title: "Karkas satış fiyatı",
+    text: "Canlı kilo, randıman profili ve kg et fiyatına göre hesaplanır.",
+    icon: <ScaleIcon className="h-5 w-5" strokeWidth={1.8} aria-hidden />,
+  },
+  {
+    title: "1/7 hisse tutarı",
+    text: "Toplam tahmini değerin kişi başı hisse karşılığı gösterilir.",
+    icon: (
+      <CurrencyDollarIcon className="h-5 w-5" strokeWidth={1.8} aria-hidden />
+    ),
+  },
+  {
+    title: "Randıman dökümü",
+    text: "Karkas ve parça değerleri tablo halinde raporlanır.",
+    icon: <ChartBarIcon className="h-5 w-5" strokeWidth={1.8} aria-hidden />,
+  },
+];
 
 const ManualWeightCalculator = () => {
   const { user, loading: authLoading, setUser } = useAuth();
@@ -87,7 +111,9 @@ const ManualWeightCalculator = () => {
     return Math.round(baseWeight * conditionMultiplier);
   }, [bodyCondition, bodyLength, chestCircumference]);
 
-  const handleLiveWeightChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleLiveWeightChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     setLiveWeight(event.target.value);
     setCalculatedResult(null);
     setCreditError("");
@@ -115,7 +141,9 @@ const ManualWeightCalculator = () => {
     setCreditError("");
   };
 
-  const handleBodyLengthChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleBodyLengthChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     setBodyLength(event.target.value);
     setCalculatedResult(null);
     setCreditError("");
@@ -142,7 +170,9 @@ const ManualWeightCalculator = () => {
     }
 
     if (user.remainingCredits <= 0) {
-      setCreditError("Kredi hakkınız kalmadı. Paket satın alarak devam edebilirsiniz.");
+      setCreditError(
+        "Kredi hakkınız kalmadı. Paket satın alarak devam edebilirsiniz.",
+      );
       return;
     }
 
@@ -170,9 +200,55 @@ const ManualWeightCalculator = () => {
   };
 
   const canCalculate = !authLoading && (user?.remainingCredits ?? 0) > 0;
+  const selectedProfileLabel =
+    yieldProfile === "male" ? "Erkek büyükbaş" : "Dişi büyükbaş";
+  const summaryValues = calculatedResult
+    ? [
+        {
+          label: "Karkas kilo",
+          value: `${calculatedResult.estimatedKarkasWeight.toLocaleString(
+            "tr-TR",
+          )} kg`,
+        },
+        {
+          label: "Randıman",
+          value: `%${calculatedResult.defaultYieldRate}`,
+        },
+        {
+          label: "Satış değeri",
+          value: formatCurrency(calculatedResult.totalSellPrice),
+        },
+        {
+          label: "Profil",
+          value: selectedProfileLabel,
+        },
+      ]
+    : [
+        {
+          label: "Canlı kilo",
+          value: `${parseNumber(liveWeight).toLocaleString("tr-TR")} kg`,
+        },
+        {
+          label: "Kg et fiyatı",
+          value: formatCurrency(parseNumber(currentMeatKgPrice)),
+        },
+        {
+          label: "Randıman profili",
+          value: selectedProfileLabel,
+        },
+        {
+          label: "Ölçü tahmini",
+          value: measurementEstimate
+            ? `${measurementEstimate.toLocaleString("tr-TR")} kg`
+            : "Bekliyor",
+        },
+      ];
 
   return (
-    <section id="hesaplama" className="surface-band scroll-mt-24 py-14 sm:py-16">
+    <section
+      id="hesaplama"
+      className="surface-band scroll-mt-24 py-14 sm:py-16"
+    >
       <div className="mx-auto max-w-6xl px-4">
         <div className="mx-auto max-w-2xl text-center">
           <p className="section-kicker mx-auto">Manuel hesaplama</p>
@@ -185,11 +261,15 @@ const ManualWeightCalculator = () => {
           </p>
         </div>
 
-        <div className="mt-10 grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
-          <div className="card p-5 sm:p-6">
+        <div className="mt-10 grid items-stretch gap-6 lg:grid-cols-[0.95fr_1.05fr]">
+          <div className="card p-5 sm:p-6 lg:h-full">
             <div className="mb-5 flex items-center gap-3">
               <div className="icon-container-primary h-11 w-11">
-                <CalculatorIcon className="h-6 w-6" strokeWidth={2} aria-hidden />
+                <CalculatorIcon
+                  className="h-6 w-6"
+                  strokeWidth={2}
+                  aria-hidden
+                />
               </div>
               <div>
                 <h3 className="font-display text-lg font-semibold text-stone-900 dark:text-stone-50">
@@ -405,11 +485,16 @@ const ManualWeightCalculator = () => {
             </div>
           </div>
 
-          <div className="flex flex-col gap-4 lg:pt-0">
-            <div className="card p-5 sm:p-6">
+          <div className="grid gap-4 lg:h-full lg:grid-rows-[auto_auto_1fr]">
+            <div className="card overflow-hidden p-5 sm:p-6">
               <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
                 <div>
-                  <p className="text-sm font-semibold text-stone-500 dark:text-stone-400">
+                  <p className="flex items-center gap-2 text-sm font-semibold text-stone-500 dark:text-stone-400">
+                    <DocumentTextIcon
+                      className="h-5 w-5 text-emerald-700 dark:text-emerald-300"
+                      strokeWidth={1.8}
+                      aria-hidden
+                    />
                     Tahmini Karkas Satış Fiyatı
                   </p>
                   {calculatedResult ? (
@@ -436,7 +521,7 @@ const ManualWeightCalculator = () => {
                     </>
                   )}
                 </div>
-                <div className="rounded-2xl border border-emerald-100 bg-emerald-50/70 px-4 py-3 text-sm text-emerald-900 dark:border-emerald-800/60 dark:bg-emerald-950/30 dark:text-emerald-100">
+                <div className="rounded-2xl border border-emerald-100 bg-emerald-50/70 px-4 py-3 text-sm text-emerald-900 dark:border-emerald-800/60 dark:bg-emerald-950/30 dark:text-emerald-100 sm:min-w-[150px]">
                   <p className="font-semibold">Güncel kg et fiyatı</p>
                   <p className="mt-1 text-xl font-bold">
                     {formatCurrency(parseNumber(currentMeatKgPrice))}
@@ -452,15 +537,79 @@ const ManualWeightCalculator = () => {
               />
               <div className="relative">
                 <p className="flex items-center justify-center gap-2 text-sm font-medium text-emerald-50 sm:text-base">
-                  <CurrencyDollarIcon className="h-5 w-5" aria-hidden />
-                  1 Kişilik Hisse Fiyatı (1/7)
+                  <CurrencyDollarIcon className="h-5 w-5" aria-hidden />1
+                  Kişilik Hisse Fiyatı (1/7)
                 </p>
-                <p className="mt-3 font-display text-4xl font-bold sm:text-6xl">
+                <p className="mt-3 font-display text-4xl font-bold sm:text-5xl">
                   {calculatedResult
                     ? formatCurrency(calculatedResult.sharePrice)
-                    : "Hesapla"}
+                    : "Hisseyi hesapla"}
                 </p>
+                {!calculatedResult && (
+                  <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-emerald-50/80">
+                    Formu tamamlayıp manuel hesapladığınızda kişi başı hisse ve
+                    toplam satış değeri burada görünür.
+                  </p>
+                )}
               </div>
+            </div>
+
+            <div className="card flex flex-col p-5 sm:p-6">
+              <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-[0.2em] text-emerald-800 dark:text-emerald-300">
+                    {calculatedResult ? "Sonuç özeti" : "Rapor önizlemesi"}
+                  </p>
+                  <h3 className="mt-2 font-display text-xl font-semibold text-stone-900 dark:text-stone-50">
+                    {calculatedResult
+                      ? "Hesabınız hazır"
+                      : "Form bilgileri hazır"}
+                  </h3>
+                </div>
+                <span className="inline-flex w-fit items-center gap-1.5 rounded-full border border-emerald-100 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-800 dark:border-emerald-800/60 dark:bg-emerald-950/40 dark:text-emerald-200">
+                  <CheckCircleIcon className="h-4 w-4" aria-hidden />
+                  Mobil uyumlu
+                </span>
+              </div>
+
+              <div className="mt-5 grid gap-3 sm:grid-cols-2">
+                {summaryValues.map((item) => (
+                  <div
+                    key={item.label}
+                    className="rounded-2xl border border-stone-200/80 bg-stone-50/80 p-4 dark:border-stone-700 dark:bg-stone-950/55"
+                  >
+                    <p className="text-xs font-semibold uppercase tracking-[0.16em] text-stone-500 dark:text-stone-400">
+                      {item.label}
+                    </p>
+                    <p className="mt-1 text-lg font-bold text-stone-900 dark:text-stone-50">
+                      {item.value}
+                    </p>
+                  </div>
+                ))}
+              </div>
+
+              {!calculatedResult && (
+                <div className="mt-5 grid gap-3">
+                  {pendingReportItems.map((item) => (
+                    <div
+                      key={item.title}
+                      className="flex gap-3 rounded-2xl border border-emerald-100/80 bg-emerald-50/45 p-4 dark:border-emerald-800/50 dark:bg-emerald-950/20"
+                    >
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white text-emerald-800 shadow-sm dark:bg-stone-900 dark:text-emerald-200">
+                        {item.icon}
+                      </div>
+                      <div>
+                        <p className="font-semibold text-stone-900 dark:text-stone-50">
+                          {item.title}
+                        </p>
+                        <p className="mt-1 text-sm leading-relaxed text-stone-600 dark:text-stone-400">
+                          {item.text}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         </div>

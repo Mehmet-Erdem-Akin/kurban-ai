@@ -80,6 +80,10 @@ const analysisQualityRows = [
   { label: "Işık dengesi", score: 88 },
 ];
 
+const heroBackgroundStyle = {
+  backgroundImage: "url('/hero-kurbanlik-bg.svg')",
+};
+
 const supportedAnimals = [
   {
     title: "Büyükbaş",
@@ -184,8 +188,17 @@ const Home = () => {
       />
 
       <main className="relative z-10">
-        <section className="mx-auto max-w-6xl px-4 pb-16 pt-10 sm:pb-20 sm:pt-14">
-          <div className="grid items-center gap-10 lg:grid-cols-[1.02fr_0.98fr] lg:gap-12">
+        <section className="relative isolate overflow-hidden pb-16 pt-10 sm:pb-20 sm:pt-14">
+          <div
+            className="absolute inset-0 -z-20 bg-cover bg-center opacity-65 dark:opacity-35"
+            style={heroBackgroundStyle}
+            aria-hidden
+          />
+          <div
+            className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(250,250,249,0.98)_0%,rgba(250,250,249,0.9)_34%,rgba(250,250,249,0.58)_64%,rgba(250,250,249,0.18)_100%),linear-gradient(180deg,rgba(250,250,249,0.55)_0%,rgba(250,250,249,0.96)_100%)] dark:bg-[linear-gradient(90deg,rgba(12,10,9,0.97)_0%,rgba(12,10,9,0.88)_40%,rgba(12,10,9,0.62)_72%,rgba(12,10,9,0.35)_100%),linear-gradient(180deg,rgba(12,10,9,0.36)_0%,rgba(12,10,9,0.96)_100%)]"
+            aria-hidden
+          />
+          <div className="mx-auto grid max-w-6xl items-center gap-10 px-4 lg:grid-cols-[1.02fr_0.98fr] lg:gap-12">
             <div className="animate-fade-in text-center lg:text-left">
               <p className="hero-pill mb-5">
                 <span
@@ -354,7 +367,7 @@ const Home = () => {
             </div>
           </div>
 
-          <ul className="mx-auto mt-16 grid max-w-5xl gap-3 sm:grid-cols-3">
+          <ul className="mx-auto mt-16 grid max-w-5xl gap-3 px-4 sm:grid-cols-3">
             {heroTrustSignals.map((label) => (
               <li
                 key={label}

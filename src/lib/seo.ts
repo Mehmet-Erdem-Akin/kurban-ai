@@ -1,6 +1,62 @@
-import type { Metadata } from "next";
+import type { Metadata, MetadataRoute } from "next";
 
 const FALLBACK_SITE_URL = "https://kurbanlikkilohesaplama.com";
+
+type ChangeFrequency = NonNullable<
+  MetadataRoute.Sitemap[number]["changeFrequency"]
+>;
+
+export type IndexableRoute = {
+  path: string;
+  changeFrequency: ChangeFrequency;
+  priority: number;
+};
+
+/** Arama motorlarında dizine eklenecek herkese açık sayfalar */
+export const indexableRoutes: IndexableRoute[] = [
+  {
+    path: "/",
+    changeFrequency: "daily",
+    priority: 1,
+  },
+  {
+    path: "/analyze",
+    changeFrequency: "daily",
+    priority: 0.95,
+  },
+  {
+    path: "/pricing",
+    changeFrequency: "weekly",
+    priority: 0.85,
+  },
+  {
+    path: "/contact",
+    changeFrequency: "monthly",
+    priority: 0.7,
+  },
+  {
+    path: "/privacy",
+    changeFrequency: "yearly",
+    priority: 0.35,
+  },
+  {
+    path: "/terms",
+    changeFrequency: "yearly",
+    priority: 0.35,
+  },
+  {
+    path: "/kvkk",
+    changeFrequency: "yearly",
+    priority: 0.35,
+  },
+];
+
+/** robots.txt — tarama engeli (noIndex sayfalar + API) */
+export const robotsDisallowPaths = [
+  "/api/",
+  "/auth/",
+  "/account/",
+] as const;
 
 const normalizeUrl = (value: string): string => value.replace(/\/+$/, "");
 
@@ -36,6 +92,10 @@ export const siteConfig = {
 export const getCanonicalUrl = (path = "/") => {
   return new URL(path, `${siteConfig.domain}/`).toString();
 };
+
+export const getSitemapUrl = () => getCanonicalUrl("/sitemap.xml");
+
+export const getRobotsHost = () => new URL(siteConfig.domain).host;
 
 type BuildMetadataInput = {
   title: string;

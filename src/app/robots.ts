@@ -1,5 +1,9 @@
 import { MetadataRoute } from "next";
-import { siteConfig } from "@/lib/seo";
+import {
+  getRobotsHost,
+  getSitemapUrl,
+  robotsDisallowPaths,
+} from "@/lib/seo";
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -7,10 +11,20 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/api/", "/auth/", "/account/"],
+        disallow: [...robotsDisallowPaths],
+      },
+      {
+        userAgent: "Googlebot",
+        allow: "/",
+        disallow: [...robotsDisallowPaths],
+      },
+      {
+        userAgent: "Googlebot-Image",
+        allow: ["/", "/og-image.jpg"],
+        disallow: [...robotsDisallowPaths],
       },
     ],
-    sitemap: `${siteConfig.domain}/sitemap.xml`,
-    host: new URL(siteConfig.domain).host,
+    sitemap: getSitemapUrl(),
+    host: getRobotsHost(),
   };
 }

@@ -8,7 +8,6 @@ import {
   CurrencyDollarIcon,
   PhotoIcon,
   ScaleIcon,
-  ShieldCheckIcon,
   SparklesIcon,
   SunIcon,
 } from "@heroicons/react/24/outline";

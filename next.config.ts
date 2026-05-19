@@ -75,6 +75,24 @@ const nextConfig: NextConfig = {
           },
         ],
       },
+      {
+        source: "/favicon.ico",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=604800, stale-while-revalidate=86400",
+          },
+        ],
+      },
+      {
+        source: "/:favicon(favicon-.*\\.png|apple-touch-icon\\.png|android-chrome-.*\\.png)",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=604800, stale-while-revalidate=86400",
+          },
+        ],
+      },
     ];
   },
 

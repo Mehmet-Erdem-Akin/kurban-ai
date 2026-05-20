@@ -2,15 +2,17 @@
 
 import {
   ArrowTrendingUpIcon,
-  CameraIcon,
-  ChartBarIcon,
+  BookOpenIcon,
+  CalculatorIcon,
   CheckBadgeIcon,
   CurrencyDollarIcon,
+  HeartIcon,
   PhotoIcon,
   ScaleIcon,
-  SparklesIcon,
+  ShieldCheckIcon,
   SunIcon,
 } from "@heroicons/react/24/outline";
+import Image from "next/image";
 import Link from "next/link";
 import AppPageShell from "@/components/AppPageShell";
 import ManualWeightCalculator from "@/components/ManualWeightCalculator";
@@ -38,45 +40,37 @@ const features = [
   },
 ];
 
-const heroMetrics = [
-  { value: "3 dk", label: "Ortalama ön analiz" },
-  { value: "7", label: "Hisse fiyat kırılımı" },
-  { value: "PDF", label: "Paylaşılabilir rapor" },
-];
-
-const heroTrustSignals = [
-  "Gemini destekli ön analiz",
-  "Mobilde hızlı kullanım",
-  "Fotoğraf + manuel hesaplama",
-];
-
-const analysisPreviewCards = [
+const heroFeatureCards = [
   {
-    label: "Canlı kilo tahmini",
-    value: "685 kg",
-    detail: "Güven aralığı: 650-720 kg",
-    icon: <ScaleIcon className="h-5 w-5" strokeWidth={1.8} aria-hidden />,
+    title: "Kolay hesaplama",
+    text: "Yaş, ırk ve cinsiyete göre kurbanlığınızın ortalama kilosunu saniyeler içinde hesaplayın.",
+    icon: <CalculatorIcon className="h-7 w-7" strokeWidth={1.9} aria-hidden />,
   },
   {
-    label: "Karkas verimi",
-    value: "%58",
-    detail: "Besili büyükbaş profili",
-    icon: <ChartBarIcon className="h-5 w-5" strokeWidth={1.8} aria-hidden />,
+    title: "Doğru ve güvenilir",
+    text: "Güncel veriler ve uzman kaynaklarla doğru sonuçlar elde edin, içiniz rahat olsun.",
+    icon: <ShieldCheckIcon className="h-7 w-7" strokeWidth={1.9} aria-hidden />,
   },
   {
-    label: "1/7 hisse",
-    value: "35.280 ₺",
-    detail: "620 ₺ kg referansıyla",
-    icon: (
-      <CurrencyDollarIcon className="h-5 w-5" strokeWidth={1.8} aria-hidden />
-    ),
+    title: "Bilgilendirici rehber",
+    text: "Kurbanlık seçimi, özellikleri ve ibadetle ilgili merak ettikleriniz rehberimizde.",
+    icon: <BookOpenIcon className="h-7 w-7" strokeWidth={1.9} aria-hidden />,
+  },
+  {
+    title: "İbadetinizi huzurla",
+    text: "Doğru kilo, doğru seçimle ibadetinizi en güzel şekilde yerine getirin.",
+    icon: <HeartIcon className="h-7 w-7" strokeWidth={1.9} aria-hidden />,
   },
 ];
 
-const analysisQualityRows = [
-  { label: "Yan açı netliği", score: 96 },
-  { label: "Gövde görünürlüğü", score: 92 },
-  { label: "Işık dengesi", score: 88 },
+const heroTrustSignals = ["Güvenilir", "Hızlı", "Ücretsiz"];
+
+const heroSupportItems = [
+  {
+    title: "Doğru Hesaplama",
+    text: "Güvenilir Sonuçlar",
+    icon: <ShieldCheckIcon className="h-8 w-8" strokeWidth={1.8} aria-hidden />,
+  },
 ];
 
 const heroBackgroundStyle = {
@@ -187,190 +181,108 @@ const Home = () => {
       />
 
       <main className="relative z-10">
-        <section className="relative isolate overflow-hidden pb-16 pt-10 sm:pb-20 sm:pt-14">
+        <section className="relative isolate overflow-hidden bg-white py-10 sm:py-14 lg:min-h-[760px] lg:py-16 dark:bg-stone-950">
           <div
-            className="absolute inset-0 -z-20 bg-cover bg-center opacity-65 dark:opacity-35"
+            className="absolute inset-0 -z-20 bg-cover bg-[position:58%_center] opacity-75 sm:bg-center lg:opacity-100"
             style={heroBackgroundStyle}
             aria-hidden
           />
           <div
-            className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(250,250,249,0.18)_0%,rgba(250,250,249,0.1)_34%,rgba(250,250,249,0.28)_64%,rgba(250,250,249,0.18)_100%),linear-gradient(180deg,rgba(250,250,249,0.15)_0%,rgba(250,250,249,0.16)_100%)] dark:bg-[linear-gradient(90deg,rgba(12,10,9,0.17)_0%,rgba(12,10,9,0.28)_40%,rgba(12,10,9,0.32)_72%,rgba(12,10,9,0.15)_100%),linear-gradient(180deg,rgba(12,10,9,0.26)_0%,rgba(12,10,9,0.36)_100%)]"
+            className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(255,255,255,0.98)_0%,rgba(255,255,255,0.94)_34%,rgba(255,255,255,0.64)_54%,rgba(255,255,255,0.12)_100%),linear-gradient(180deg,rgba(255,255,255,0.18)_0%,rgba(255,255,255,0.98)_100%)] dark:bg-[linear-gradient(90deg,rgba(12,10,9,0.96)_0%,rgba(12,10,9,0.88)_36%,rgba(12,10,9,0.54)_62%,rgba(12,10,9,0.24)_100%),linear-gradient(180deg,rgba(12,10,9,0.15)_0%,rgba(12,10,9,0.96)_100%)]"
             aria-hidden
           />
-          <div className="mx-auto grid max-w-6xl items-center gap-10 px-4 lg:grid-cols-[1.02fr_0.98fr] lg:gap-12">
-            <div className="animate-fade-in text-center lg:text-left">
-              <p className="hero-pill mb-5">
-                <span
-                  className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-600 dark:bg-emerald-500"
-                  aria-hidden
-                />
-                {"AI destekli kurbanlık değerleme"}
-              </p>
-              <h1 className="font-display text-balance text-4xl font-semibold tracking-tight text-stone-950 dark:text-stone-50 sm:text-6xl sm:leading-[1.02]">
-                Kurbanlık değerini{" "}
-                <span className="gradient-text">profesyonel analizle</span>{" "}
-                görün.
+          <div className="mx-auto flex min-h-[680px] max-w-6xl flex-col justify-between px-4">
+            <div className="max-w-2xl animate-fade-in pt-2 text-left sm:pt-4 lg:pt-8">
+              <Image
+                src="/ka-logo.png"
+                alt="Kurbanlık Kilo Hesaplama"
+                width={360}
+                height={134}
+                priority
+                className="h-auto w-[235px] sm:w-[300px]"
+              />
+              <h1 className="mt-8 max-w-3xl text-balance font-display text-4xl font-semibold leading-[1.04] tracking-tight text-stone-950 dark:text-stone-50 sm:text-6xl lg:text-7xl">
+                Kurbanlık Kilonu{" "}
+                <span className="block text-emerald-800 dark:text-emerald-300">
+                  Hesapla, İçin Rahat Olsun
+                </span>
               </h1>
-              <p className="mt-6 max-w-2xl text-pretty text-base leading-relaxed text-stone-600 dark:text-stone-400 sm:text-lg lg:max-w-xl">
-                Fotoğraf, canlı kilo ve piyasa referanslarını tek raporda
-                birleştiren premium arayüzle daha güvenli seçim yapın.
+              <p className="mt-6 max-w-xl text-pretty text-base leading-8 text-stone-600 dark:text-stone-300 sm:text-lg">
+                Kurbanlık hayvanınızın yaş, ırk ve cinsiyet bilgilerine göre
+                ortalama kilosunu hesaplayın; ibadetinizi doğru ve huzurlu bir
+                şekilde yerine getirin.
               </p>
-              <div className="mt-8 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center lg:justify-start">
+              <div className="mt-8 flex flex-col gap-5 sm:flex-row sm:items-center">
                 <Link
-                  href="/analyze"
-                  className="btn btn-primary btn-lg justify-center gap-2"
+                  href="#hesaplama"
+                  className="btn btn-primary btn-lg justify-center gap-3 rounded-2xl px-7 py-4 shadow-xl shadow-emerald-900/20"
                 >
-                  <CameraIcon
+                  <CalculatorIcon
                     className="h-5 w-5"
-                    strokeWidth={1.9}
+                    strokeWidth={2}
                     aria-hidden
                   />
-                  Fotoğraf ile analiz et
+                  Hemen Kilo Hesapla
                 </Link>
-                <a
-                  href="#hesaplama"
-                  className="btn btn-secondary btn-lg justify-center"
-                >
-                  Manuel hesapla
-                </a>
-              </div>
-
-              <dl className="mt-9 grid gap-3 sm:grid-cols-3">
-                {heroMetrics.map((metric) => (
+                {heroSupportItems.map((item) => (
                   <div
-                    key={metric.label}
-                    className="rounded-2xl border border-white/70 bg-white/75 px-4 py-4 shadow-soft backdrop-blur-xl dark:border-stone-700/70 dark:bg-stone-900/70"
+                    key={item.title}
+                    className="flex items-center gap-3 rounded-2xl border border-white/70 bg-white/70 px-4 py-3 shadow-soft backdrop-blur-md dark:border-stone-700/70 dark:bg-stone-900/70"
                   >
-                    <dt className="text-xs font-semibold uppercase tracking-[0.16em] text-stone-500 dark:text-stone-400">
-                      {metric.label}
-                    </dt>
-                    <dd className="mt-1 font-display text-2xl font-semibold text-emerald-900 dark:text-emerald-200">
-                      {metric.value}
-                    </dd>
+                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-emerald-100 bg-white text-emerald-800 shadow-sm dark:border-emerald-800/60 dark:bg-stone-950 dark:text-emerald-300">
+                      {item.icon}
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold text-stone-700 dark:text-stone-200">
+                        {item.title}
+                      </p>
+                      <p className="text-sm text-stone-500 dark:text-stone-400">
+                        {item.text}
+                      </p>
+                    </div>
                   </div>
                 ))}
-              </dl>
-            </div>
-
-            <div className="relative animate-slide-up">
-              <div
-                className="absolute -left-6 top-8 h-24 w-24 rounded-full bg-amber-300/30 blur-2xl dark:bg-amber-500/20"
-                aria-hidden
-              />
-              <div
-                className="absolute -right-8 bottom-10 h-36 w-36 rounded-full bg-emerald-400/25 blur-3xl dark:bg-emerald-500/20"
-                aria-hidden
-              />
-              <div className="relative overflow-hidden rounded-[2rem] border border-white/70 bg-white/80 p-3 shadow-large shadow-emerald-950/10 backdrop-blur-2xl dark:border-stone-700/70 dark:bg-stone-900/80 dark:shadow-black/30">
-                <div className="relative overflow-hidden rounded-[1.55rem] bg-gradient-to-br from-emerald-950 via-emerald-900 to-stone-950 p-5 text-white sm:p-6">
-                  <div
-                    className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_22%_18%,rgba(255,255,255,0.22),transparent_32%),radial-gradient(circle_at_82%_12%,rgba(251,191,36,0.18),transparent_28%),linear-gradient(135deg,rgba(255,255,255,0.08),transparent_48%)]"
-                    aria-hidden
-                  />
-                  <div className="relative flex items-center justify-between gap-4">
-                    <div>
-                      <p className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1 text-xs font-semibold text-emerald-50 backdrop-blur">
-                        <SparklesIcon className="h-4 w-4" aria-hidden />
-                        Canlı önizleme
-                      </p>
-                      <h2 className="mt-4 font-display text-2xl font-semibold sm:text-3xl">
-                        AI Analiz Raporu
-                      </h2>
-                      <p className="mt-2 max-w-sm text-sm leading-relaxed text-emerald-50/80">
-                        Fotoğraftan kilo, randıman ve hisse fiyatı için tek
-                        ekranda okunabilir karar özeti.
-                      </p>
-                    </div>
-                    <div className="hidden h-16 w-16 items-center justify-center rounded-2xl border border-white/15 bg-white/10 backdrop-blur sm:flex">
-                      <PhotoIcon
-                        className="h-8 w-8"
-                        strokeWidth={1.6}
-                        aria-hidden
-                      />
-                    </div>
-                  </div>
-
-                  <div className="relative mt-6 rounded-3xl border border-white/15 bg-white/10 p-3 shadow-2xl shadow-black/20 backdrop-blur-md">
-                    <div className="overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-stone-100 to-emerald-50 p-4 text-stone-900">
-                      <div className="flex items-center justify-between gap-4">
-                        <div>
-                          <p className="text-xs font-bold uppercase tracking-[0.22em] text-emerald-800">
-                            Fotoğraf kalite skoru
-                          </p>
-                          <p className="mt-1 font-display text-3xl font-semibold text-stone-950">
-                            %94
-                          </p>
-                        </div>
-                        <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-800 text-white shadow-lg shadow-emerald-900/25">
-                          <CheckBadgeIcon
-                            className="h-8 w-8"
-                            strokeWidth={1.7}
-                            aria-hidden
-                          />
-                        </div>
-                      </div>
-                      <div className="mt-5 space-y-2">
-                        {analysisQualityRows.map((row) => (
-                          <div key={row.label}>
-                            <div className="mb-1 flex justify-between text-xs font-medium text-stone-600">
-                              <span>{row.label}</span>
-                              <span>{row.score}%</span>
-                            </div>
-                            <div className="h-2 rounded-full bg-stone-200">
-                              <div
-                                className="h-2 rounded-full bg-gradient-to-r from-emerald-700 to-teal-500"
-                                style={{
-                                  width: `${row.score}%`,
-                                }}
-                              />
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="relative mt-4 grid gap-3 sm:grid-cols-3">
-                    {analysisPreviewCards.map((card) => (
-                      <div
-                        key={card.label}
-                        className="rounded-2xl border border-white/15 bg-white/10 p-4 backdrop-blur"
-                      >
-                        <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-xl bg-white/15 text-emerald-50">
-                          {card.icon}
-                        </div>
-                        <p className="text-xs font-medium text-emerald-50/75">
-                          {card.label}
-                        </p>
-                        <p className="mt-1 text-xl font-bold text-white">
-                          {card.value}
-                        </p>
-                        <p className="mt-1 text-[11px] leading-snug text-emerald-50/65">
-                          {card.detail}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
               </div>
             </div>
-          </div>
 
-          <ul className="mx-auto mt-16 grid max-w-5xl gap-3 px-4 sm:grid-cols-3">
-            {heroTrustSignals.map((label) => (
-              <li
-                key={label}
-                className="flex items-center justify-center gap-2 rounded-2xl border border-stone-200/80 bg-white/85 px-4 py-3 text-center text-sm font-semibold text-stone-700 shadow-soft backdrop-blur-sm transition hover:border-emerald-200/60 hover:shadow-medium dark:border-stone-700 dark:bg-stone-900/80 dark:text-stone-300 dark:hover:border-emerald-700/50"
-              >
-                <CheckBadgeIcon
-                  className="h-5 w-5 shrink-0 text-emerald-700 dark:text-emerald-400"
-                  strokeWidth={1.8}
-                  aria-hidden
-                />
-                {label}
-              </li>
-            ))}
-          </ul>
+            <div className="animate-slide-up">
+              <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                {heroFeatureCards.map((card) => (
+                  <div
+                    key={card.title}
+                    className="rounded-3xl border border-white/80 bg-white/90 p-5 shadow-medium shadow-stone-900/5 backdrop-blur-md transition hover:-translate-y-0.5 hover:shadow-large dark:border-stone-700/70 dark:bg-stone-900/85"
+                  >
+                    <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-emerald-700 text-white shadow-lg shadow-emerald-900/20 dark:bg-emerald-600">
+                      {card.icon}
+                    </div>
+                    <h2 className="text-sm font-bold uppercase tracking-wide text-emerald-900 dark:text-emerald-200">
+                      {card.title}
+                    </h2>
+                    <p className="mt-2 text-sm leading-relaxed text-stone-600 dark:text-stone-400">
+                      {card.text}
+                    </p>
+                  </div>
+                ))}
+              </div>
+
+              <ul className="mt-8 flex flex-wrap items-center justify-center gap-3 text-base font-semibold text-stone-700 dark:text-stone-200">
+                <li className="flex items-center gap-2 text-emerald-800 dark:text-emerald-300">
+                  <CheckBadgeIcon className="h-7 w-7" aria-hidden />
+                </li>
+                {heroTrustSignals.map((label, index) => (
+                  <li key={label} className="flex items-center gap-3">
+                    {index > 0 && (
+                      <span
+                        className="h-1.5 w-1.5 rounded-full bg-emerald-700 dark:bg-emerald-300"
+                        aria-hidden
+                      />
+                    )}
+                    <span>{label}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
         </section>
 
         <ManualWeightCalculator />

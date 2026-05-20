@@ -74,7 +74,7 @@ const heroSupportItems = [
 ];
 
 const heroBackgroundStyle = {
-  backgroundImage: "url('/hero-bg-2.png')",
+  backgroundImage: "url('/hero-bg-3.png')",
 };
 
 const supportedAnimals = [

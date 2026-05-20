@@ -183,12 +183,12 @@ const Home = () => {
       <main className="relative z-10">
         <section className="relative isolate overflow-hidden bg-white py-10 sm:py-14 lg:min-h-[760px] lg:py-16 dark:bg-stone-950">
           <div
-            className="absolute inset-0 -z-20 bg-cover bg-[position:58%_center] opacity-75 sm:bg-center lg:opacity-100"
+            className="absolute inset-0 -z-20 bg-cover bg-[position:58%_center] opacity-90 sm:bg-center lg:opacity-100"
             style={heroBackgroundStyle}
             aria-hidden
           />
           <div
-            className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(255,255,255,0.98)_0%,rgba(255,255,255,0.94)_34%,rgba(255,255,255,0.64)_54%,rgba(255,255,255,0.12)_100%),linear-gradient(180deg,rgba(255,255,255,0.18)_0%,rgba(255,255,255,0.98)_100%)] dark:bg-[linear-gradient(90deg,rgba(12,10,9,0.96)_0%,rgba(12,10,9,0.88)_36%,rgba(12,10,9,0.54)_62%,rgba(12,10,9,0.24)_100%),linear-gradient(180deg,rgba(12,10,9,0.15)_0%,rgba(12,10,9,0.96)_100%)]"
+            className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(255,255,255,0.94)_0%,rgba(255,255,255,0.86)_34%,rgba(255,255,255,0.42)_56%,rgba(255,255,255,0.06)_100%),linear-gradient(180deg,rgba(255,255,255,0.08)_0%,rgba(255,255,255,0.94)_100%)] dark:bg-[linear-gradient(90deg,rgba(12,10,9,0.94)_0%,rgba(12,10,9,0.82)_36%,rgba(12,10,9,0.42)_62%,rgba(12,10,9,0.16)_100%),linear-gradient(180deg,rgba(12,10,9,0.12)_0%,rgba(12,10,9,0.92)_100%)]"
             aria-hidden
           />
           <div className="mx-auto flex min-h-[680px] max-w-6xl flex-col justify-between px-4">

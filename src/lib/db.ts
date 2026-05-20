@@ -1,4 +1,8 @@
-import type { User as PrismaUser } from "@prisma/client";
+import type {
+  Analysis as PrismaAnalysis,
+  Prisma,
+  User as PrismaUser,
+} from "@prisma/client";
 import prisma from "@/lib/prisma";
 
 export type User = {
@@ -11,6 +15,13 @@ export type User = {
   address: string;
   usagePurpose: string;
   remainingCredits: number;
+  createdAt: string;
+};
+
+export type AnalysisRecord = {
+  id: string;
+  userId: string;
+  payload: Prisma.JsonValue;
   createdAt: string;
 };
 
@@ -33,6 +44,13 @@ const mapUserRecord = (user: PrismaUser): User => ({
   usagePurpose: user.usagePurpose,
   remainingCredits: user.remainingCredits,
   createdAt: user.createdAt.toISOString(),
+});
+
+const mapAnalysisRecord = (analysis: PrismaAnalysis): AnalysisRecord => ({
+  id: analysis.id,
+  userId: analysis.userId,
+  payload: analysis.payload,
+  createdAt: analysis.createdAt.toISOString(),
 });
 
 export const getUserByEmail = async (email: string): Promise<User | null> => {
@@ -112,6 +130,51 @@ export const decrementUserCredit = async (
   });
 
   return updatedUser ? mapUserRecord(updatedUser) : null;
+};
+
+export const decrementUserCreditAndCreateAnalysis = async (
+  userId: string,
+  payload: Prisma.InputJsonObject,
+): Promise<{ user: User; analysis: AnalysisRecord } | null> => {
+  const result = await prisma.$transaction(async (transaction) => {
+    const currentUser = await transaction.user.findUnique({
+      where: { id: userId },
+    });
+
+    if (!currentUser || currentUser.remainingCredits <= 0) {
+      return null;
+    }
+
+    const updatedUser = await transaction.user.update({
+      where: { id: userId },
+      data: {
+        remainingCredits: {
+          decrement: 1,
+        },
+      },
+    });
+
+    const analysis = await transaction.analysis.create({
+      data: {
+        userId,
+        payload,
+      },
+    });
+
+    return {
+      user: updatedUser,
+      analysis,
+    };
+  });
+
+  if (!result) {
+    return null;
+  }
+
+  return {
+    user: mapUserRecord(result.user),
+    analysis: mapAnalysisRecord(result.analysis),
+  };
 };
 
 export const addUserCredits = async (

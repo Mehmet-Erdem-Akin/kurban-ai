@@ -3,15 +3,16 @@ import type { ReactNode } from "react";
 import { buildMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildMetadata({
-  title: "Fotoğraf ile Kurbanlık Kilo Hesaplama",
+  title: "Fotoğraf ile Kurban Kilo Hesaplama | Yapay Zeka",
   description:
-    "Kurbanlık büyükbaş ve küçükbaş hayvanlar için fotoğraftan canlı kilo, karkas verimi ve hisse fiyatı tahmini alın.",
+    "Fotoğraftan kurbanlık canlı kilo, karkas randımanı ve hisse fiyatı tahmini. Dana, koyun ve keçi için ücretsiz yapay zeka analizi.",
   path: "/analyze",
   keywords: [
-    "fotoğraf ile kurbanlık kilo hesaplama",
-    "kurbanlık kilo hesaplama",
+    "fotoğraf ile kurban kilo hesaplama",
+    "yapay zeka kurban analizi",
     "dana kilo hesaplama",
     "koyun kilo hesaplama",
+    "keçi kilo hesaplama",
   ],
 });
 

@@ -9,7 +9,9 @@ const SiteFooter = () => {
 
   const siteLinks = [
     { href: "/", label: "Ana sayfa" },
-    { href: "/analyze", label: "Analiz" },
+    { href: "/#hesaplama", label: "Kilo hesapla" },
+    { href: "/analyze", label: "Fotoğraf analizi" },
+    { href: "/blog", label: "Blog & rehber" },
     { href: "/contact", label: "İletişim" },
   ] as const;
 

@@ -65,6 +65,11 @@ const SiteHeader = () => {
       label: "Kilo Hesapla",
       active: false,
     },
+    {
+      href: "/blog",
+      label: "Rehber",
+      active: pathname.startsWith("/blog"),
+    },
     { href: "/pricing", label: "Paketler", active: pathname === "/pricing" },
     { href: "/contact", label: "İletişim", active: pathname === "/contact" },
   ];
@@ -104,6 +109,15 @@ const SiteHeader = () => {
             className={`${navLinkClass} hidden md:inline`}
           >
             Kilo Hesapla
+          </Link>
+          <Link
+            href="/blog"
+            className={`${navLinkClass} hidden md:inline ${
+              pathname.startsWith("/blog") ? activeNavLinkClass : ""
+            }`}
+            aria-current={pathname.startsWith("/blog") ? "page" : undefined}
+          >
+            Rehber
           </Link>
           <Link
             href="/pricing"

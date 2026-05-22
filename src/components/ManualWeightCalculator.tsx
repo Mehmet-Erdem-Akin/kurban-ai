@@ -3,12 +3,14 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import {
+  ArrowPathIcon,
   CalculatorIcon,
   ChartBarIcon,
   CheckCircleIcon,
   CurrencyDollarIcon,
-  DocumentTextIcon,
+  LockClosedIcon,
   ScaleIcon,
+  SparklesIcon,
 } from "@heroicons/react/24/outline";
 import YieldTable from "@/components/YieldTable";
 import { useAuth } from "@/components/AuthProvider";
@@ -17,6 +19,11 @@ import {
   getDefaultYieldRate,
   type LargeCattleYieldProfile,
 } from "@/utils/yieldCalculator";
+
+const LIVE_WEIGHT_MIN = 250;
+const LIVE_WEIGHT_MAX = 1200;
+const MEAT_PRICE_MIN = 350;
+const MEAT_PRICE_MAX = 950;
 
 const formatCurrency = (value: number) =>
   `${Math.round(value).toLocaleString("tr-TR")} ₺`;
@@ -27,6 +34,8 @@ const parseNumber = (value: string) => {
 };
 
 type BodyCondition = "normal" | "besili";
+type InputMode = "weight" | "measure";
+
 type CalculatedValues = {
   profile: LargeCattleYieldProfile;
   totalSellPrice: number;
@@ -36,28 +45,36 @@ type CalculatedValues = {
   estimatedKarkasWeight: number;
 };
 
-const pendingReportItems = [
-  {
-    title: "Karkas satış fiyatı",
-    text: "Canlı kilo, randıman profili ve kg et fiyatına göre hesaplanır.",
-    icon: <ScaleIcon className="h-5 w-5" strokeWidth={1.8} aria-hidden />,
-  },
-  {
-    title: "1/7 hisse tutarı",
-    text: "Toplam tahmini değerin kişi başı hisse karşılığı gösterilir.",
-    icon: (
-      <CurrencyDollarIcon className="h-5 w-5" strokeWidth={1.8} aria-hidden />
-    ),
-  },
-  {
-    title: "Randıman dökümü",
-    text: "Karkas ve parça değerleri tablo halinde raporlanır.",
-    icon: <ChartBarIcon className="h-5 w-5" strokeWidth={1.8} aria-hidden />,
-  },
-];
+const buildCalculatedValues = (
+  liveWeightValue: number,
+  currentMeatKgPriceValue: number,
+  yieldProfile: LargeCattleYieldProfile,
+): CalculatedValues => {
+  const defaultYieldRate = getDefaultYieldRate(yieldProfile);
+  const estimatedKarkasWeight = Math.round(
+    (liveWeightValue * defaultYieldRate) / 100,
+  );
+  const totalSellPrice = estimatedKarkasWeight * currentMeatKgPriceValue;
+  const sharePrice = totalSellPrice / 7;
+  const yieldRows = calculateYieldRows({
+    liveWeight: liveWeightValue,
+    totalValue: totalSellPrice,
+    profile: yieldProfile,
+  });
+
+  return {
+    profile: yieldProfile,
+    totalSellPrice,
+    sharePrice,
+    yieldRows,
+    defaultYieldRate,
+    estimatedKarkasWeight,
+  };
+};
 
 const ManualWeightCalculator = () => {
   const { user, loading: authLoading, setUser } = useAuth();
+  const [inputMode, setInputMode] = useState<InputMode>("weight");
   const [liveWeight, setLiveWeight] = useState("700");
   const [currentMeatKgPrice, setCurrentMeatKgPrice] = useState("620");
   const [yieldProfile, setYieldProfile] =
@@ -65,118 +82,97 @@ const ManualWeightCalculator = () => {
   const [chestCircumference, setChestCircumference] = useState("");
   const [bodyLength, setBodyLength] = useState("");
   const [bodyCondition, setBodyCondition] = useState<BodyCondition>("normal");
-  const [calculatedResult, setCalculatedResult] =
-    useState<CalculatedValues | null>(null);
+  const [showYieldTable, setShowYieldTable] = useState(false);
   const [creditError, setCreditError] = useState("");
-  const [isCalculating, setIsCalculating] = useState(false);
+  const [isUnlocking, setIsUnlocking] = useState(false);
 
-  const previewCalculatedValues = useMemo((): CalculatedValues => {
-    const liveWeightValue = parseNumber(liveWeight);
-    const currentMeatKgPriceValue = parseNumber(currentMeatKgPrice);
-    const defaultYieldRate = getDefaultYieldRate(yieldProfile);
-    const estimatedKarkasWeight = Math.round(
-      (liveWeightValue * defaultYieldRate) / 100,
-    );
-    const totalSellPrice = estimatedKarkasWeight * currentMeatKgPriceValue;
-    const sharePrice = totalSellPrice / 7;
-    const yieldRows = calculateYieldRows({
-      liveWeight: liveWeightValue,
-      totalValue: totalSellPrice,
-      profile: yieldProfile,
-    });
+  const liveWeightValue = parseNumber(liveWeight);
+  const meatPriceValue = parseNumber(currentMeatKgPrice);
 
-    return {
-      profile: yieldProfile,
-      totalSellPrice,
-      sharePrice,
-      yieldRows,
-      defaultYieldRate,
-      estimatedKarkasWeight,
-    };
-  }, [currentMeatKgPrice, liveWeight, yieldProfile]);
+  const previewValues = useMemo(
+    () =>
+      buildCalculatedValues(
+        liveWeightValue,
+        meatPriceValue,
+        yieldProfile,
+      ),
+    [liveWeightValue, meatPriceValue, yieldProfile],
+  );
 
   const measurementEstimate = useMemo(() => {
-    const chestCircumferenceValue = parseNumber(chestCircumference);
-    const bodyLengthValue = parseNumber(bodyLength);
+    const chest = parseNumber(chestCircumference);
+    const length = parseNumber(bodyLength);
 
-    if (chestCircumferenceValue <= 0 || bodyLengthValue <= 0) {
-      return null;
-    }
+    if (chest <= 0 || length <= 0) return null;
 
-    const baseWeight =
-      (chestCircumferenceValue * chestCircumferenceValue * bodyLengthValue) /
-      10840;
-    const conditionMultiplier = bodyCondition === "besili" ? 1.08 : 1;
-
-    return Math.round(baseWeight * conditionMultiplier);
+    const base = (chest * chest * length) / 10840;
+    const multiplier = bodyCondition === "besili" ? 1.08 : 1;
+    return Math.round(base * multiplier);
   }, [bodyCondition, bodyLength, chestCircumference]);
 
-  const handleLiveWeightChange = (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    setLiveWeight(event.target.value);
-    setCalculatedResult(null);
+  const selectedProfileLabel =
+    yieldProfile === "male" ? "Erkek büyükbaş" : "Dişi büyükbaş";
+
+  const handleInputModeChange = (mode: InputMode) => {
+    setInputMode(mode);
+    setShowYieldTable(false);
     setCreditError("");
   };
 
-  const handleCurrentMeatKgPriceChange = (
+  const handleLiveWeightSlider = (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
+    setLiveWeight(event.target.value);
+    setShowYieldTable(false);
+    setCreditError("");
+  };
+
+  const handleMeatPriceSlider = (event: React.ChangeEvent<HTMLInputElement>) => {
     setCurrentMeatKgPrice(event.target.value);
-    setCalculatedResult(null);
+    setShowYieldTable(false);
+    setCreditError("");
+  };
+
+  const handleLiveWeightInput = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    setLiveWeight(event.target.value);
+    setShowYieldTable(false);
+    setCreditError("");
+  };
+
+  const handleMeatPriceInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setCurrentMeatKgPrice(event.target.value);
+    setShowYieldTable(false);
     setCreditError("");
   };
 
   const handleYieldProfileChange = (profile: LargeCattleYieldProfile) => {
     setYieldProfile(profile);
-    setCalculatedResult(null);
-    setCreditError("");
-  };
-
-  const handleChestCircumferenceChange = (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    setChestCircumference(event.target.value);
-    setCalculatedResult(null);
-    setCreditError("");
-  };
-
-  const handleBodyLengthChange = (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    setBodyLength(event.target.value);
-    setCalculatedResult(null);
-    setCreditError("");
-  };
-
-  const handleBodyConditionChange = (condition: BodyCondition) => {
-    setBodyCondition(condition);
-    setCalculatedResult(null);
+    setShowYieldTable(false);
     setCreditError("");
   };
 
   const handleUseMeasurementEstimate = () => {
     if (!measurementEstimate) return;
-
     setLiveWeight(String(measurementEstimate));
-    setCalculatedResult(null);
+    setInputMode("weight");
+    setShowYieldTable(false);
     setCreditError("");
   };
 
-  const handleCalculateManual = async () => {
+  const handleUnlockYieldTable = async () => {
     if (!user) {
-      setCreditError("Manuel hesaplama için giriş yapmanız gerekiyor.");
+      setCreditError("Detaylı randıman tablosu için giriş yapın.");
       return;
     }
 
     if (user.remainingCredits <= 0) {
-      setCreditError(
-        "Kredi hakkınız kalmadı. Paket satın alarak devam edebilirsiniz.",
-      );
+      setCreditError("Kredi hakkınız kalmadı. Paketler sayfasından devam edin.");
       return;
     }
 
-    setIsCalculating(true);
+    setIsUnlocking(true);
     setCreditError("");
 
     try {
@@ -191,435 +187,479 @@ const ManualWeightCalculator = () => {
       }
 
       setUser(data.user);
-      setCalculatedResult(previewCalculatedValues);
+      setShowYieldTable(true);
     } catch {
-      setCreditError("Kredi işlemi sırasında sunucuya bağlanılamadı.");
+      setCreditError("Sunucuya bağlanılamadı. Lütfen tekrar deneyin.");
     } finally {
-      setIsCalculating(false);
+      setIsUnlocking(false);
     }
   };
 
-  const canCalculate = !authLoading && (user?.remainingCredits ?? 0) > 0;
-  const selectedProfileLabel =
-    yieldProfile === "male" ? "Erkek büyükbaş" : "Dişi büyükbaş";
-  const summaryValues = calculatedResult
-    ? [
-        {
-          label: "Karkas kilo",
-          value: `${calculatedResult.estimatedKarkasWeight.toLocaleString(
-            "tr-TR",
-          )} kg`,
-        },
-        {
-          label: "Randıman",
-          value: `%${calculatedResult.defaultYieldRate}`,
-        },
-        {
-          label: "Satış değeri",
-          value: formatCurrency(calculatedResult.totalSellPrice),
-        },
-        {
-          label: "Profil",
-          value: selectedProfileLabel,
-        },
-      ]
-    : [
-        {
-          label: "Canlı kilo",
-          value: `${parseNumber(liveWeight).toLocaleString("tr-TR")} kg`,
-        },
-        {
-          label: "Kg et fiyatı",
-          value: formatCurrency(parseNumber(currentMeatKgPrice)),
-        },
-        {
-          label: "Randıman profili",
-          value: selectedProfileLabel,
-        },
-        {
-          label: "Ölçü tahmini",
-          value: measurementEstimate
-            ? `${measurementEstimate.toLocaleString("tr-TR")} kg`
-            : "Bekliyor",
-        },
-      ];
+  const yieldProgress = Math.min(
+    100,
+    (previewValues.defaultYieldRate / 70) * 100,
+  );
 
   return (
     <section
       id="hesaplama"
-      className="surface-band scroll-mt-24 py-14 sm:py-16"
+      className="relative scroll-mt-24 overflow-hidden py-16 sm:py-20"
     >
+      <div
+        className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,rgba(4,120,87,0.12),transparent_55%),linear-gradient(180deg,rgba(250,250,249,0)_0%,rgba(236,253,245,0.35)_50%,rgba(250,250,249,0)_100%)] dark:bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,rgba(52,211,153,0.1),transparent_55%),linear-gradient(180deg,rgba(12,10,9,0)_0%,rgba(6,78,59,0.15)_50%,rgba(12,10,9,0)_100%)]"
+        aria-hidden
+      />
+
       <div className="mx-auto max-w-6xl px-4">
-        <div className="mx-auto max-w-2xl text-center">
-          <p className="section-kicker mx-auto">Manuel hesaplama</p>
-          <h2 className="font-display text-2xl font-semibold tracking-tight text-stone-900 dark:text-stone-50 sm:text-3xl">
-            Fotoğraf olmadan kilo ve hisse hesabı
+        <div className="mx-auto max-w-3xl text-center">
+          <p className="hero-pill mx-auto">
+            <SparklesIcon className="h-4 w-4 text-emerald-700 dark:text-emerald-300" aria-hidden />
+            Ücretsiz önizleme · Anlık sonuç
+          </p>
+          <h2 className="mt-5 font-display text-3xl font-semibold tracking-tight text-stone-900 dark:text-stone-50 sm:text-4xl">
+            Kurbanlık{" "}
+            <span className="gradient-text">kilo ve hisse hesaplama</span>
           </h2>
-          <p className="mt-3 text-stone-600 dark:text-stone-400">
-            Canlı kilo ve güncel kg et fiyatını girerek tahmini karkas değeri,
-            hisse fiyatı ve randıman karşılığını hızlıca hesaplayın.
+          <p className="mt-4 text-pretty text-base leading-relaxed text-stone-600 dark:text-stone-400 sm:text-lg">
+            Canlı kilo, karkas verimi ve 1/7 hisse fiyatını saniyeler içinde
+            görün. Fotoğraf olmadan dana kurban maliyetinizi planlayın.
           </p>
         </div>
 
-        <div className="mt-10 grid items-stretch gap-6 lg:grid-cols-[0.95fr_1.05fr]">
-          <div className="card p-5 sm:p-6 lg:h-full">
-            <div className="mb-5 flex items-center gap-3">
-              <div className="icon-container-primary h-11 w-11">
-                <CalculatorIcon
-                  className="h-6 w-6"
-                  strokeWidth={2}
-                  aria-hidden
-                />
-              </div>
-              <div>
-                <h3 className="font-display text-lg font-semibold text-stone-900 dark:text-stone-50">
-                  Kilo ve fiyat bilgileri
-                </h3>
-                <p className="text-sm text-stone-500 dark:text-stone-400">
-                  Manuel hesaplama ve fotoğraf analizi ortak kredi kullanır.
-                </p>
+        <div className="mt-12 grid gap-6 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:items-start">
+          {/* Sol: form */}
+          <div className="glass-strong animate-fade-in overflow-hidden rounded-[1.75rem] shadow-large shadow-stone-900/5 dark:shadow-black/30">
+            <div className="border-b border-stone-200/80 bg-gradient-to-r from-emerald-50/90 via-white to-teal-50/60 px-5 py-4 dark:border-stone-700 dark:from-emerald-950/40 dark:via-stone-900 dark:to-teal-950/30 sm:px-6">
+              <div className="flex flex-wrap gap-2 rounded-2xl border border-stone-200/90 bg-white/90 p-1.5 dark:border-stone-600 dark:bg-stone-950/80">
+                <button
+                  type="button"
+                  onClick={() => handleInputModeChange("weight")}
+                  className={`flex-1 rounded-xl px-4 py-2.5 text-sm font-semibold transition ${
+                    inputMode === "weight"
+                      ? "bg-emerald-800 text-white shadow-md"
+                      : "text-stone-600 hover:bg-stone-50 dark:text-stone-300 dark:hover:bg-stone-900"
+                  }`}
+                  aria-pressed={inputMode === "weight"}
+                >
+                  Canlı kilo
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleInputModeChange("measure")}
+                  className={`flex-1 rounded-xl px-4 py-2.5 text-sm font-semibold transition ${
+                    inputMode === "measure"
+                      ? "bg-emerald-800 text-white shadow-md"
+                      : "text-stone-600 hover:bg-stone-50 dark:text-stone-300 dark:hover:bg-stone-900"
+                  }`}
+                  aria-pressed={inputMode === "measure"}
+                >
+                  Ölçü ile tahmin
+                </button>
               </div>
             </div>
 
-            <div className="grid gap-4 sm:grid-cols-2">
-              <label className="block">
-                <span className="mb-1.5 block text-sm font-medium text-stone-700 dark:text-stone-300">
-                  Canlı Kilo (KG)
-                </span>
-                <input
-                  type="number"
-                  min="0"
-                  inputMode="decimal"
-                  value={liveWeight}
-                  onChange={handleLiveWeightChange}
-                  className="input"
-                  aria-label="Canlı kilo"
-                />
-              </label>
-
-              <label className="block">
-                <span className="mb-1.5 block text-sm font-medium text-stone-700 dark:text-stone-300">
-                  Güncel Kg Et Fiyatı
-                </span>
-                <input
-                  type="number"
-                  min="0"
-                  inputMode="decimal"
-                  value={currentMeatKgPrice}
-                  onChange={handleCurrentMeatKgPriceChange}
-                  className="input"
-                  aria-label="Güncel kilogram et fiyatı"
-                />
-              </label>
-
-              <fieldset className="rounded-2xl border border-emerald-100 bg-emerald-50/40 p-4 dark:border-emerald-800/55 dark:bg-emerald-950/20 sm:col-span-2">
-                <legend className="px-2 text-sm font-semibold text-emerald-800 dark:text-emerald-200">
-                  Ölçüyle canlı kilo tahmini
-                </legend>
-                <p className="mb-4 text-xs leading-relaxed text-stone-500 dark:text-stone-400">
-                  Göğüs çevresi ve vücut uzunluğu ile yaklaşık canlı kilo
-                  hesaplanır. Formül: göğüs çevresi² × vücut uzunluğu / 10840.
-                </p>
-
-                <div className="grid gap-4 sm:grid-cols-2">
-                  <label className="block">
-                    <span className="mb-1.5 block text-sm font-medium text-stone-700 dark:text-stone-300">
-                      Göğüs Çevresi (cm)
-                    </span>
-                    <input
-                      type="number"
-                      min="0"
-                      inputMode="decimal"
-                      value={chestCircumference}
-                      onChange={handleChestCircumferenceChange}
-                      className="input"
-                      aria-label="Göğüs çevresi santimetre"
-                      placeholder="Örn. 190"
-                    />
-                  </label>
-
-                  <label className="block">
-                    <span className="mb-1.5 block text-sm font-medium text-stone-700 dark:text-stone-300">
-                      Vücut Uzunluğu (cm)
-                    </span>
-                    <input
-                      type="number"
-                      min="0"
-                      inputMode="decimal"
-                      value={bodyLength}
-                      onChange={handleBodyLengthChange}
-                      className="input"
-                      aria-label="Vücut uzunluğu santimetre"
-                      placeholder="Örn. 165"
-                    />
-                  </label>
-                </div>
-
-                <div className="mt-4 grid gap-2 rounded-xl border border-stone-200 bg-white/80 p-1.5 dark:border-stone-700 dark:bg-stone-950/70 sm:grid-cols-2">
-                  <button
-                    type="button"
-                    onClick={() => handleBodyConditionChange("normal")}
-                    className={`rounded-lg px-4 py-2.5 text-sm font-semibold transition ${
-                      bodyCondition === "normal"
-                        ? "bg-emerald-700 text-white shadow-sm"
-                        : "text-stone-600 hover:bg-white dark:text-stone-300 dark:hover:bg-stone-900"
-                    }`}
-                    aria-pressed={bodyCondition === "normal"}
-                  >
-                    Normal kondisyon
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => handleBodyConditionChange("besili")}
-                    className={`rounded-lg px-4 py-2.5 text-sm font-semibold transition ${
-                      bodyCondition === "besili"
-                        ? "bg-emerald-700 text-white shadow-sm"
-                        : "text-stone-600 hover:bg-white dark:text-stone-300 dark:hover:bg-stone-900"
-                    }`}
-                    aria-pressed={bodyCondition === "besili"}
-                  >
-                    Besili kondisyon
-                  </button>
-                </div>
-
-                <div className="mt-4 flex flex-col gap-3 rounded-xl border border-stone-200 bg-white p-4 dark:border-stone-700 dark:bg-stone-950/80 sm:flex-row sm:items-center sm:justify-between">
+            <div className="space-y-6 p-5 sm:p-7">
+              {inputMode === "weight" ? (
+                <>
                   <div>
-                    <p className="text-xs font-semibold uppercase tracking-wide text-stone-500 dark:text-stone-400">
-                      Ölçü tahmini
-                    </p>
-                    <p className="mt-1 text-2xl font-bold text-stone-900 dark:text-stone-50">
-                      {measurementEstimate
-                        ? `${measurementEstimate.toLocaleString("tr-TR")} kg`
-                        : "Ölçü girin"}
-                    </p>
+                    <div className="flex items-end justify-between gap-3">
+                      <label
+                        htmlFor="live-weight-slider"
+                        className="text-sm font-semibold text-stone-800 dark:text-stone-200"
+                      >
+                        Canlı kilo
+                      </label>
+                      <div className="flex items-baseline gap-1.5">
+                        <input
+                          type="number"
+                          min={LIVE_WEIGHT_MIN}
+                          max={LIVE_WEIGHT_MAX}
+                          value={liveWeight}
+                          onChange={handleLiveWeightInput}
+                          className="w-20 rounded-lg border border-stone-200 bg-white px-2 py-1 text-right text-lg font-bold text-stone-900 dark:border-stone-600 dark:bg-stone-900 dark:text-stone-50"
+                          aria-label="Canlı kilo değeri"
+                        />
+                        <span className="text-sm font-medium text-stone-500">kg</span>
+                      </div>
+                    </div>
+                    <input
+                      id="live-weight-slider"
+                      type="range"
+                      min={LIVE_WEIGHT_MIN}
+                      max={LIVE_WEIGHT_MAX}
+                      step={5}
+                      value={Math.min(
+                        LIVE_WEIGHT_MAX,
+                        Math.max(LIVE_WEIGHT_MIN, liveWeightValue || LIVE_WEIGHT_MIN),
+                      )}
+                      onChange={handleLiveWeightSlider}
+                      className="mt-3 h-2 w-full cursor-pointer appearance-none rounded-full bg-stone-200 accent-emerald-700 dark:bg-stone-700"
+                      aria-valuemin={LIVE_WEIGHT_MIN}
+                      aria-valuemax={LIVE_WEIGHT_MAX}
+                      aria-valuenow={liveWeightValue}
+                    />
+                    <div className="mt-1 flex justify-between text-xs text-stone-400">
+                      <span>{LIVE_WEIGHT_MIN} kg</span>
+                      <span>{LIVE_WEIGHT_MAX} kg</span>
+                    </div>
                   </div>
-                  <button
-                    type="button"
-                    onClick={handleUseMeasurementEstimate}
-                    disabled={!measurementEstimate}
-                    className="btn btn-secondary btn-md"
-                  >
-                    Bu kiloyu kullan
-                  </button>
-                </div>
-              </fieldset>
 
-              <fieldset className="block sm:col-span-2">
-                <legend className="mb-1.5 block text-sm font-medium text-stone-700 dark:text-stone-300">
+                  <div>
+                    <div className="flex items-end justify-between gap-3">
+                      <label
+                        htmlFor="meat-price-slider"
+                        className="text-sm font-semibold text-stone-800 dark:text-stone-200"
+                      >
+                        Kg et fiyatı
+                      </label>
+                      <div className="flex items-baseline gap-1.5">
+                        <input
+                          type="number"
+                          min={MEAT_PRICE_MIN}
+                          max={MEAT_PRICE_MAX}
+                          value={currentMeatKgPrice}
+                          onChange={handleMeatPriceInput}
+                          className="w-24 rounded-lg border border-stone-200 bg-white px-2 py-1 text-right text-lg font-bold text-stone-900 dark:border-stone-600 dark:bg-stone-900 dark:text-stone-50"
+                          aria-label="Kilogram et fiyatı"
+                        />
+                        <span className="text-sm font-medium text-stone-500">₺/kg</span>
+                      </div>
+                    </div>
+                    <input
+                      id="meat-price-slider"
+                      type="range"
+                      min={MEAT_PRICE_MIN}
+                      max={MEAT_PRICE_MAX}
+                      step={10}
+                      value={Math.min(
+                        MEAT_PRICE_MAX,
+                        Math.max(MEAT_PRICE_MIN, meatPriceValue || MEAT_PRICE_MIN),
+                      )}
+                      onChange={handleMeatPriceSlider}
+                      className="mt-3 h-2 w-full cursor-pointer appearance-none rounded-full bg-stone-200 accent-emerald-700 dark:bg-stone-700"
+                    />
+                  </div>
+                </>
+              ) : (
+                <fieldset className="rounded-2xl border border-emerald-100/90 bg-emerald-50/30 p-4 dark:border-emerald-800/50 dark:bg-emerald-950/20">
+                  <legend className="px-1 text-sm font-semibold text-emerald-900 dark:text-emerald-200">
+                    Göğüs çevresi × vücut uzunluğu
+                  </legend>
+                  <p className="mt-1 text-xs leading-relaxed text-stone-500 dark:text-stone-400">
+                    Formül: göğüs² × uzunluk / 10840. Besili kondisyonda +%8.
+                  </p>
+                  <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                    <label className="block">
+                      <span className="mb-1 block text-xs font-medium text-stone-600 dark:text-stone-400">
+                        Göğüs (cm)
+                      </span>
+                      <input
+                        type="number"
+                        min="0"
+                        value={chestCircumference}
+                        onChange={(e) => {
+                          setChestCircumference(e.target.value);
+                          setShowYieldTable(false);
+                        }}
+                        className="input"
+                        placeholder="190"
+                        aria-label="Göğüs çevresi"
+                      />
+                    </label>
+                    <label className="block">
+                      <span className="mb-1 block text-xs font-medium text-stone-600 dark:text-stone-400">
+                        Uzunluk (cm)
+                      </span>
+                      <input
+                        type="number"
+                        min="0"
+                        value={bodyLength}
+                        onChange={(e) => {
+                          setBodyLength(e.target.value);
+                          setShowYieldTable(false);
+                        }}
+                        className="input"
+                        placeholder="165"
+                        aria-label="Vücut uzunluğu"
+                      />
+                    </label>
+                  </div>
+                  <div className="mt-3 grid grid-cols-2 gap-2 rounded-xl border border-stone-200/80 bg-white/80 p-1 dark:border-stone-700 dark:bg-stone-950/70">
+                    {(["normal", "besili"] as const).map((condition) => (
+                      <button
+                        key={condition}
+                        type="button"
+                        onClick={() => {
+                          setBodyCondition(condition);
+                          setShowYieldTable(false);
+                        }}
+                        className={`rounded-lg py-2 text-xs font-semibold transition ${
+                          bodyCondition === condition
+                            ? "bg-emerald-800 text-white"
+                            : "text-stone-600 dark:text-stone-300"
+                        }`}
+                        aria-pressed={bodyCondition === condition}
+                      >
+                        {condition === "normal" ? "Normal" : "Besili"}
+                      </button>
+                    ))}
+                  </div>
+                  <div className="mt-4 flex flex-col gap-3 rounded-xl border border-stone-200 bg-white p-4 dark:border-stone-700 dark:bg-stone-950 sm:flex-row sm:items-center sm:justify-between">
+                    <div>
+                      <p className="text-xs font-semibold uppercase tracking-wide text-stone-500">
+                        Tahmini canlı kilo
+                      </p>
+                      <p className="mt-1 font-display text-3xl font-bold text-stone-900 dark:text-stone-50">
+                        {measurementEstimate
+                          ? `${measurementEstimate.toLocaleString("tr-TR")} kg`
+                          : "—"}
+                      </p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={handleUseMeasurementEstimate}
+                      disabled={!measurementEstimate}
+                      className="btn btn-primary btn-md shrink-0"
+                    >
+                      Kiloyu uygula
+                    </button>
+                  </div>
+                </fieldset>
+              )}
+
+              <div>
+                <p className="mb-2 text-sm font-semibold text-stone-800 dark:text-stone-200">
                   Randıman profili
-                </legend>
-                <div className="grid gap-2 rounded-xl border border-stone-200 bg-stone-50/80 p-1.5 dark:border-stone-700 dark:bg-stone-950/70 sm:grid-cols-2">
-                  <button
-                    type="button"
-                    onClick={() => handleYieldProfileChange("male")}
-                    className={`rounded-lg px-4 py-2.5 text-sm font-semibold transition ${
-                      yieldProfile === "male"
-                        ? "bg-emerald-700 text-white shadow-sm"
-                        : "text-stone-600 hover:bg-white dark:text-stone-300 dark:hover:bg-stone-900"
-                    }`}
-                    aria-pressed={yieldProfile === "male"}
-                  >
-                    Erkek büyükbaş
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => handleYieldProfileChange("female")}
-                    className={`rounded-lg px-4 py-2.5 text-sm font-semibold transition ${
-                      yieldProfile === "female"
-                        ? "bg-emerald-700 text-white shadow-sm"
-                        : "text-stone-600 hover:bg-white dark:text-stone-300 dark:hover:bg-stone-900"
-                    }`}
-                    aria-pressed={yieldProfile === "female"}
-                  >
-                    Dişi büyükbaş
-                  </button>
+                </p>
+                <div className="grid grid-cols-2 gap-2 rounded-2xl border border-stone-200/90 bg-stone-50/80 p-1.5 dark:border-stone-700 dark:bg-stone-950/70">
+                  {(
+                    [
+                      { id: "male" as const, label: "Erkek", sub: "~%60" },
+                      { id: "female" as const, label: "Dişi", sub: "~%53" },
+                    ] as const
+                  ).map((item) => (
+                    <button
+                      key={item.id}
+                      type="button"
+                      onClick={() => handleYieldProfileChange(item.id)}
+                      className={`rounded-xl px-3 py-3 text-left transition ${
+                        yieldProfile === item.id
+                          ? "bg-emerald-800 text-white shadow-md"
+                          : "text-stone-700 hover:bg-white dark:text-stone-200 dark:hover:bg-stone-900"
+                      }`}
+                      aria-pressed={yieldProfile === item.id}
+                    >
+                      <span className="block text-sm font-bold">{item.label}</span>
+                      <span
+                        className={`text-xs ${
+                          yieldProfile === item.id
+                            ? "text-emerald-100"
+                            : "text-stone-500"
+                        }`}
+                      >
+                        {item.sub} randıman
+                      </span>
+                    </button>
+                  ))}
                 </div>
-              </fieldset>
-
-              <div className="space-y-3 sm:col-span-2">
-                <button
-                  type="button"
-                  onClick={handleCalculateManual}
-                  disabled={!canCalculate || isCalculating}
-                  className="btn btn-primary btn-lg w-full"
-                >
-                  {isCalculating ? "Hesaplanıyor..." : "Manuel hesapla"}
-                </button>
-
-                {!authLoading && user && (
-                  <p className="text-center text-xs text-stone-500 dark:text-stone-400">
-                    Kalan hakkınız:{" "}
-                    <strong className="text-emerald-700 dark:text-emerald-300">
-                      {user.remainingCredits}
-                    </strong>{" "}
-                    kredi
-                  </p>
-                )}
-
-                {!authLoading && !user && (
-                  <p className="text-center text-sm text-stone-600 dark:text-stone-400">
-                    Manuel hesaplama için{" "}
-                    <Link
-                      href="/auth/login"
-                      className="font-semibold text-emerald-700 hover:text-emerald-900 dark:text-emerald-300"
-                    >
-                      giriş yapın
-                    </Link>{" "}
-                    veya{" "}
-                    <Link
-                      href="/auth/register"
-                      className="font-semibold text-emerald-700 hover:text-emerald-900 dark:text-emerald-300"
-                    >
-                      ücretsiz hesap oluşturun
-                    </Link>
-                    .
-                  </p>
-                )}
-
-                {creditError && (
-                  <p className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-center text-sm text-red-700 dark:border-red-900/60 dark:bg-red-950/30 dark:text-red-200">
-                    {creditError}
-                  </p>
-                )}
               </div>
+
+              <Link
+                href="/analyze"
+                className="flex items-center justify-center gap-2 rounded-2xl border border-dashed border-emerald-300/80 bg-emerald-50/50 px-4 py-3 text-sm font-semibold text-emerald-900 transition hover:border-emerald-400 hover:bg-emerald-50 dark:border-emerald-700/60 dark:bg-emerald-950/30 dark:text-emerald-200 dark:hover:bg-emerald-950/50"
+              >
+                <CalculatorIcon className="h-5 w-5" aria-hidden />
+                Fotoğrafla yapay zeka analizi
+              </Link>
             </div>
           </div>
 
-          <div className="grid gap-4 lg:h-full lg:grid-rows-[auto_auto_1fr]">
-            <div className="card overflow-hidden p-5 sm:p-6">
-              <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
-                <div>
-                  <p className="flex items-center gap-2 text-sm font-semibold text-stone-500 dark:text-stone-400">
-                    <DocumentTextIcon
-                      className="h-5 w-5 text-emerald-700 dark:text-emerald-300"
-                      strokeWidth={1.8}
-                      aria-hidden
-                    />
-                    Tahmini Karkas Satış Fiyatı
+          {/* Sağ: canlı sonuç paneli */}
+          <div className="animate-slide-up space-y-4 lg:sticky lg:top-24">
+            <div className="overflow-hidden rounded-[1.75rem] border border-stone-200/80 bg-white shadow-large dark:border-stone-700 dark:bg-stone-900">
+              <div className="border-b border-stone-100 bg-stone-50/80 px-5 py-4 dark:border-stone-800 dark:bg-stone-950/80 sm:px-6">
+                <div className="flex items-center justify-between gap-3">
+                  <p className="flex items-center gap-2 text-sm font-semibold text-stone-600 dark:text-stone-400">
+                    <ScaleIcon className="h-5 w-5 text-emerald-700 dark:text-emerald-400" aria-hidden />
+                    Anlık önizleme
                   </p>
-                  {calculatedResult ? (
-                    <>
-                      <p className="mt-2 text-3xl font-bold text-stone-900 dark:text-stone-50">
-                        {formatCurrency(calculatedResult.totalSellPrice)}
-                      </p>
-                      <p className="mt-1 text-xs text-stone-500 dark:text-stone-400">
-                        %{calculatedResult.defaultYieldRate} randıman ·{" "}
-                        {calculatedResult.estimatedKarkasWeight.toLocaleString(
-                          "tr-TR",
-                        )}{" "}
-                        kg karkas
-                      </p>
-                    </>
-                  ) : (
-                    <>
-                      <p className="mt-2 text-3xl font-bold text-stone-400 dark:text-stone-500">
-                        Hesaplama bekliyor
-                      </p>
-                      <p className="mt-1 text-xs text-stone-500 dark:text-stone-400">
-                        Sonucu görmek için 1 kredi kullanın.
-                      </p>
-                    </>
-                  )}
-                </div>
-                <div className="rounded-2xl border border-emerald-100 bg-emerald-50/70 px-4 py-3 text-sm text-emerald-900 dark:border-emerald-800/60 dark:bg-emerald-950/30 dark:text-emerald-100 sm:min-w-[150px]">
-                  <p className="font-semibold">Güncel kg et fiyatı</p>
-                  <p className="mt-1 text-xl font-bold">
-                    {formatCurrency(parseNumber(currentMeatKgPrice))}
-                  </p>
+                  <span className="badge-success">Canlı güncellenir</span>
                 </div>
               </div>
-            </div>
 
-            <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-emerald-600 via-emerald-700 to-emerald-900 p-6 text-center text-white shadow-large shadow-emerald-900/25 sm:p-8">
-              <div
-                className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.22),transparent_45%)]"
-                aria-hidden
-              />
-              <div className="relative">
-                <p className="flex items-center justify-center gap-2 text-sm font-medium text-emerald-50 sm:text-base">
-                  <CurrencyDollarIcon className="h-5 w-5" aria-hidden />1
-                  Kişilik Hisse Fiyatı (1/7)
+              <div className="p-5 sm:p-6">
+                <p className="text-xs font-bold uppercase tracking-[0.2em] text-stone-500">
+                  Tahmini karkas satış değeri
                 </p>
-                <p className="mt-3 font-display text-4xl font-bold sm:text-5xl">
-                  {calculatedResult
-                    ? formatCurrency(calculatedResult.sharePrice)
-                    : "Hisseyi hesapla"}
+                <p className="mt-2 font-display text-4xl font-bold tracking-tight text-stone-900 dark:text-stone-50 sm:text-5xl">
+                  {formatCurrency(previewValues.totalSellPrice)}
                 </p>
-                {!calculatedResult && (
-                  <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-emerald-50/80">
-                    Formu tamamlayıp manuel hesapladığınızda kişi başı hisse ve
-                    toplam satış değeri burada görünür.
-                  </p>
-                )}
-              </div>
-            </div>
+                <p className="mt-2 text-sm text-stone-500 dark:text-stone-400">
+                  {previewValues.estimatedKarkasWeight.toLocaleString("tr-TR")} kg
+                  karkas · %{previewValues.defaultYieldRate} randıman ·{" "}
+                  {selectedProfileLabel}
+                </p>
 
-            <div className="card flex flex-col p-5 sm:p-6">
-              <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
-                <div>
-                  <p className="text-xs font-bold uppercase tracking-[0.2em] text-emerald-800 dark:text-emerald-300">
-                    {calculatedResult ? "Sonuç özeti" : "Rapor önizlemesi"}
-                  </p>
-                  <h3 className="mt-2 font-display text-xl font-semibold text-stone-900 dark:text-stone-50">
-                    {calculatedResult
-                      ? "Hesabınız hazır"
-                      : "Form bilgileri hazır"}
-                  </h3>
-                </div>
-                <span className="inline-flex w-fit items-center gap-1.5 rounded-full border border-emerald-100 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-800 dark:border-emerald-800/60 dark:bg-emerald-950/40 dark:text-emerald-200">
-                  <CheckCircleIcon className="h-4 w-4" aria-hidden />
-                  Mobil uyumlu
-                </span>
-              </div>
-
-              <div className="mt-5 grid gap-3 sm:grid-cols-2">
-                {summaryValues.map((item) => (
-                  <div
-                    key={item.label}
-                    className="rounded-2xl border border-stone-200/80 bg-stone-50/80 p-4 dark:border-stone-700 dark:bg-stone-950/55"
-                  >
-                    <p className="text-xs font-semibold uppercase tracking-[0.16em] text-stone-500 dark:text-stone-400">
-                      {item.label}
-                    </p>
-                    <p className="mt-1 text-lg font-bold text-stone-900 dark:text-stone-50">
-                      {item.value}
-                    </p>
+                <div className="mt-5">
+                  <div className="flex justify-between text-xs font-medium text-stone-500">
+                    <span>Randıman</span>
+                    <span>%{previewValues.defaultYieldRate}</span>
                   </div>
-                ))}
-              </div>
-
-              {!calculatedResult && (
-                <div className="mt-5 grid gap-3">
-                  {pendingReportItems.map((item) => (
+                  <div className="progress mt-2">
                     <div
-                      key={item.title}
-                      className="flex gap-3 rounded-2xl border border-emerald-100/80 bg-emerald-50/45 p-4 dark:border-emerald-800/50 dark:bg-emerald-950/20"
+                      className="progress-primary"
+                      style={{ width: `${yieldProgress}%` }}
+                      role="progressbar"
+                      aria-valuenow={previewValues.defaultYieldRate}
+                      aria-valuemin={0}
+                      aria-valuemax={70}
+                    />
+                  </div>
+                </div>
+
+                <div className="mt-6 grid grid-cols-2 gap-3">
+                  {[
+                    {
+                      label: "Canlı kilo",
+                      value: `${liveWeightValue.toLocaleString("tr-TR")} kg`,
+                      icon: ScaleIcon,
+                    },
+                    {
+                      label: "Kg et fiyatı",
+                      value: formatCurrency(meatPriceValue),
+                      icon: CurrencyDollarIcon,
+                    },
+                    {
+                      label: "Karkas kilo",
+                      value: `${previewValues.estimatedKarkasWeight.toLocaleString("tr-TR")} kg`,
+                      icon: ChartBarIcon,
+                    },
+                    {
+                      label: "Ölçü tahmini",
+                      value: measurementEstimate
+                        ? `${measurementEstimate} kg`
+                        : "—",
+                      icon: ArrowPathIcon,
+                    },
+                  ].map((stat) => (
+                    <div
+                      key={stat.label}
+                      className="rounded-2xl border border-stone-100 bg-stone-50/90 p-3.5 dark:border-stone-700 dark:bg-stone-950/60"
                     >
-                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white text-emerald-800 shadow-sm dark:bg-stone-900 dark:text-emerald-200">
-                        {item.icon}
-                      </div>
-                      <div>
-                        <p className="font-semibold text-stone-900 dark:text-stone-50">
-                          {item.title}
-                        </p>
-                        <p className="mt-1 text-sm leading-relaxed text-stone-600 dark:text-stone-400">
-                          {item.text}
-                        </p>
-                      </div>
+                      <stat.icon
+                        className="h-4 w-4 text-emerald-700 dark:text-emerald-400"
+                        aria-hidden
+                      />
+                      <p className="mt-2 text-[11px] font-semibold uppercase tracking-wide text-stone-500">
+                        {stat.label}
+                      </p>
+                      <p className="mt-0.5 text-sm font-bold text-stone-900 dark:text-stone-50">
+                        {stat.value}
+                      </p>
                     </div>
                   ))}
                 </div>
+              </div>
+            </div>
+
+            <div className="relative overflow-hidden rounded-[1.75rem] bg-gradient-to-br from-emerald-600 via-emerald-800 to-stone-950 p-6 text-white shadow-xl shadow-emerald-950/30 sm:p-8">
+              <div
+                className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_30%_0%,rgba(255,255,255,0.2),transparent_50%)]"
+                aria-hidden
+              />
+              <div className="relative text-center">
+                <p className="text-sm font-medium text-emerald-50/90">
+                  1 kişilik hisse (1/7)
+                </p>
+                <p className="mt-2 font-display text-4xl font-bold sm:text-5xl">
+                  {formatCurrency(previewValues.sharePrice)}
+                </p>
+                <p className="mx-auto mt-3 max-w-xs text-sm text-emerald-50/80">
+                  Kurban hisse fiyatı hesaplama: toplam değer ÷ 7 pay.
+                </p>
+              </div>
+            </div>
+
+            <div className="glass-strong rounded-2xl p-5 sm:p-6">
+              <div className="flex items-start gap-3">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">
+                  {showYieldTable ? (
+                    <CheckCircleIcon className="h-5 w-5" aria-hidden />
+                  ) : (
+                    <LockClosedIcon className="h-5 w-5" aria-hidden />
+                  )}
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="font-semibold text-stone-900 dark:text-stone-50">
+                    Detaylı randıman tablosu
+                  </p>
+                  <p className="mt-1 text-sm text-stone-600 dark:text-stone-400">
+                    Farklı randıman senaryoları ve parça dökümü. 1 kredi ile
+                    açılır.
+                  </p>
+                </div>
+              </div>
+
+              {!showYieldTable && (
+                <button
+                  type="button"
+                  onClick={handleUnlockYieldTable}
+                  disabled={
+                    isUnlocking ||
+                    authLoading ||
+                    (!!user && user.remainingCredits <= 0)
+                  }
+                  className="btn btn-primary btn-md mt-4 w-full"
+                >
+                  {isUnlocking ? "Açılıyor..." : "Tabloyu aç (1 kredi)"}
+                </button>
+              )}
+
+              {!authLoading && !user && (
+                <p className="mt-3 text-center text-sm text-stone-600 dark:text-stone-400">
+                  <Link
+                    href="/auth/login"
+                    className="font-semibold text-emerald-700 dark:text-emerald-300"
+                  >
+                    Giriş yapın
+                  </Link>{" "}
+                  veya{" "}
+                  <Link
+                    href="/auth/register"
+                    className="font-semibold text-emerald-700 dark:text-emerald-300"
+                  >
+                    ücretsiz kayıt olun
+                  </Link>
+                </p>
+              )}
+
+              {!authLoading && user && (
+                <p className="mt-3 text-center text-xs text-stone-500">
+                  Kalan kredi:{" "}
+                  <strong className="text-emerald-700 dark:text-emerald-300">
+                    {user.remainingCredits}
+                  </strong>
+                </p>
+              )}
+
+              {creditError && (
+                <p
+                  className="mt-3 rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-center text-sm text-red-700 dark:border-red-900/50 dark:bg-red-950/30 dark:text-red-200"
+                  role="alert"
+                >
+                  {creditError}
+                </p>
               )}
             </div>
           </div>
         </div>
 
-        {calculatedResult && (
-          <div className="mt-6">
+        {showYieldTable && (
+          <div className="mt-8 animate-scale-in">
             <YieldTable
-              key={calculatedResult.profile}
-              rows={calculatedResult.yieldRows}
-              profile={calculatedResult.profile}
+              key={previewValues.profile}
+              rows={previewValues.yieldRows}
+              profile={previewValues.profile}
             />
           </div>
         )}

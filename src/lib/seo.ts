@@ -25,6 +25,11 @@ export const indexableRoutes: IndexableRoute[] = [
     priority: 0.95,
   },
   {
+    path: "/blog",
+    changeFrequency: "weekly",
+    priority: 0.9,
+  },
+  {
     path: "/pricing",
     changeFrequency: "weekly",
     priority: 0.85,
@@ -69,24 +74,41 @@ const getConfiguredSiteUrl = () => {
   return FALLBACK_SITE_URL;
 };
 
+/** Yüksek hacimli, nişe uygun anahtar kelimeler (Türkiye arama niyeti) */
+export const primaryKeywords = [
+  "kurbanlık kilo hesaplama",
+  "kurban kilo hesaplama",
+  "kurbanlık fiyat hesaplama",
+  "kurban hisse fiyatı hesaplama",
+  "kurban et miktarı hesaplama",
+  "kurbanlık hisse hesaplama",
+  "karkas kilo hesaplama",
+  "kurban randıman hesaplama",
+  "dana kilo hesaplama",
+  "koyun kilo hesaplama",
+  "keçi kilo hesaplama",
+  "kurbanlık canlı kilo tahmini",
+] as const;
+
+export const secondaryKeywords = [
+  "kurbanlık analiz",
+  "fotoğraf ile kurban kilo hesaplama",
+  "kurbanlık kg et fiyatı",
+  "büyükbaş kurban hesaplama",
+  "küçükbaş kurban hesaplama",
+  "kurbanlık değer hesaplama",
+  "yapay zeka kurban analizi",
+] as const;
+
 export const siteConfig = {
-  name: "Kurbanlık Analiz",
-  title: "Kurbanlık Analiz - Yapay Zeka ile Hayvan Analizi",
+  name: "Kurbanlık Kilo Hesaplama",
+  title: "Kurbanlık Kilo Hesaplama | Hisse ve Karkas Fiyatı",
   description:
-    "Kurbanlık hayvan seçiminde daha bilinçli kararlar verin. Yapay zeka ile fotoğraftan canlı kilo, karkas verimi ve piyasa değeri tahmini alın.",
+    "Kurbanlık kilo, karkas verimi ve hisse fiyatını ücretsiz hesaplayın. Dana, koyun ve keçi için canlı kilo tahmini; fotoğrafla yapay zeka analizi.",
   domain: getConfiguredSiteUrl(),
   locale: "tr_TR",
   ogImage: "/og-image.jpg",
-  keywords: [
-    "kurbanlık kilo hesaplama",
-    "kurbanlık fiyat hesaplama",
-    "kurbanlık analiz",
-    "dana kilo tahmini",
-    "koyun kilo tahmini",
-    "kurbanlık hisse fiyatı",
-    "karkas hesaplama",
-    "yapay zeka hayvan analizi",
-  ],
+  keywords: [...primaryKeywords, ...secondaryKeywords],
 } as const;
 
 export const getCanonicalUrl = (path = "/") => {

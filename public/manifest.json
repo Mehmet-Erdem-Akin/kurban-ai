@@ -1,7 +1,7 @@
 {
-  "name": "Kurbanlık Analiz - Yapay Zeka ile Hayvan Analizi",
-  "short_name": "Kurbanlık Analiz",
-  "description": "Yapay zeka teknolojisi ile kurbanlık hayvan analizi ve fiyat tahmini",
+  "name": "Kurbanlık Kilo Hesaplama - Hisse ve Karkas",
+  "short_name": "Kilo Hesaplama",
+  "description": "Kurbanlık kilo, karkas verimi ve hisse fiyatı hesaplama. Fotoğrafla yapay zeka analizi.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",

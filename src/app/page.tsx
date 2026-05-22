@@ -15,6 +15,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import AppPageShell from "@/components/AppPageShell";
+import BlogTeaser from "@/components/blog/BlogTeaser";
 import ManualWeightCalculator from "@/components/ManualWeightCalculator";
 import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
@@ -202,15 +203,15 @@ const Home = () => {
                 className="h-auto w-[235px] sm:w-[300px]"
               />
               <h1 className="mt-8 max-w-3xl text-balance font-display text-4xl font-semibold leading-[1.04] tracking-tight text-stone-950 dark:text-stone-50 sm:text-6xl lg:text-7xl">
-                Kurbanlık Kilonu{" "}
+                Kurbanlık Kilo ve{" "}
                 <span className="block text-emerald-800 dark:text-emerald-300">
-                  Hesapla, İçin Rahat Olsun
+                  Hisse Fiyatı Hesaplama
                 </span>
               </h1>
               <p className="mt-6 max-w-xl text-pretty text-base leading-8 text-stone-600 dark:text-stone-300 sm:text-lg">
-                Kurbanlık hayvanınızın yaş, ırk ve cinsiyet bilgilerine göre
-                ortalama kilosunu hesaplayın; ibadetinizi doğru ve huzurlu bir
-                şekilde yerine getirin.
+                Canlı kilo, karkas verimi ve 1/7 hisse tutarını ücretsiz
+                hesaplayın. Dana, koyun ve keçi için fotoğrafla yapay zeka
+                analizi veya manuel hesaplama.
               </p>
               <div className="mt-8 flex flex-col gap-5 sm:flex-row sm:items-center">
                 <Link
@@ -407,6 +408,8 @@ const Home = () => {
             </div>
           </div>
         </section>
+
+        <BlogTeaser />
 
         <section
           id="sss"

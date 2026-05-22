@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -26,10 +27,28 @@ const SiteHeader = () => {
   const isHome = pathname === "/";
   const { user, loading } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   useEffect(() => {
     setIsMobileMenuOpen(false);
   }, [pathname]);
+
+  useEffect(() => {
+    if (!isMobileMenuOpen) {
+      return;
+    }
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [isMobileMenuOpen]);
 
   const handleToggleMobileMenu = () => {
     setIsMobileMenuOpen((isOpen) => !isOpen);
@@ -149,74 +168,116 @@ const SiteHeader = () => {
           </button>
         </nav>
       </div>
-      {isMobileMenuOpen && (
-        <div
-          id="mobile-navigation"
-          className="border-t border-stone-200/80 bg-white/95 px-4 pb-4 pt-3 shadow-large backdrop-blur-xl dark:border-stone-800 dark:bg-stone-950/95 md:hidden"
-        >
-          <div className="mx-auto max-w-6xl space-y-3">
-            <div className="flex items-center justify-between rounded-2xl border border-stone-200/80 bg-stone-50/80 px-4 py-3 dark:border-stone-700 dark:bg-stone-900/80">
-              <span className="text-sm font-semibold text-stone-700 dark:text-stone-200">
-                Renk teması
-              </span>
-              <ThemeToggle />
+      {isMounted &&
+        isMobileMenuOpen &&
+        createPortal(
+          <div
+            id="mobile-navigation"
+            className="fixed inset-0 z-[100] flex flex-col bg-white dark:bg-stone-950 md:hidden"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Mobil menü"
+          >
+            <div className="flex shrink-0 items-center justify-between gap-3 border-b border-stone-200/80 px-4 py-3 dark:border-stone-800">
+              <Link
+                href="/"
+                onClick={handleCloseMobileMenu}
+                className="group flex min-w-0 items-center rounded-xl outline-none ring-emerald-800 ring-offset-2 focus-visible:ring-2 dark:ring-offset-stone-950"
+                aria-label="Kurbanlık Analiz ana sayfa"
+              >
+                <Image
+                  src="/ka-logo.png"
+                  alt="Kurbanlık Kilo Hesaplama"
+                  width={220}
+                  height={60}
+                  className="h-[40px] w-auto rounded-lg object-contain transition group-hover:opacity-90"
+                />
+              </Link>
+              <button
+                type="button"
+                onClick={handleCloseMobileMenu}
+                className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-stone-200 bg-white/90 text-stone-800 shadow-sm transition hover:border-emerald-200 hover:text-emerald-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700 focus-visible:ring-offset-2 dark:border-stone-700 dark:bg-stone-900/90 dark:text-stone-100 dark:hover:border-emerald-700 dark:hover:text-emerald-300 dark:focus-visible:ring-emerald-500 dark:focus-visible:ring-offset-stone-950"
+                aria-label="Menüyü kapat"
+              >
+                <XMarkIcon className="h-6 w-6" strokeWidth={2} aria-hidden />
+              </button>
             </div>
-            <div className="grid gap-1">
-              {mobileNavItems.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={handleCloseMobileMenu}
-                  className={`${mobileNavLinkClass} ${
-                    item.active ? activeNavLinkClass : ""
-                  }`}
-                  aria-current={item.active ? "page" : undefined}
-                >
-                  {item.label}
-                </Link>
-              ))}
-              {!loading && !user && (
-                <Link
-                  href="/auth/login"
-                  onClick={handleCloseMobileMenu}
-                  className={`${mobileNavLinkClass} ${
-                    pathname === "/auth/login" ? activeNavLinkClass : ""
-                  }`}
-                  aria-current={pathname === "/auth/login" ? "page" : undefined}
-                >
-                  Giriş Yap
-                </Link>
-              )}
-              {!loading && user && (
-                <Link
-                  href="/account"
-                  onClick={handleCloseMobileMenu}
-                  className={`${mobileNavLinkClass} ${
-                    pathname === "/account" ? activeNavLinkClass : ""
-                  }`}
-                  aria-current={pathname === "/account" ? "page" : undefined}
-                >
-                  <span className="inline-flex items-center gap-2">
-                    <UserCircleIcon className="h-5 w-5" aria-hidden />
-                    Hesabım
-                  </span>
-                  <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-800 dark:bg-emerald-950 dark:text-emerald-200">
-                    {user.remainingCredits}
-                  </span>
-                </Link>
-              )}
-            </div>
-            <Link
-              href="/analyze"
-              onClick={handleCloseMobileMenu}
-              className="btn btn-primary btn-md w-full"
-              aria-current={pathname === "/analyze" ? "page" : undefined}
+
+            <nav
+              className="flex flex-1 flex-col overflow-y-auto px-4 py-6"
+              aria-label="Mobil ana menü"
             >
-              Fotoğrafla Hesapla
-            </Link>
-          </div>
-        </div>
-      )}
+              <div className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-6">
+                <div className="flex items-center justify-between rounded-2xl border border-stone-200/80 bg-stone-50/80 px-4 py-3 dark:border-stone-700 dark:bg-stone-900/80">
+                  <span className="text-sm font-semibold text-stone-700 dark:text-stone-200">
+                    Renk teması
+                  </span>
+                  <ThemeToggle />
+                </div>
+
+                <div className="grid flex-1 content-start gap-2">
+                  {mobileNavItems.map((item) => (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      onClick={handleCloseMobileMenu}
+                      className={`${mobileNavLinkClass} py-4 text-base ${
+                        item.active ? activeNavLinkClass : ""
+                      }`}
+                      aria-current={item.active ? "page" : undefined}
+                    >
+                      {item.label}
+                    </Link>
+                  ))}
+                  {!loading && !user && (
+                    <Link
+                      href="/auth/login"
+                      onClick={handleCloseMobileMenu}
+                      className={`${mobileNavLinkClass} py-4 text-base ${
+                        pathname === "/auth/login" ? activeNavLinkClass : ""
+                      }`}
+                      aria-current={
+                        pathname === "/auth/login" ? "page" : undefined
+                      }
+                    >
+                      Giriş Yap
+                    </Link>
+                  )}
+                  {!loading && user && (
+                    <Link
+                      href="/account"
+                      onClick={handleCloseMobileMenu}
+                      className={`${mobileNavLinkClass} py-4 text-base ${
+                        pathname === "/account" ? activeNavLinkClass : ""
+                      }`}
+                      aria-current={
+                        pathname === "/account" ? "page" : undefined
+                      }
+                    >
+                      <span className="inline-flex items-center gap-2">
+                        <UserCircleIcon className="h-5 w-5" aria-hidden />
+                        Hesabım
+                      </span>
+                      <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-800 dark:bg-emerald-950 dark:text-emerald-200">
+                        {user.remainingCredits}
+                      </span>
+                    </Link>
+                  )}
+                </div>
+
+                <Link
+                  href="/analyze"
+                  onClick={handleCloseMobileMenu}
+                  className="btn btn-primary btn-md mt-auto w-full"
+                  aria-current={pathname === "/analyze" ? "page" : undefined}
+                >
+                  Fotoğrafla Hesapla
+                </Link>
+              </div>
+            </nav>
+          </div>,
+          document.body
+        )}
     </header>
   );
 };

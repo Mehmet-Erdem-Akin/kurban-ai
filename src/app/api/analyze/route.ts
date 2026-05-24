@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import type { Prisma } from "@prisma/client";
 import { getCurrentUser, toSafeUser } from "@/lib/auth";
-import { decrementUserCredit } from "@/lib/db";
+import { decrementUserCreditAndCreateAnalysis } from "@/lib/db";
 
 // Define proper types for additionalInfo
 interface AdditionalInfo {
@@ -16,6 +17,47 @@ interface AdditionalInfo {
   specialNotes?: string;
   weight?: string;
 }
+
+type AnalysisResultPayload = Record<string, unknown>;
+
+const dataUrlPattern = /^data:(image\/[a-zA-Z0-9.+-]+);base64,/;
+
+const toJsonObject = (payload: AnalysisResultPayload): Prisma.InputJsonObject =>
+  JSON.parse(JSON.stringify(payload)) as Prisma.InputJsonObject;
+
+const getImagePayload = (image: string, imageIndex: number) => {
+  const mimeType = image.match(dataUrlPattern)?.[1] ?? "image/jpeg";
+  const base64Data = image.replace(dataUrlPattern, "");
+
+  return {
+    imageIndex,
+    mimeType,
+    dataUrl: image,
+    sizeBytes: Math.ceil((base64Data.length * 3) / 4),
+  };
+};
+
+const createAnalysisRecordPayload = ({
+  images,
+  additionalInfo,
+  result,
+}: {
+  images: string[];
+  additionalInfo?: AdditionalInfo;
+  result: AnalysisResultPayload;
+}) =>
+  toJsonObject({
+    source: "photo_analysis",
+    version: 1,
+    savedAt: new Date().toISOString(),
+    selectedInputs: additionalInfo ?? {},
+    photos: images.map((image, index) => getImagePayload(image, index + 1)),
+    result,
+    metadata: {
+      analysisType: result.analysisType,
+      totalImages: images.length,
+    },
+  });
 
 const createCreditErrorResponse = (
   error: "AUTH_REQUIRED" | "NO_CREDITS",
@@ -59,12 +101,22 @@ const getUserReadyForAnalysis = async () => {
   return { user, response: null };
 };
 
-const consumeAnalysisCredit = async (userId: string) => {
-  const updatedUser = await decrementUserCredit(userId);
+const saveAnalysisAndConsumeCredit = async ({
+  userId,
+  payload,
+}: {
+  userId: string;
+  payload: Prisma.InputJsonObject;
+}) => {
+  const savedAnalysis = await decrementUserCreditAndCreateAnalysis(
+    userId,
+    payload,
+  );
 
-  if (!updatedUser) {
+  if (!savedAnalysis) {
     return {
       user: null,
+      analysisId: null,
       response: createCreditErrorResponse(
         "NO_CREDITS",
         "Kredi hakkınız kalmadı",
@@ -73,7 +125,11 @@ const consumeAnalysisCredit = async (userId: string) => {
     };
   }
 
-  return { user: toSafeUser(updatedUser), response: null };
+  return {
+    user: toSafeUser(savedAnalysis.user),
+    analysisId: savedAnalysis.analysis.id,
+    response: null,
+  };
 };
 
 // Initialize Gemini API
@@ -619,7 +675,9 @@ const analyzeMultipleImages = async ({
   additionalInfo?: AdditionalInfo;
   userId: string;
 }) => {
-  console.log(`🔬 Aynı hayvana ait ${images.length} fotoğraf analiz ediliyor...`);
+  console.log(
+    `🔬 Aynı hayvana ait ${images.length} fotoğraf analiz ediliyor...`,
+  );
 
   try {
     // Basitleştirilmiş yaklaşım: Sadece ilk fotoğrafı analiz et, ama çoklu fotoğraf olduğunu belirt
@@ -663,8 +721,6 @@ const analyzeMultipleImages = async ({
     }
 
     const detailedAnalysis = calculateDetailedAnalysis(basicAnalysis);
-    const creditConsumption = await consumeAnalysisCredit(userId);
-    if (creditConsumption.response) return creditConsumption.response;
 
     const multipleImageResult = {
       success: true,
@@ -692,13 +748,28 @@ const analyzeMultipleImages = async ({
       recommendations: detailedAnalysis.recommendations,
       analysisDate: new Date().toISOString(),
       analysisNote: `Aynı hayvana ait ${images.length} farklı açıdan çekilmiş fotoğraf analiz edildi - yüksek güvenilirlik`,
+    };
+
+    const creditConsumption = await saveAnalysisAndConsumeCredit({
+      userId,
+      payload: createAnalysisRecordPayload({
+        images,
+        additionalInfo,
+        result: multipleImageResult,
+      }),
+    });
+    if (creditConsumption.response) return creditConsumption.response;
+
+    const responseBody = {
+      ...multipleImageResult,
+      savedAnalysisId: creditConsumption.analysisId,
       user: creditConsumption.user,
     };
 
     console.log(
       `✅ Aynı hayvana ait ${images.length} fotoğraf başarıyla analiz edildi`,
     );
-    return NextResponse.json(multipleImageResult);
+    return NextResponse.json(responseBody);
   } catch (error) {
     console.error("❌ Çoklu resim analiz hatası:", error);
 
@@ -707,7 +778,8 @@ const analyzeMultipleImages = async ({
       {
         success: false,
         error: "ANALYSIS_ERROR",
-        message: "Çoklu fotoğraf analizi başarısız oldu - lütfen tekrar deneyin",
+        message:
+          "Çoklu fotoğraf analizi başarısız oldu - lütfen tekrar deneyin",
         analysisType: "multiple_same_animal",
         totalImages: images.length,
         confidence: 0,
@@ -784,9 +856,6 @@ export async function POST(request: NextRequest) {
 
     const detailedAnalysis = calculateDetailedAnalysis(basicAnalysis);
 
-    const creditConsumption = await consumeAnalysisCredit(user.id);
-    if (creditConsumption.response) return creditConsumption.response;
-
     const result = {
       success: true,
       analysisType: "single",
@@ -813,10 +882,25 @@ export async function POST(request: NextRequest) {
       analysisDate: new Date().toISOString(),
       imageIndex: imageIndex || 1,
       totalImages: totalImages || 1,
+    };
+
+    const creditConsumption = await saveAnalysisAndConsumeCredit({
+      userId: user.id,
+      payload: createAnalysisRecordPayload({
+        images: [image],
+        additionalInfo,
+        result,
+      }),
+    });
+    if (creditConsumption.response) return creditConsumption.response;
+
+    const responseBody = {
+      ...result,
+      savedAnalysisId: creditConsumption.analysisId,
       user: creditConsumption.user,
     };
 
-    return NextResponse.json(result);
+    return NextResponse.json(responseBody);
   } catch (error) {
     console.error("Analysis error:", error);
     return NextResponse.json(

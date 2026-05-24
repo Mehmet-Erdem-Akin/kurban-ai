@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import type { Prisma } from "@prisma/client";
 import prisma from "@/lib/prisma";
+import { getCurrentUser } from "@/lib/auth";
 
 type AnalysisPayload = Record<string, unknown>;
 
@@ -12,6 +13,41 @@ const getUserFromToken = (token: string) => {
   } catch {
     return null;
   }
+};
+
+const getAuthenticatedUserId = async (request: NextRequest) => {
+  const currentUser = await getCurrentUser();
+
+  if (currentUser) {
+    return currentUser.id;
+  }
+
+  const authHeader = request.headers.get("authorization");
+  const token = authHeader?.replace("Bearer ", "");
+
+  return token ? getUserFromToken(token) : null;
+};
+
+const getNestedObject = (
+  payload: AnalysisPayload,
+  key: string,
+): AnalysisPayload => {
+  const value = payload[key];
+
+  return value && typeof value === "object" && !Array.isArray(value)
+    ? (value as AnalysisPayload)
+    : {};
+};
+
+const getEstimatedCost = (result: AnalysisPayload) => {
+  const pricing = getNestedObject(result, "pricing");
+  const estimatedMeatValue = pricing.estimatedMeatValue;
+
+  if (typeof estimatedMeatValue === "number") {
+    return estimatedMeatValue;
+  }
+
+  return typeof result.marketValue === "number" ? result.marketValue : 0;
 };
 
 const toAnalysisResponse = ({
@@ -29,27 +65,29 @@ const toAnalysisResponse = ({
     payload && typeof payload === "object" && !Array.isArray(payload)
       ? (payload as AnalysisPayload)
       : {};
+  const result = getNestedObject(normalizedPayload, "result");
+  const analysisDate =
+    typeof result.analysisDate === "string" ? result.analysisDate : null;
 
   return {
     ...normalizedPayload,
     id,
     userId,
     createdAt: createdAt.toISOString(),
+    date: analysisDate ?? createdAt.toISOString(),
+    animalType:
+      typeof result.animalType === "string" ? result.animalType : "Bilinmiyor",
+    estimatedWeight:
+      typeof result.estimatedWeight === "number" ? result.estimatedWeight : 0,
+    estimatedCost: getEstimatedCost(result),
   };
 };
 
 export async function GET(request: NextRequest) {
   try {
-    const authHeader = request.headers.get("authorization");
-    const token = authHeader?.replace("Bearer ", "");
-
-    if (!token) {
-      return NextResponse.json({ error: "Token gerekli" }, { status: 401 });
-    }
-
-    const userId = getUserFromToken(token);
+    const userId = await getAuthenticatedUserId(request);
     if (!userId) {
-      return NextResponse.json({ error: "Geçersiz token" }, { status: 401 });
+      return NextResponse.json({ error: "Oturum gerekli" }, { status: 401 });
     }
 
     const userAnalyses = await prisma.analysis.findMany({
@@ -69,16 +107,9 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const authHeader = request.headers.get("authorization");
-    const token = authHeader?.replace("Bearer ", "");
-
-    if (!token) {
-      return NextResponse.json({ error: "Token gerekli" }, { status: 401 });
-    }
-
-    const userId = getUserFromToken(token);
+    const userId = await getAuthenticatedUserId(request);
     if (!userId) {
-      return NextResponse.json({ error: "Geçersiz token" }, { status: 401 });
+      return NextResponse.json({ error: "Oturum gerekli" }, { status: 401 });
     }
 
     const { analysis } = await request.json();

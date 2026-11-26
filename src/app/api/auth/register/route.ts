@@ -64,6 +64,7 @@ export async function POST(request: NextRequest) {
       success: true,
       message: "Kayıt başarılı! Hoş geldiniz.",
       user: toSafeUser(newUser),
+      token,
     });
   } catch (error) {
     console.error("Kayıt hatası:", error);

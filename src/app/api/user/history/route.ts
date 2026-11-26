@@ -1,18 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import type { Prisma } from "@prisma/client";
+import { getCurrentUser } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 
 type AnalysisPayload = Record<string, unknown>;
-
-const getUserFromToken = (token: string) => {
-  try {
-    const decoded = Buffer.from(token, "base64").toString();
-    const [userId] = decoded.split(":");
-    return userId;
-  } catch {
-    return null;
-  }
-};
 
 const toAnalysisResponse = ({
   id,
@@ -38,22 +29,16 @@ const toAnalysisResponse = ({
   };
 };
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
-    const authHeader = request.headers.get("authorization");
-    const token = authHeader?.replace("Bearer ", "");
+    const user = await getCurrentUser();
 
-    if (!token) {
+    if (!user) {
       return NextResponse.json({ error: "Token gerekli" }, { status: 401 });
     }
 
-    const userId = getUserFromToken(token);
-    if (!userId) {
-      return NextResponse.json({ error: "Geçersiz token" }, { status: 401 });
-    }
-
     const userAnalyses = await prisma.analysis.findMany({
-      where: { userId },
+      where: { userId: user.id },
       orderBy: { createdAt: "desc" },
     });
 
@@ -69,16 +54,10 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const authHeader = request.headers.get("authorization");
-    const token = authHeader?.replace("Bearer ", "");
+    const user = await getCurrentUser();
 
-    if (!token) {
+    if (!user) {
       return NextResponse.json({ error: "Token gerekli" }, { status: 401 });
-    }
-
-    const userId = getUserFromToken(token);
-    if (!userId) {
-      return NextResponse.json({ error: "Geçersiz token" }, { status: 401 });
     }
 
     const { analysis } = await request.json();
@@ -89,7 +68,7 @@ export async function POST(request: NextRequest) {
 
     const newAnalysis = await prisma.analysis.create({
       data: {
-        userId,
+        userId: user.id,
         payload: analysisPayload as Prisma.InputJsonObject,
       },
     });

@@ -21,6 +21,19 @@ export default function PrivacyPage() {
       <main className="relative z-10 container mx-auto px-4 py-12">
         <div className="max-w-4xl mx-auto">
           <div className="card p-8">
+            <div className="mb-4 flex flex-wrap items-center gap-3 text-sm">
+              <span className="font-semibold text-neutral-800 dark:text-neutral-100">
+                Türkçe
+              </span>
+              <span className="text-neutral-400">·</span>
+              <Link
+                href="/privacy/en"
+                className="text-primary-600 hover:text-primary-700 dark:text-primary-400"
+              >
+                English
+              </Link>
+            </div>
+
             <h1 className="font-display text-4xl font-semibold text-neutral-900 dark:text-neutral-100 mb-2">
               Gizlilik Politikası
             </h1>

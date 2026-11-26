@@ -41,6 +41,7 @@ export async function POST(request: NextRequest) {
       success: true,
       message: "Giriş başarılı!",
       user: toSafeUser(user),
+      token,
     });
   } catch (error) {
     console.error("Giriş hatası:", error);

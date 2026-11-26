@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { getCurrentUser, toSafeUser } from "@/lib/auth";
 import { decrementUserCredit } from "@/lib/db";
+import { consumeRateLimit, getClientIp } from "@/lib/rateLimit";
 
 // Define proper types for additionalInfo
 interface AdditionalInfo {
@@ -723,6 +724,46 @@ export async function POST(request: NextRequest) {
     if (authorization.response) return authorization.response;
 
     const { user } = authorization;
+    if (!user) {
+      return createCreditErrorResponse(
+        "AUTH_REQUIRED",
+        "Fotoğraf analizi için giriş yapmanız gerekiyor",
+        401,
+      );
+    }
+
+    const userRate = consumeRateLimit(`analyze:user:${user.id}`);
+    if (!userRate.allowed) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "RATE_LIMITED",
+          message: "Çok fazla analiz isteği gönderildi. Lütfen biraz sonra tekrar deneyin.",
+        },
+        {
+          status: 429,
+          headers: { "Retry-After": String(userRate.retryAfterSeconds) },
+        },
+      );
+    }
+
+    const ip = getClientIp(request.headers);
+    const ipRate = consumeRateLimit(`analyze:ip:${ip}`, {
+      limit: Number.parseInt(process.env.ANALYZE_IP_RATE_LIMIT_MAX || "30", 10) || 30,
+    });
+    if (!ipRate.allowed) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "RATE_LIMITED",
+          message: "Çok fazla analiz isteği gönderildi. Lütfen biraz sonra tekrar deneyin.",
+        },
+        {
+          status: 429,
+          headers: { "Retry-After": String(ipRate.retryAfterSeconds) },
+        },
+      );
+    }
 
     // Parse JSON data instead of FormData
     const body = await request.json();
